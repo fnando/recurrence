@@ -1,0 +1,6 @@
+require "rubygems"
+require "date"
+gem "activesupport", ">=2.1.1"
+require "activesupport"
+require "recurrence/base"
+require "recurrence/event"
