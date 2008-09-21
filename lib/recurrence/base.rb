@@ -15,7 +15,7 @@ class Recurrence
     
     @options = initialize_dates(options)
     
-    case @options[:every]
+    case @options[:every].to_sym
       when :day then
         @event = Recurrence::Event.new(:day, @options)
       when :week then
@@ -48,6 +48,20 @@ class Recurrence
     end
     
     return false
+  end
+  
+  def items
+    @items ||= begin
+      reset!
+      _items = []
+      each { |date| _items << date }
+      _items
+    end
+  end
+  
+  def items!
+    @items = nil
+    items
   end
   
   def each(&block)

@@ -57,6 +57,10 @@ USAGE:
 	  puts date.to_s
 	end
 	
+	# Getting an array with all events
+	r.items.each {|date| puts date.to_s }  # => Memoized array
+	r.items!.each {|date| puts date.to_s } # => reset items cache and re-execute it
+	
 	# Check if a date is included
 	r.include?(Date.today) # => true or false
 	r.include?('2008-09-21')

@@ -2,3 +2,8 @@
 
 * 1 major enhancement:
   * Initial release
+
+== 0.0.2 2008-09-21
+
+* 1 minor enhancement:
+  * Added `items` and `items!` methods; returns an array with all events
