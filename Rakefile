@@ -5,7 +5,7 @@ PKG_FILES = %w(init.rb Rakefile recurrence.gemspec History.txt License.txt READM
 
 spec = Gem::Specification.new do |s|
   s.name = "recurrence"
-  s.version = "0.0.2"
+  s.version = "0.0.3"
   s.summary = "A simples library that handles recurring events"
   s.authors = ["Nando Vieira"]
   s.email = ["fnando.vieira@gmail.com"]
@@ -68,4 +68,9 @@ namespace :gem do
   task :install => [:update_gemspec, :build] do
     system "sudo gem install #{spec.instance_variable_get('@name')}"
   end
+end
+
+desc "Execute specs"
+task :specs do
+  system "spec specs/recurrence_spec.rb -c -f s"
 end

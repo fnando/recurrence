@@ -14,6 +14,7 @@ class Recurrence
     raise ArgumentError, 'interval should be greater than zero' if options.key?(:interval) && options[:interval].to_i == 0
     
     @options = initialize_dates(options)
+    @options[:interval] ||= 1
     
     case @options[:every].to_sym
       when :day then

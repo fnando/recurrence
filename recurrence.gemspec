@@ -2,10 +2,10 @@
 # RUN : 'rake gem:update_gemspec'
 
 Gem::Specification.new do |s|
-  s.date = "Sun Sep 21 03:50:15 -0300 2008"
+  s.date = "Mon Sep 22 21:17:41 -0300 2008"
   s.authors = ["Nando Vieira"]
   s.required_rubygems_version = ">= 0"
-  s.version = "0.0.1"
+  s.version = "0.0.3"
   s.files = ["init.rb",
  "Rakefile",
  "recurrence.gemspec",

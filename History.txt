@@ -7,3 +7,9 @@
 
 * 1 minor enhancement:
   * Added `items` and `items!` methods; returns an array with all events
+
+== 0.0.3 2008-09-22
+
+* 1 major enhancement:
+  * The recurrence now considers the starting date and its configurations
+  * Added lots of specs
