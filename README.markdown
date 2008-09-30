@@ -48,9 +48,9 @@ USAGE:
 	# Limit recurrence
 	# :starts defaults to Date.today
 	# :until defaults to 2037-12-31
-	r = Recurrence.new(:day, :starts => Date.today)
-	r = Recurrence.new(:day, :until => '2010-01-31')
-	r = Recurrence.new(:day, :starts => Date.today, :until => '2010-01-31')
+	r = Recurrence.new(:every => :day, :starts => Date.today)
+	r = Recurrence.new(:every => :day, :until => '2010-01-31')
+	r = Recurrence.new(:every => :day, :starts => Date.today, :until => '2010-01-31')
 	
 	# Iterating events
 	r.each do |date|
