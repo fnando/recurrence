@@ -71,6 +71,6 @@ namespace :gem do
 end
 
 desc "Execute specs"
-task :specs do
-  system "spec specs/recurrence_spec.rb -c -f s"
+task :spec do
+  system "spec spec/recurrence_spec.rb -c -f s"
 end

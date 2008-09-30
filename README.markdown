@@ -52,14 +52,13 @@ USAGE:
 	r = Recurrence.new(:every => :day, :until => '2010-01-31')
 	r = Recurrence.new(:every => :day, :starts => Date.today, :until => '2010-01-31')
 	
-	# Iterating events
-	r.each do |date|
-	  puts date.to_s
-	end
-	
 	# Getting an array with all events
-	r.items.each {|date| puts date.to_s }  # => Memoized array
-	r.items!.each {|date| puts date.to_s } # => reset items cache and re-execute it
+	r.events.each {|date| puts date.to_s }  # => Memoized array
+	r.events!.each {|date| puts date.to_s } # => reset items cache and re-execute it
+	
+	# Iterating events
+	r.each { |date| puts date.to_s } # => Use items method
+	r.each! { |date| puts date.to_s } # => Use items! method
 	
 	# Check if a date is included
 	r.include?(Date.today) # => true or false

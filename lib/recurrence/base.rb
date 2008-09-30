@@ -35,6 +35,7 @@ class Recurrence
   
   def reset!
     @event.reset!
+    @events = nil
   end
   
   def include?(required_date)
@@ -51,31 +52,34 @@ class Recurrence
     return false
   end
   
-  def items
-    @items ||= begin
-      reset!
-      _items = []
-      each { |date| _items << date }
-      _items
+  def events
+    @events ||= begin
+      _events = []
+      
+      loop do
+        date = @event.find_next!
+
+        break if date.nil?
+        _events << date
+      end
+      
+      _events
     end
   end
   
-  def items!
-    @items = nil
-    items
+  def events!
+    reset!
+    events
+  end
+  
+  def each!(&block)
+    reset!
+    each(&block)
   end
   
   def each(&block)
-    reset!
-    
-    loop do
-      date = @event.find_next!
-      
-      if date.nil?
-        break
-      else
-        yield date
-      end
+    events.each do |item|
+      yield item
     end
   end
   
