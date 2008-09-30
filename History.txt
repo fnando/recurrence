@@ -13,3 +13,10 @@
 * 1 major enhancement:
   * The recurrence now considers the starting date and its configurations
   * Added lots of specs
+
+== 0.0.4 2008-09-30
+
+* 1 major enhancement:
+  * Renamed items method to events
+  * Added each! method
+  * Added lots of specs
