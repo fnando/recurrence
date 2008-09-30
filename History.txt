@@ -20,3 +20,9 @@
   * Renamed items method to events
   * Added each! method
   * Added lots of specs
+
+== 0.0.5 2008-09-30
+
+* 1 major enhancement:
+  * Monthly interval now accepts symbols: monthly, bimonthly, quarterly, 
+	semesterly

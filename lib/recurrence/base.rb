@@ -5,13 +5,20 @@ class Recurrence
     :monthly => 1,
     :bimonthly => 2,
     :quarterly => 3,
-    :semestral => 6
+    :semesterly => 6
   }
   
   def initialize(options)
-    raise ArgumentError, ':every options is required' unless options.key?(:every)
+    raise ArgumentError, ':every option is required' unless options.key?(:every)
     raise ArgumentError, 'invalid :every option' unless FREQUENCY.include?(options[:every].to_s)
-    raise ArgumentError, 'interval should be greater than zero' if options.key?(:interval) && options[:interval].to_i == 0
+    
+    if options.key?(:interval)
+      if options[:every].to_sym == :month && options[:interval].is_a?(Symbol) && !INTERVALS.key?(options[:interval])
+        raise ArgumentError, 'interval symbol is not valid'
+      elsif options[:interval].to_i == 0
+        raise ArgumentError, 'interval should be greater than zero'
+      end
+    end
     
     @options = initialize_dates(options)
     @options[:interval] ||= 1
@@ -25,6 +32,7 @@ class Recurrence
         @event = Recurrence::Event.new(:week, @options)
       when :month then
         raise ArgumentError, 'invalid day' unless (1..31).include?(@options[:on])
+        options.merge!(:interval => INTERVALS[options[:interval]]) if options[:interval].is_a?(Symbol)
         @event = Recurrence::Event.new(:month, @options)
       when :year then
         raise ArgumentError, 'invalid month' unless (1..12).include?(@options[:on].first)

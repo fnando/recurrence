@@ -5,7 +5,7 @@ PKG_FILES = %w(init.rb Rakefile recurrence.gemspec History.txt License.txt READM
 
 spec = Gem::Specification.new do |s|
   s.name = "recurrence"
-  s.version = "0.0.4"
+  s.version = "0.0.5"
   s.summary = "A simples library that handles recurring events"
   s.authors = ["Nando Vieira"]
   s.email = ["fnando.vieira@gmail.com"]

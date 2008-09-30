@@ -18,6 +18,16 @@ describe "recurrence" do
     doing { recurrence(:every => :day, :interval => 0) }.should raise_error(ArgumentError)
   end
   
+  Recurrence::INTERVALS.each do |interval|
+    it "should accept valid :interval symbol for monthly recurrence (#{interval[0]})" do
+      doing { recurrence(:every => :month, :on => 10, :interval => interval[0]) }.should_not raise_error(ArgumentError)
+    end
+  end
+  
+  it "should require :interval to be a valid symbol for monthly recurrence" do
+    doing { recurrence(:every => :month, :on => 10, :interval => :invalid) }.should raise_error(ArgumentError)
+  end
+  
   describe "- daily" do
     it "should recur until limit date" do
       @recurrence = recurrence(:every => :day)
@@ -119,21 +129,49 @@ describe "recurrence" do
       @recurrence.events[-1].to_s.should == '2008-11-07'
     end
     
-    it "should use interval" do
-      starts = Date.parse('2008-09-21')
-      
-      @recurrence = recurrence(:every => :month, :on => starts.day, :interval => 2, :starts => starts)
-      @recurrence.events[0].to_s.should == '2008-09-21'
-      @recurrence.events[1].to_s.should == '2008-11-21'
-      @recurrence.events[2].to_s.should == '2009-01-21'
-      @recurrence.events[3].to_s.should == '2009-03-21'
-    end
-    
     it "should run until next available 27th" do
       starts = Date.parse('2008-09-03')
       
       @recurrence = recurrence(:every => :month, :on => 27, :starts => starts)
       @recurrence.events[0].to_s.should == '2008-09-27'
+    end
+    
+    describe "interval" do
+      before(:each) do
+        @starts = Date.parse('2008-09-03')
+      end
+      
+      it "should use numeric interval" do
+        @recurrence = recurrence(:every => :month, :on => 21, :interval => 2, :starts => @starts)
+        @recurrence.events[0].to_s.should == '2008-09-21'
+        @recurrence.events[1].to_s.should == '2008-11-21'
+        @recurrence.events[2].to_s.should == '2009-01-21'
+        @recurrence.events[3].to_s.should == '2009-03-21'
+      end
+      
+      it "should accept monthly symbol" do
+        @recurrence = recurrence(:every => :month, :on => 10, :starts => @starts, :interval => :monthly)
+        @recurrence.events[0].to_s.should == '2008-09-10'
+        @recurrence.events[1].to_s.should == '2008-10-10'
+      end
+      
+      it "should accept bimonthly symbol" do
+        @recurrence = recurrence(:every => :month, :on => 10, :starts => @starts, :interval => :bimonthly)
+        @recurrence.events[0].to_s.should == '2008-09-10'
+        @recurrence.events[1].to_s.should == '2008-11-10'
+      end
+      
+      it "should accept quarterly symbol" do
+        @recurrence = recurrence(:every => :month, :on => 10, :starts => @starts, :interval => :quarterly)
+        @recurrence.events[0].to_s.should == '2008-09-10'
+        @recurrence.events[1].to_s.should == '2008-12-10'
+      end
+      
+      it "should accept semesterly symbol" do
+        @recurrence = recurrence(:every => :month, :on => 10, :starts => @starts, :interval => :semesterly)
+        @recurrence.events[0].to_s.should == '2008-09-10'
+        @recurrence.events[1].to_s.should == '2009-03-10'
+      end
     end
   end
   

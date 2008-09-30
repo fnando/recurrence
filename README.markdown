@@ -40,6 +40,10 @@ USAGE:
 	r = Recurrence.new(:every => :month, :on => 15)
 	r = Recurrence.new(:every => :month, :on => 31)
 	r = Recurrence.new(:every => :month, :on => 7, :interval => 2)
+	r = Recurrence.new(:every => :month, :on => 7, :interval => :monthly)
+	r = Recurrence.new(:every => :month, :on => 7, :interval => :bimonthly)
+	r = Recurrence.new(:every => :month, :on => 7, :interval => :quarterly)
+	r = Recurrence.new(:every => :month, :on => 7, :interval => :semesterly)
 	
 	# Yearly
 	r = Recurrence.new(:every => :year, :on => [7, 4]) # => [month, day]
