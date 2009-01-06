@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
  "lib/recurrence/event.rb",
  "lib/recurrence.rb"]
   s.email = ["fnando.vieira@gmail.com"]
-  s.version = "0.0.6"
+  s.version = "0.0.7"
   s.homepage = "http://github.com/fnando/recurrence"
   s.name = "recurrence"
   s.summary = "A simple library to handle recurring events"

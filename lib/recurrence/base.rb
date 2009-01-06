@@ -86,7 +86,12 @@ class Recurrence
     @event.next!
   end
   
-  def events
+  def events(options={})
+    options[:starts] = Date.parse(options[:starts]) if options[:starts].is_a?(String)
+    options[:until] = Date.parse(options[:until]) if options[:until].is_a?(String)
+    
+    reset! if options[:starts] || options[:until]
+    
     @events ||= begin
       _events = []
       
@@ -94,16 +99,25 @@ class Recurrence
         date = @event.next!
 
         break if date.nil?
-        _events << date
+
+        if options[:starts] && options[:until] && date >= options[:starts] && date <= options[:until]
+          _events << date
+        elsif options[:starts] && options[:until].nil? && date >= options[:starts]
+          _events << date
+        elsif options[:until] && options[:starts].nil? && date <= options[:until]
+          _events << date
+        elsif options[:starts].nil? && options[:until].nil?
+          _events << date
+        end
       end
       
       _events
     end
   end
   
-  def events!
+  def events!(options={})
     reset!
-    events
+    events(options)
   end
   
   def each!(&block)

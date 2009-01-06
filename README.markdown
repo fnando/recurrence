@@ -67,6 +67,9 @@ USAGE:
 	# Getting an array with all events
 	r.events.each {|date| puts date.to_s }  # => Memoized array
 	r.events!.each {|date| puts date.to_s } # => reset items cache and re-execute it
+	r.events(:starts => '2009-01-01').each {|date| puts date.to_s }
+	r.events(:until => '2009-01-10').each {|date| puts date.to_s }
+	r.events(:starts => '2009-01-05', :until => '2009-01-10').each {|date| puts date.to_s }
 	
 	# Iterating events
 	r.each { |date| puts date.to_s } # => Use items method

@@ -34,3 +34,8 @@
 	* Added next and next! methods
 	* Added more specs
 	* Yearly interval now accepts symbols: jan-dec and january-december
+
+== 0.0.7 2009-01-06
+
+* 1 major enhancement:
+	* The events method now accepts :starts and :until dates

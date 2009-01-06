@@ -399,6 +399,41 @@ describe "recurrence" do
     end
   end
   
+  describe "events" do
+    before(:each) do
+      @recurrence = recurrence(:every => :day, :starts => '2009-01-06', :until => '2009-01-15')
+    end
+    
+    it "should return starting and ending recurrences" do
+      @recurrence.events[0].to_s.should == '2009-01-06'
+      @recurrence.events[-1].to_s.should == '2009-01-15'
+    end
+    
+    it "should reset cache" do
+      @recurrence.event.should_receive(:reset!).exactly(3).times
+      @recurrence.events(:starts => '2009-01-11')
+      @recurrence.events(:until => '2009-01-14')
+      @recurrence.events(:starts => '2009-01-11', :until => '2009-01-14')
+    end
+    
+    it "should return only events greater than starting date" do
+      @events = @recurrence.events(:starts => '2009-01-10')
+      @events[0].to_s.should == '2009-01-10'
+    end
+    
+    it "should return only events smaller than until date" do
+      @events = @recurrence.events(:until => '2009-01-10')
+      @events[0].to_s.should == '2009-01-06'
+      @events[-1].to_s.should == '2009-01-10'
+    end
+    
+    it "should return only events between starting and until date" do
+      @events = @recurrence.events(:starts => '2009-01-12', :until => '2009-01-14')
+      @events[0].to_s.should == '2009-01-12'
+      @events[-1].to_s.should == '2009-01-14'
+    end
+  end
+  
   private
     def recurrence(options)
       Recurrence.new(options)
