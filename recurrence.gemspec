@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.version = "0.0.6"
   s.homepage = "http://github.com/fnando/recurrence"
   s.name = "recurrence"
-  s.summary = "A simples library that handles recurring events"
+  s.summary = "A simple library to handle recurring events"
   s.add_dependency "rubigen", ">= 0"
   s.add_dependency "activesupport", ">= 2.1.1"
   s.bindir = "bin"

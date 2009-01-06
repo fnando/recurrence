@@ -6,7 +6,7 @@ PKG_FILES = %w(init.rb Rakefile recurrence.gemspec History.txt License.txt READM
 spec = Gem::Specification.new do |s|
   s.name = "recurrence"
   s.version = "0.0.6"
-  s.summary = "A simples library that handles recurring events"
+  s.summary = "A simple library to handle recurring events"
   s.authors = ["Nando Vieira"]
   s.email = ["fnando.vieira@gmail.com"]
   s.homepage = "http://github.com/fnando/recurrence"
@@ -22,7 +22,7 @@ namespace :gem do
   # Thanks to the Merb project for this code.
   desc "Update Github Gemspec"
   task :update_gemspec do
-    skip_fields = %w(new_platform original_platform specification_version loaded required_ruby_version rubygems_version platform )
+    skip_fields = %w(new_platform original_platform specification_version loaded required_ruby_version rubygems_version platform)
     
     result = "# WARNING : RAKE AUTO-GENERATED FILE. DO NOT MANUALLY EDIT!\n"
     result << "# RUN : 'rake gem:update_gemspec'\n\n"
