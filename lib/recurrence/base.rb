@@ -1,12 +1,29 @@
 class Recurrence
   FREQUENCY = %w(day week month year)
   DAYS = %w(sunday monday tuesday wednesday thursday friday saturday)
+  MONTHS = {
+    "jan" => 1, "january" => 1,
+    "feb" => 2, "february" => 2,
+    "mar" => 3, "march" => 3,
+    "apr" => 4, "april" => 4,
+    "may" => 5,
+    "jun" => 6, "june" => 6,
+    "jul" => 7, "july" => 7,
+    "aug" => 8, "august" => 8,
+    "sep" => 9, "september" => 9,
+    "oct" => 10, "october" => 10,
+    "nov" => 11, "november" => 11,
+    "dec" => 12, "december" => 12
+  }
+  
   INTERVALS = {
     :monthly => 1,
     :bimonthly => 2,
     :quarterly => 3,
     :semesterly => 6
   }
+  
+  attr_reader :event
   
   def initialize(options)
     raise ArgumentError, ':every option is required' unless options.key?(:every)
@@ -35,8 +52,9 @@ class Recurrence
         options.merge!(:interval => INTERVALS[options[:interval]]) if options[:interval].is_a?(Symbol)
         @event = Recurrence::Event.new(:month, @options)
       when :year then
-        raise ArgumentError, 'invalid month' unless (1..12).include?(@options[:on].first)
+        raise ArgumentError, 'invalid month' if !(1..12).include?(@options[:on].first) && !MONTHS.keys.include?(@options[:on].first)
         raise ArgumentError, 'invalid day' unless (1..31).include?(@options[:on].last)
+        @options.merge!(:on => [MONTHS[@options[:on].first.to_s], @options.last]) unless @options[:on].first.kind_of?(Numeric)
         @event = Recurrence::Event.new(:year, @options)
     end
   end
@@ -60,12 +78,20 @@ class Recurrence
     return false
   end
   
+  def next
+    @event.next
+  end
+  
+  def next!
+    @event.next!
+  end
+  
   def events
     @events ||= begin
       _events = []
       
       loop do
-        date = @event.find_next!
+        date = @event.next!
 
         break if date.nil?
         _events << date

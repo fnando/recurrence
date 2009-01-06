@@ -48,6 +48,8 @@ USAGE:
 	# Yearly
 	r = Recurrence.new(:every => :year, :on => [7, 4]) # => [month, day]
 	r = Recurrence.new(:every => :year, :on => [10, 31], :interval => 3)
+	r = Recurrence.new(:every => :year, :on => [:jan, 31])
+	r = Recurrence.new(:every => :year, :on => [:january, 31])
 	
 	# Limit recurrence
 	# :starts defaults to Date.today
@@ -67,11 +69,10 @@ USAGE:
 	# Check if a date is included
 	r.include?(Date.today) # => true or false
 	r.include?('2008-09-21')
-
-TODO
-----	
-
-* Write the specs
+	
+	# Get next available date
+	r.next 	# => Keep the original date object
+	r.next! # => Change the internal date object to the next available date
 
 MAINTAINER
 ----------

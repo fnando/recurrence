@@ -12,17 +12,16 @@ Gem::Specification.new do |s|
  "History.txt",
  "License.txt",
  "README.markdown",
- "TODO.txt",
  "lib/recurrence",
  "lib/recurrence/base.rb",
  "lib/recurrence/event.rb",
  "lib/recurrence.rb"]
   s.email = ["fnando.vieira@gmail.com"]
-  s.version = "0.0.5"
+  s.version = "0.0.6"
   s.homepage = "http://github.com/fnando/recurrence"
   s.name = "recurrence"
   s.summary = "A simples library that handles recurring events"
   s.add_dependency "rubigen", ">= 0"
-  s.add_dependency "activesupport", ">= 0"
+  s.add_dependency "activesupport", ">= 2.1.1"
   s.bindir = "bin"
 end

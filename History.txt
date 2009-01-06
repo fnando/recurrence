@@ -26,3 +26,11 @@
 * 1 major enhancement:
   * Monthly interval now accepts symbols: monthly, bimonthly, quarterly, 
 	semesterly
+
+== 0.0.6 2009-01-06
+
+* 1 major enhancement:
+	* Code refactoring
+	* Added next and next! methods
+	* Added more specs
+	* Yearly interval now accepts symbols: jan-dec and january-december
