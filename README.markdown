@@ -6,7 +6,7 @@ Recurrence
 DESCRIPTION:
 ------------
 
-A simples library that handles recurring events.
+A simple library to handle recurring events.
 
 
 INSTALLATION:
@@ -16,6 +16,12 @@ Recurrence can be installed as Rails plugin or gem. To install it as gem, just
 run the command 
 
 	sudo gem install fnando-recurrence --source=http://gems.github.com
+
+Sometimes Github just won't build the gem. You can then do the following
+
+	git clone git://github.com/fnando/recurrence.git
+	cd recurrence
+	rake gem:install
 
 If you prefer it as a plugin, just run the command
 
