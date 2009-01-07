@@ -39,3 +39,8 @@
 
 * 1 major enhancement:
 	* The events method now accepts :starts and :until dates
+
+== 0.0.8 2009-01-07
+
+* 1 small enhancement:
+	* The iteration is stopped when the :until is reached when limiting events

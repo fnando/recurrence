@@ -432,6 +432,13 @@ describe "recurrence" do
       @events[0].to_s.should == '2009-01-12'
       @events[-1].to_s.should == '2009-01-14'
     end
+    
+    it "should not iterate all dates when using until" do
+      @events = @recurrence.events(:starts => '2009-01-06', :until => '2009-01-08')
+      @recurrence.instance_variable_get('@events').size.should == 3
+      @events.size.should == 3
+      @events[-1].to_s.should == '2009-01-08'
+    end
   end
   
   private

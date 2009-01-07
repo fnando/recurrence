@@ -99,7 +99,7 @@ class Recurrence
         date = @event.next!
 
         break if date.nil?
-
+        
         if options[:starts] && options[:until] && date >= options[:starts] && date <= options[:until]
           _events << date
         elsif options[:starts] && options[:until].nil? && date >= options[:starts]
@@ -109,6 +109,8 @@ class Recurrence
         elsif options[:starts].nil? && options[:until].nil?
           _events << date
         end
+        
+        break if options[:until] && options[:until] <= date
       end
       
       _events
