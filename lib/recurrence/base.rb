@@ -1,142 +1,127 @@
 class Recurrence
-  FREQUENCY = %w(day week month year)
+  module Base
+    FREQUENCY = %w(day week month year)
 
-  attr_reader :event
+    attr_reader :event
 
-  def initialize(options)
-    raise ArgumentError, ':every option is required' unless options.key?(:every)
-    raise ArgumentError, 'invalid :every option'     unless FREQUENCY.include?(options[:every].to_s)
-
-    @options = initialize_dates(options)
-    @options[:interval] ||= 1
-
-    @event = case @options[:every].to_sym
-      when :day
-        Recurrence::Event::Daily.new(@options)
-      when :week
-        @event = Recurrence::Event::Weekly.new(@options)
-      when :month
-        @event = Recurrence::Event::Monthly.new(@options)
-      when :year
-        @event = Recurrence::Event::Yearly.new(@options)
+    def self.included(base) #:nodoc:
+      base.extend ClassMethods
     end
-  end
 
-  def reset!
-    @event.reset!
-    @events = nil
-  end
+    # Holds default_until_date configuration.
+    #
+    module ClassMethods #:nodoc:
+      def default_until_date
+        @default_until_date ||= Date.new(2037, 12, 31)
+      end
 
-  def include?(required_date)
-    required_date = Date.parse(required_date) if required_date.is_a?(String)
-
-    if required_date < @options[:starts] || required_date > @options[:until]
-      false
-    else
-      each do |date|
-        return true if date == required_date
+      def default_until_date=(date)
+        @default_until_date = if date.is_a?(String)
+          Date.parse(date)
+        else
+          date
+        end
       end
     end
 
-    return false
-  end
+    def initialize(options)
+      raise ArgumentError, ':every option is required' unless options.key?(:every)
+      raise ArgumentError, 'invalid :every option'     unless FREQUENCY.include?(options[:every].to_s)
 
-  def next
-    @event.next
-  end
+      @options = initialize_dates(options)
+      @options[:interval] ||= 1
 
-  def next!
-    @event.next!
-  end
+      @event = case @options[:every].to_sym
+        when :day
+          Recurrence::Event::Daily.new(@options)
+        when :week
+          Recurrence::Event::Weekly.new(@options)
+        when :month
+          Recurrence::Event::Monthly.new(@options)
+        when :year
+          Recurrence::Event::Yearly.new(@options)
+      end
+    end
 
-  def events(options={})
-    options[:starts] = Date.parse(options[:starts]) if options[:starts].is_a?(String)
-    options[:until]  = Date.parse(options[:until])  if options[:until].is_a?(String)
+    def reset!
+      @event.reset!
+      @events = nil
+    end
 
-    reset! if options[:starts] || options[:until]
+    def include?(required_date)
+      required_date = Date.parse(required_date) if required_date.is_a?(String)
 
-    @events ||= begin
-      _events = []
-
-      loop do
-        date = @event.next!
-
-        break if date.nil?
-
-        valid_start = options[:starts].nil? || date >= options[:starts]
-        valid_until = options[:until].nil?  || date <= options[:until]
-        _events << date if valid_start && valid_until
-
-        break if options[:until] && options[:until] <= date
+      if required_date < @options[:starts] || required_date > @options[:until]
+        false
+      else
+        each do |date|
+          return true if date == required_date
+        end
       end
 
-      _events
+      return false
     end
-  end
 
-  def events!(options={})
-    reset!
-    events(options)
-  end
-
-  def each!(&block)
-    reset!
-    each(&block)
-  end
-
-  def each(&block)
-    events.each do |item|
-      yield item
+    def next
+      @event.next
     end
-  end
 
-  # Defaul until date configuration.
-  #
-  def self.default_until_date=(date)
-    @default_until_date = if date.is_a?(String)
-      Date.parse(date)
-    else
-      date
+    def next!
+      @event.next!
     end
-  end
 
-  def self.default_until_date
-    @default_until_date ||= Date.new(2037, 12, 31)
-  end
+    def events(options={})
+      options[:starts] = Date.parse(options[:starts]) if options[:starts].is_a?(String)
+      options[:until]  = Date.parse(options[:until])  if options[:until].is_a?(String)
 
-  # Recurrence.type shortcuts
-  #
-  def self.daily(options={})
-    options[:every] = :day
-    new(options)
-  end
+      reset! if options[:starts] || options[:until]
 
-  def self.weekly(options)
-    options[:every] = :week
-    new(options)
-  end
+      @events ||= begin
+        _events = []
 
-  def self.monthly(options)
-    options[:every] = :month
-    new(options)
-  end
+        loop do
+          date = @event.next!
 
-  def self.yearly(options)
-    options[:every] = :year
-    new(options)
-  end
+          break if date.nil?
 
-  private
+          valid_start = options[:starts].nil? || date >= options[:starts]
+          valid_until = options[:until].nil?  || date <= options[:until]
+          _events << date if valid_start && valid_until
 
-    def initialize_dates(options) #:nodoc:
-      [:starts, :until].each do |name|
-        options[name] = Date.parse(options[name]) if options[name].is_a?(String)
+          break if options[:until] && options[:until] <= date
+        end
+
+        _events
       end
-
-      options[:starts] ||= Date.today
-      options[:until]  ||= self.class.default_until_date
-
-      options
     end
 
+    def events!(options={})
+      reset!
+      events(options)
+    end
+
+    def each!(&block)
+      reset!
+      each(&block)
+    end
+
+    def each(&block)
+      events.each do |item|
+        yield item
+      end
+    end
+
+    private
+
+      def initialize_dates(options) #:nodoc:
+        [:starts, :until].each do |name|
+          options[name] = Date.parse(options[name]) if options[name].is_a?(String)
+        end
+
+        options[:starts] ||= Date.today
+        options[:until]  ||= self.class.default_until_date
+
+        options
+      end
+  end
 end
