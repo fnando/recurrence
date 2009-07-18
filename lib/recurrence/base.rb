@@ -1,6 +1,8 @@
 class Recurrence
   FREQUENCY = %w(day week month year)
+  CARDINALS = %w(first second third fourth fifth)
   DAYS = %w(sunday monday tuesday wednesday thursday friday saturday)
+
   MONTHS = {
     "jan" => 1, "january" => 1,
     "feb" => 2, "february" => 2,
@@ -41,20 +43,45 @@ class Recurrence
     @options[:interval] ||= 1
     
     case @options[:every].to_sym
-      when :day then
+      when :day
         @event = Recurrence::Event.new(:day, @options)
-      when :week then
-        raise ArgumentError, 'invalid day' if !DAYS.include?(@options[:on].to_s) && !(0..6).include?(@options[:on])
-        @options.merge!(:on => DAYS.index(@options[:on].to_s)) if DAYS.include?(@options[:on].to_s)
+      when :week
+        assign_weekday_or_weekday_name_for_key :on
         @event = Recurrence::Event.new(:week, @options)
-      when :month then
-        raise ArgumentError, 'invalid day' unless (1..31).include?(@options[:on])
-        options.merge!(:interval => INTERVALS[options[:interval]]) if options[:interval].is_a?(Symbol)
+      when :month
+        if @options.key?(:weekday)
+
+          # Allow :on => :last, :weekday => :thursday contruction.
+          if @options[:on].to_s == 'last'
+            @options[:on] = 5 
+          elsif @options[:on].kind_of?(Numeric)
+            valid_week?(@options[:on])
+          else
+            valid_cardinal?(@options[:on])
+            @options[:on] = CARDINALS.index(@options[:on].to_s) + 1
+          end
+
+          assign_weekday_or_weekday_name_for_key :weekday
+        else
+          valid_month_day?(@options[:on])
+        end
+
+        if @options[:interval].is_a?(Symbol)
+          valid_interval?(@options[:interval])
+          @options[:interval] = INTERVALS[@options[:interval]]
+        end
+
         @event = Recurrence::Event.new(:month, @options)
-      when :year then
-        raise ArgumentError, 'invalid month' if !(1..12).include?(@options[:on].first) && !MONTHS.keys.include?(@options[:on].first)
-        raise ArgumentError, 'invalid day' unless (1..31).include?(@options[:on].last)
-        @options.merge!(:on => [MONTHS[@options[:on].first.to_s], @options.last]) unless @options[:on].first.kind_of?(Numeric)
+      when :year
+        valid_month_day?(@options[:on].last)
+
+        if @options[:on].first.kind_of?(Numeric)
+          valid_month?(@options[:on].first)
+        else
+          valid_month_name?(@options[:on].first)
+          @options[:on] = [ MONTHS[@options[:on].first.to_s], @options.last ]
+        end
+
         @event = Recurrence::Event.new(:year, @options)
     end
   end
@@ -132,16 +159,62 @@ class Recurrence
       yield item
     end
   end
-  
+
   private
-    def initialize_dates(options)
+
+    def initialize_dates(options) #:nodoc:
       [:starts, :until].each do |name|
         options[name] = Date.parse(options[name]) if options[name].is_a?(String)
       end
-      
+
       options[:starts] ||= Date.today
       options[:until] ||= Date.parse('2037-12-31')
-      
+
       options
+    end
+
+    # Check if the given key has a valid weekdday (0 upto 6) or a valid weekday
+    # name (defined in the DAYS constant). If a weekday name (String) is given,
+    # convert it to a weekday (Integer).
+    #
+    def assign_weekday_or_weekday_name_for_key(key)
+      if @options[key].kind_of?(Numeric)
+        valid_weekday?(@options[key])
+      else
+        valid_weekday_name?(@options[key])
+        @options.merge!(key => DAYS.index(@options[key].to_s))
+      end
+    end
+
+    def valid_cardinal?(cardinal)
+      raise ArgumentError, "invalid cardinal #{cardinal}" unless CARDINALS.include?(cardinal.to_s)
+    end
+
+    def valid_interval?(interval)
+      raise ArgumentError, "invalid cardinal #{interval}" unless INTERVALS.key?(interval)
+    end
+
+    def valid_week?(week) #:nodoc:
+      raise ArgumentError, "invalid week #{week}" unless (1..5).include?(week)
+    end
+
+    def valid_weekday?(day) #:nodoc:
+      raise ArgumentError, "invalid day #{day}" unless (0..6).include?(day)
+    end
+
+    def valid_weekday_name?(dayname) #:nodoc:
+      raise ArgumentError, "invalid weekday #{dayname}" unless DAYS.include?(dayname.to_s)
+    end
+
+    def valid_month?(month) #:nodoc:
+      raise ArgumentError, "invalid month #{month}" unless (1..12).include?(month)
+    end
+
+    def valid_month_day?(day) #:nodoc:
+      raise ArgumentError, "invalid day #{day}" unless (1..31).include?(day)
+    end
+
+    def valid_month_name?(month) #:nodoc:
+      raise ArgumentError, "invalid month #{month}" unless MONTHS.keys.include?(month.to_s)
     end
 end

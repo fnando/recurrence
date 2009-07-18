@@ -30,15 +30,19 @@ class Recurrence::Event
       return @date
     end
     
-    case @every
+    @date = case @every
       when :day
-        @date = next_day
+        next_day
       when :week
-        @date = next_week
+        next_week
       when :month
-        @date = next_month
+        if @options[:weekday]
+          next_month_by_weekday
+        else
+          next_month_by_monthday
+        end
       when :year
-        @date = next_year
+        next_year
     end
     
     # if limit date has been reached just set the date 
@@ -60,71 +64,94 @@ class Recurrence::Event
     def inited?
       !!@start_date
     end
-  
-    def next_day
-      date = @date
-      date = date + @options[:interval].days if inited? || @options[:interval] > 1
-      
-      date.to_date
-    end
-    
-    def next_week
-      date = @date
-      
-      if inited?
-        date = date + @options[:interval].weeks
-      elsif date.wday != @options[:on]
-        date = date.next until @options[:on] == date.wday && date > @options[:starts]
-        date = date + (@options[:interval] - 1).weeks
-      end
-      
-      date.to_date
-    end
-    
-    def next_month
-      date = @date
-      
-      if inited?
-        date = advance_to_month(date)
-      else
-        day = [options[:on], Time.days_in_month(date.month, date.year)].min
-        date = Date.new(date.year, date.month, day)
-        date = advance_to_month(date) if @date.day > day
-      end
 
-      date.to_date
-    end
-    
-    def advance_to_month(date)
-      date = date.beginning_of_month + @options[:interval].months
-      day = [options[:on], Time.days_in_month(date.month, date.year)].min
-      
-      if date.day != day && date.day < day
-        date = date.to_date.next until date.day == day
-      end
-      
+    def next_day
+      date  = @date.to_date
+      date += @options[:interval] if inited?
       date
     end
-    
-    def next_year
-      date = @date
-      
+
+    def next_week
       if inited?
-        date = advance_to_year(date)
-      else
-        day = [options[:on].last, Time.days_in_month(options[:on].first, date.year)].min
-        date = Date.new(date.year, options[:on].first, day)
-        date = advance_to_year(date) if @date.month > date.month || @options[:on].last < @date.day
+        to_add = @options[:interval] * 7
+      elsif @date.wday != @options[:on]
+        to_add  = @options[:on] - @date.wday
+        to_add += 7 if to_add < 0
+        to_add += (@options[:interval] - 1) * 7
       end
-      
-      date.to_date
+
+      @date.to_date + (to_add || 0)
     end
-    
-    def advance_to_year(date)
-      date = date.beginning_of_month + @options[:interval].years
-      day = [Time.days_in_month(@options[:on].first, date.year), @options[:on].last].min
-      year = date.year
-    
-      date = Date.new(year, @options[:on].first, day)
+
+    def next_month_by_weekday
+      if inited?
+        advance_to_month_by_weekday(@date)
+      else
+        new_date = advance_to_month_by_weekday(@date, 0)
+        new_date = advance_to_month_by_weekday(new_date) if @date > new_date
+        new_date
+      end
+    end
+
+    def advance_to_month_by_weekday(date, interval=@options[:interval])
+      raw_month  = date.month + interval - 1
+      next_year  = date.year + raw_month / 12
+      next_month = (raw_month % 12) + 1 # change back to ruby interval
+      date       = Date.new(next_year, next_month, 1)
+
+      weekday, month = @options[:weekday], date.month
+
+      # Adjust week day
+      to_add  = weekday - date.wday
+      to_add += 7 if to_add < 0
+      to_add += (@options[:on] - 1) * 7
+      date   += to_add
+
+      # Go to the previous month if we lost it
+      if date.month != month
+        weeks = (date.day - 1) / 7 + 1
+        date -= weeks * 7
+      end
+
+      date
+    end
+
+    def next_month_by_monthday
+      if inited?
+        advance_to_month_by_monthday(@date)
+      else
+        new_date = advance_to_month_by_monthday(@date, 0)
+        new_date = advance_to_month_by_monthday(new_date) if @date > new_date
+        new_date
+      end
+    end
+
+    def advance_to_month_by_monthday(date, interval=@options[:interval])
+      # Have a raw month from 0 to 11 interval
+      raw_month  = date.month + interval - 1
+
+      next_year  = date.year + raw_month / 12
+      next_month = (raw_month % 12) + 1 # change back to ruby interval
+      next_day   = [ @options[:on], Time.days_in_month(next_month, next_year) ].min
+
+      Date.new(next_year, next_month, next_day)
+    end
+
+    def next_year
+      if inited?
+        advance_to_year(@date)
+      else
+        new_date = advance_to_year(@date, 0)
+        new_date = advance_to_year(new_date) if @date > new_date
+        new_date
+      end
+    end
+
+    def advance_to_year(date, interval=@options[:interval])
+      next_year  = date.year + interval
+      next_month = @options[:on].first
+      next_day   = [ @options[:on].last, Time.days_in_month(next_month, next_year) ].min
+
+      Date.new(next_year, next_month, next_day)
     end
 end
