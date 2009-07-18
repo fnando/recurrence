@@ -29,7 +29,7 @@ class Recurrence
   
   def initialize(options)
     raise ArgumentError, ':every option is required' unless options.key?(:every)
-    raise ArgumentError, 'invalid :every option' unless FREQUENCY.include?(options[:every].to_s)
+    raise ArgumentError, 'invalid :every option'     unless FREQUENCY.include?(options[:every].to_s)
     
     if options.key?(:interval)
       if options[:every].to_sym == :month && options[:interval].is_a?(Symbol) && !INTERVALS.key?(options[:interval])
@@ -129,16 +129,10 @@ class Recurrence
         date = @event.next!
 
         break if date.nil?
-        
-        if options[:starts] && options[:until] && date >= options[:starts] && date <= options[:until]
-          _events << date
-        elsif options[:starts] && options[:until].nil? && date >= options[:starts]
-          _events << date
-        elsif options[:until] && options[:starts].nil? && date <= options[:until]
-          _events << date
-        elsif options[:starts].nil? && options[:until].nil?
-          _events << date
-        end
+
+        valid_start = options[:starts].nil? || date >= options[:starts]
+        valid_until = options[:until].nil?  || date <= options[:until]
+        _events << date if valid_start && valid_until
         
         break if options[:until] && options[:until] <= date
       end
