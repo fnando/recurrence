@@ -2,26 +2,31 @@
 # RUN : 'rake gem:update_gemspec'
 
 Gem::Specification.new do |s|
-  s.authors = ["Nando Vieira"]
+  s.add_dependency "activesupport", ">= 2.1.1"
   s.require_paths = ["lib"]
-  s.required_rubygems_version = ">= 0"
-  s.has_rdoc = false
   s.files = ["init.rb",
  "Rakefile",
  "recurrence.gemspec",
  "History.txt",
  "License.txt",
  "README.markdown",
+ "lib/recurrence.rb",
  "lib/recurrence",
  "lib/recurrence/base.rb",
  "lib/recurrence/event.rb",
- "lib/recurrence.rb"]
-  s.email = ["fnando.vieira@gmail.com"]
-  s.version = "0.0.7"
-  s.homepage = "http://github.com/fnando/recurrence"
+ "lib/recurrence/shortcuts.rb",
+ "lib/recurrence/event",
+ "lib/recurrence/event/monthly.rb",
+ "lib/recurrence/event/daily.rb",
+ "lib/recurrence/event/weekly.rb",
+ "lib/recurrence/event/yearly.rb"]
+  s.authors = ["Nando Vieira"]
   s.name = "recurrence"
-  s.summary = "A simple library to handle recurring events"
-  s.add_dependency "rubigen", ">= 0"
-  s.add_dependency "activesupport", ">= 2.1.1"
+  s.required_rubygems_version = ">= 0"
+  s.has_rdoc = false
+  s.email = ["fnando.vieira@gmail.com"]
+  s.homepage = "http://github.com/fnando/recurrence"
   s.bindir = "bin"
+  s.version = "0.1.0"
+  s.summary = "A simple library to handle recurring events"
 end

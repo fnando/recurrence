@@ -44,3 +44,12 @@
 
 * 1 small enhancement:
 	* The iteration is stopped when the :until is reached when limiting events
+
+== 0.1.0 2009-07-18
+
+* 3 major enhancements:
+  * Allow monthly recurrences to occur by weekday:
+    Recurrence.new(:every => :month, :on => :first, :weekday => :thursday)
+  * Allow several weekdays to be given to weekly recurrence:
+    Recurrence.new(:every => :week, :on => [:monday, :wednesday, :friday])
+  * Added :daily, :weekly, :monthly and :yearly shortcuts to Recurrence.
