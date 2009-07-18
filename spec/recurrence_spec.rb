@@ -129,7 +129,7 @@ describe "recurrence" do
     
     it "should use interval" do
       starts = Date.parse('2008-09-21')
-      @recurrence = recurrence(:every => :week, :on => starts.wday, :interval => 2, :starts => starts)
+      @recurrence = recurrence(:every => :week, :on => starts.wday, :interval => 2, :starts => starts, :until => '2009-01-01')
       @recurrence.events[0].to_s.should == '2008-09-21'
       @recurrence.events[1].to_s.should == '2008-10-05'
       @recurrence.events[2].to_s.should == '2008-10-19'
@@ -139,9 +139,31 @@ describe "recurrence" do
       @recurrence.events[6].to_s.should == '2008-12-14'
     end
     
+    it "should occur several times per week" do
+      starts = Date.parse('2008-09-21') #=> sunday
+      @recurrence = recurrence(:every => :week, :on => [ :saturday, :sunday ], :interval => 2, :starts => starts, :until => '2009-01-01')
+      @recurrence.events[0].to_s.should == '2008-09-21'
+      @recurrence.events[1].to_s.should == '2008-09-27'
+      @recurrence.events[2].to_s.should == '2008-10-05'
+      @recurrence.events[3].to_s.should == '2008-10-11'
+      @recurrence.events[4].to_s.should == '2008-10-19'
+      @recurrence.events[5].to_s.should == '2008-10-25'
+      @recurrence.events[6].to_s.should == '2008-11-02'
+      @recurrence.events[7].to_s.should == '2008-11-08'
+
+      starts = Date.parse('2008-09-21') #=> sunday
+      @recurrence = recurrence(:every => :week, :on => [ :monday, :wednesday, :friday ], :starts => starts, :until => '2009-01-01')
+      @recurrence.events[0].to_s.should == '2008-09-22'
+      @recurrence.events[1].to_s.should == '2008-09-24'
+      @recurrence.events[2].to_s.should == '2008-09-26'
+      @recurrence.events[3].to_s.should == '2008-09-29'
+      @recurrence.events[4].to_s.should == '2008-10-01'
+      @recurrence.events[5].to_s.should == '2008-10-03'
+    end
+    
     it "should run until next available saturday" do
       starts = Date.parse('2008-09-21') # => sunday
-      @recurrence = recurrence(:every => :week, :on => :saturday, :starts => starts)
+      @recurrence = recurrence(:every => :week, :on => :saturday, :starts => starts, :until => '2009-01-01')
       @recurrence.events[0].to_s.should == '2008-09-27'
     end
   end
@@ -178,13 +200,13 @@ describe "recurrence" do
       it "should run until next available 27th" do
         starts = Date.parse('2008-09-28')
         
-        @recurrence = recurrence(:every => :month, :on => 27, :starts => starts)
+        @recurrence = recurrence(:every => :month, :on => 27, :starts => starts, :until => '2009-01-01')
         @recurrence.events[0].to_s.should == '2008-10-27'
       end
       
       it "should use interval" do
         starts = Date.parse('2008-01-31')
-        @recurrence = recurrence(:every => :month, :on => 31, :interval => 2, :starts => starts)
+        @recurrence = recurrence(:every => :month, :on => 31, :interval => 2, :starts => starts, :until => '2010-01-01')
         @recurrence.events[0].to_s.should == '2008-01-31'
         @recurrence.events[1].to_s.should == '2008-03-31'
         @recurrence.events[2].to_s.should == '2008-05-31'
@@ -194,7 +216,7 @@ describe "recurrence" do
         @recurrence.events[6].to_s.should == '2009-01-31'
         
         starts = Date.parse('2008-01-31')
-        @recurrence = recurrence(:every => :month, :on => 29, :interval => 3, :starts => starts)
+        @recurrence = recurrence(:every => :month, :on => 29, :interval => 3, :starts => starts, :until => '2010-01-01')
         @recurrence.events[0].to_s.should == '2008-04-29'
         @recurrence.events[1].to_s.should == '2008-07-29'
         @recurrence.events[2].to_s.should == '2008-10-29'
@@ -203,7 +225,7 @@ describe "recurrence" do
         @recurrence.events[5].to_s.should == '2009-07-29'
         
         starts = Date.parse('2008-02-29')
-        @recurrence = recurrence(:every => :month, :on => 31, :interval => 4, :starts => starts)
+        @recurrence = recurrence(:every => :month, :on => 31, :interval => 4, :starts => starts, :until => '2010-01-01')
         @recurrence.events[0].to_s.should == '2008-02-29'
         @recurrence.events[1].to_s.should == '2008-06-30'
         @recurrence.events[2].to_s.should == '2008-10-31'
@@ -251,7 +273,7 @@ describe "recurrence" do
       
       it "should use interval" do
         starts = Date.parse('2009-01-01')
-        @recurrence = recurrence(:every => :month, :on => :third, :weekday => :sunday, :interval => 2, :starts => starts)
+        @recurrence = recurrence(:every => :month, :on => :third, :weekday => :sunday, :interval => 2, :starts => starts, :until => '2010-02-01')
         @recurrence.events[0].to_s.should == '2009-01-18'
         @recurrence.events[1].to_s.should == '2009-03-15'
         @recurrence.events[2].to_s.should == '2009-05-17'

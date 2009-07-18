@@ -46,7 +46,10 @@ class Recurrence
       when :day
         @event = Recurrence::Event.new(:day, @options)
       when :week
-        assign_weekday_or_weekday_name_for_key :on
+        @options[:on] = Array.wrap(@options[:on]).inject([]) do |days, value|
+          days << valid_weekday_or_weekday_name?(value)
+        end
+
         @event = Recurrence::Event.new(:week, @options)
       when :month
         if @options.key?(:weekday)
@@ -61,7 +64,7 @@ class Recurrence
             @options[:on] = CARDINALS.index(@options[:on].to_s) + 1
           end
 
-          assign_weekday_or_weekday_name_for_key :weekday
+          @options[:weekday] = valid_weekday_or_weekday_name?(@options[:weekday])
         else
           valid_month_day?(@options[:on])
         end
@@ -195,16 +198,17 @@ class Recurrence
       options
     end
 
-    # Check if the given key has a valid weekdday (0 upto 6) or a valid weekday
+    # Check if the given key has a valid weekday (0 upto 6) or a valid weekday
     # name (defined in the DAYS constant). If a weekday name (String) is given,
     # convert it to a weekday (Integer).
     #
-    def assign_weekday_or_weekday_name_for_key(key)
-      if @options[key].kind_of?(Numeric)
-        valid_weekday?(@options[key])
+    def valid_weekday_or_weekday_name?(value)
+      if value.kind_of?(Numeric)
+        raise ArgumentError, "invalid day #{value}" unless (0..6).include?(value)
+        value
       else
-        valid_weekday_name?(@options[key])
-        @options.merge!(key => DAYS.index(@options[key].to_s))
+        raise ArgumentError, "invalid weekday #{value}" unless DAYS.include?(value.to_s)
+        DAYS.index(value.to_s)
       end
     end
 
@@ -218,14 +222,6 @@ class Recurrence
 
     def valid_week?(week) #:nodoc:
       raise ArgumentError, "invalid week #{week}" unless (1..5).include?(week)
-    end
-
-    def valid_weekday?(day) #:nodoc:
-      raise ArgumentError, "invalid day #{day}" unless (0..6).include?(day)
-    end
-
-    def valid_weekday_name?(dayname) #:nodoc:
-      raise ArgumentError, "invalid weekday #{dayname}" unless DAYS.include?(dayname.to_s)
     end
 
     def valid_month?(month) #:nodoc:

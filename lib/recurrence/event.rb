@@ -7,6 +7,7 @@ class Recurrence::Event
     @current = nil
     @date    = options[:starts]
     prepare!
+    @options[:on].sort! if @every == :week
   end
   
   def prepare!
@@ -72,15 +73,17 @@ class Recurrence::Event
     end
 
     def next_week
-      if inited?
-        to_add = @options[:interval] * 7
-      elsif @date.wday != @options[:on]
-        to_add  = @options[:on] - @date.wday
-        to_add += 7 if to_add < 0
-        to_add += (@options[:interval] - 1) * 7
+      return @date if !inited? && @options[:on].include?(@date.wday)
+
+      if next_day = @options[:on].find { |day| day > @date.wday }
+        to_add = next_day - @date.wday
+      else 
+        to_add = (7 - date.wday)                 # Move to next week
+        to_add += (@options[:interval] - 1) * 7  # Add extra intervals
+        to_add += @options[:on].first            # Go to first required day
       end
 
-      @date.to_date + (to_add || 0)
+      @date.to_date + to_add
     end
 
     def next_month_by_weekday

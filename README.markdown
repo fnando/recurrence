@@ -38,8 +38,10 @@ USAGE:
 	r = Recurrence.new(:every => :day, :interval => 9)
 	
 	# Weekly
-	r = Recurrence.new(:every => :week, :on => :friday)
 	r = Recurrence.new(:every => :week, :on => 5)
+	r = Recurrence.new(:every => :week, :on => :monday)
+	r = Recurrence.new(:every => :week, :on => [:monday, :friday])
+	r = Recurrence.new(:every => :week, :on => [:monday, :wednesday, :friday])
 	r = Recurrence.new(:every => :week, :on => :friday, :interval => 2)
 	
 	# Monthly by month day
