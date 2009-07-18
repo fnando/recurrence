@@ -1,6 +1,36 @@
 class Recurrence::Event::Monthly < Recurrence::Event
+  INTERVALS = {
+    :monthly => 1,
+    :bimonthly => 2,
+    :quarterly => 3,
+    :semesterly => 6
+  }
 
   protected
+
+    def validate
+      if @options.key?(:weekday)
+
+        # Allow :on => :last, :weekday => :thursday contruction.
+        if @options[:on].to_s == 'last'
+          @options[:on] = 5 
+        elsif @options[:on].kind_of?(Numeric)
+          valid_week?(@options[:on])
+        else
+          valid_cardinal?(@options[:on])
+          @options[:on] = CARDINALS.index(@options[:on].to_s) + 1
+        end
+
+        @options[:weekday] = valid_weekday_or_weekday_name?(@options[:weekday])
+      else
+        valid_month_day?(@options[:on])
+      end
+
+      if @options[:interval].is_a?(Symbol)
+        valid_interval?(@options[:interval])
+        @options[:interval] = INTERVALS[@options[:interval]]
+      end
+    end
 
     def next_in_recurrence
       return next_month if self.respond_to?(:next_month)
@@ -53,6 +83,20 @@ class Recurrence::Event::Monthly < Recurrence::Event
       end
 
       date
+    end
+
+  private
+
+    def valid_cardinal?(cardinal) #:nodoc:
+      raise ArgumentError, "invalid cardinal #{cardinal}" unless CARDINALS.include?(cardinal.to_s)
+    end
+
+    def valid_interval?(interval) #:nodoc:
+      raise ArgumentError, "invalid cardinal #{interval}" unless INTERVALS.key?(interval)
+    end
+
+    def valid_week?(week) #:nodoc:
+      raise ArgumentError, "invalid week #{week}" unless (1..5).include?(week)
     end
 
 end

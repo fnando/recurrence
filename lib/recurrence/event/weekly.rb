@@ -3,6 +3,10 @@ class Recurrence::Event::Weekly < Recurrence::Event
   protected
 
     def validate
+      @options[:on] = Array.wrap(@options[:on]).inject([]) do |days, value|
+        days << valid_weekday_or_weekday_name?(value)
+      end
+
       @options[:on].sort!
     end
 

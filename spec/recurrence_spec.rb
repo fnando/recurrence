@@ -32,13 +32,13 @@ describe "recurrence" do
     doing { recurrence(:every => :day, :interval => 0) }.should raise_error(ArgumentError)
   end
   
-  Recurrence::INTERVALS.each do |interval|
+  Recurrence::Event::Monthly::INTERVALS.each do |interval|
     it "should accept valid :interval symbol for monthly recurrence (#{interval[0]})" do
       doing { recurrence(:every => :month, :on => 10, :interval => interval[0]) }.should_not raise_error(ArgumentError)
     end
   end
   
-  Recurrence::MONTHS.each do |month_name, month_number|
+  Recurrence::Event::Yearly::MONTHS.each do |month_name, month_number|
     it "should accept month as symbol for yearly recurrence (#{month_name})" do
       doing { recurrence(:every => :year, :on => [month_name, 10]) }.should_not raise_error(ArgumentError)
     end
