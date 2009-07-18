@@ -54,7 +54,7 @@ describe "recurrence" do
   
   describe "- daily" do
     it "should recur until limit date" do
-      @recurrence = recurrence(:every => :day)
+      @recurrence = Recurrence.daily
       @recurrence.events[-1].should == Date.parse('2037-12-31')
     end
     
@@ -94,7 +94,7 @@ describe "recurrence" do
   
   describe "- weekly" do
     it "should recur until limit date" do
-      @recurrence = recurrence(:every => :week, :on => :thursday)
+      @recurrence = Recurrence.weekly(:on => :thursday)
       @recurrence.events[-1].should == Date.parse('2037-12-31')
     end
     
@@ -149,7 +149,7 @@ describe "recurrence" do
   describe "- monthly" do
     describe "by day" do
       it "should recur until limit date" do
-        @recurrence = recurrence(:every => :month, :on => 31)
+        @recurrence = Recurrence.monthly(:on => 31)
         @recurrence.events[-1].should == Date.parse('2037-12-31')
       end
       
@@ -213,7 +213,7 @@ describe "recurrence" do
     
     describe "by weekday" do
       it "should recur until limit date" do
-        @recurrence = recurrence(:every => :month, :on => 5, :weekday => :thursday)
+        @recurrence = Recurrence.daily(:on => 5, :weekday => :thursday)
         @recurrence.events[-1].should == Date.parse('2037-12-31')
       end
       
@@ -303,7 +303,7 @@ describe "recurrence" do
   
   describe "- yearly" do
     it "should recur until limit date" do
-      @recurrence = recurrence(:every => :year, :on => [12,31])
+      @recurrence = Recurrence.yearly(:on => [12,31])
       @recurrence.events[-1].should == Date.parse('2037-12-31')
     end
     

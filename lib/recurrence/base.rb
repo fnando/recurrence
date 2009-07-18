@@ -160,6 +160,28 @@ class Recurrence
     end
   end
 
+  # Recurrence.type shortcuts
+  #
+  def self.daily(options={})
+    options[:every] = :day
+    new(options)
+  end
+
+  def self.weekly(options)
+    options[:every] = :week
+    new(options)
+  end
+
+  def self.monthly(options)
+    options[:every] = :month
+    new(options)
+  end
+
+  def self.yearly(options)
+    options[:every] = :year
+    new(options)
+  end
+
   private
 
     def initialize_dates(options) #:nodoc:
