@@ -44,13 +44,13 @@ class Recurrence
     
     case @options[:every].to_sym
       when :day
-        @event = Recurrence::Event.new(:day, @options)
+        @event = Recurrence::Event::Daily.new(@options)
       when :week
         @options[:on] = Array.wrap(@options[:on]).inject([]) do |days, value|
           days << valid_weekday_or_weekday_name?(value)
         end
 
-        @event = Recurrence::Event.new(:week, @options)
+        @event = Recurrence::Event::Weekly.new(@options)
       when :month
         if @options.key?(:weekday)
 
@@ -74,7 +74,7 @@ class Recurrence
           @options[:interval] = INTERVALS[@options[:interval]]
         end
 
-        @event = Recurrence::Event.new(:month, @options)
+        @event = Recurrence::Event::Monthly.new(@options)
       when :year
         valid_month_day?(@options[:on].last)
 
@@ -85,7 +85,7 @@ class Recurrence
           @options[:on] = [ MONTHS[@options[:on].first.to_s], @options.last ]
         end
 
-        @event = Recurrence::Event.new(:year, @options)
+        @event = Recurrence::Event::Yearly.new(@options)
     end
   end
   
@@ -118,7 +118,7 @@ class Recurrence
   
   def events(options={})
     options[:starts] = Date.parse(options[:starts]) if options[:starts].is_a?(String)
-    options[:until] = Date.parse(options[:until]) if options[:until].is_a?(String)
+    options[:until]  = Date.parse(options[:until])  if options[:until].is_a?(String)
     
     reset! if options[:starts] || options[:until]
     
