@@ -92,7 +92,12 @@ USAGE:
 MAINTAINER
 ----------
  
-* Nando Vieira ([http://simplesideias.com.br](http://simplesideias.com.br))
+* Nando Vieira (<http://simplesideias.com.br/>)
+
+CONTRIBUTORS
+------------
+ 
+* José Valim (<http://josevalim.blogspot.com/>)
 
 LICENSE:
 --------
