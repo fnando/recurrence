@@ -42,14 +42,20 @@ USAGE:
 	r = Recurrence.new(:every => :week, :on => 5)
 	r = Recurrence.new(:every => :week, :on => :friday, :interval => 2)
 	
-	# Monthly
+	# Monthly by month day
 	r = Recurrence.new(:every => :month, :on => 15)
 	r = Recurrence.new(:every => :month, :on => 31)
 	r = Recurrence.new(:every => :month, :on => 7, :interval => 2)
 	r = Recurrence.new(:every => :month, :on => 7, :interval => :monthly)
 	r = Recurrence.new(:every => :month, :on => 7, :interval => :bimonthly)
-	r = Recurrence.new(:every => :month, :on => 7, :interval => :quarterly)
-	r = Recurrence.new(:every => :month, :on => 7, :interval => :semesterly)
+	
+	# Monthly by week day
+	r = Recurrence.new(:every => :month, :on => :first, :weekday => :sunday)
+	r = Recurrence.new(:every => :month, :on => :third, :weekday => :monday)
+	r = Recurrence.new(:every => :month, :on => :last,  :weekday => :friday)
+	r = Recurrence.new(:every => :month, :on => :last,  :weekday => :friday, :interval => 2)
+	r = Recurrence.new(:every => :month, :on => :last,  :weekday => :friday, :interval => :quarterly)
+	r = Recurrence.new(:every => :month, :on => :last,  :weekday => :friday, :interval => :semesterly)
 	
 	# Yearly
 	r = Recurrence.new(:every => :year, :on => [7, 4]) # => [month, day]
