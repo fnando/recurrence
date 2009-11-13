@@ -15,6 +15,6 @@ require "ofx/account"
 require "ofx/transaction"
 require "ofx/version"
 
-def OFX(path, &block)
-  yield OFX::Parser::Base.new(path).parser
+def OFX(resource, &block)
+  yield OFX::Parser::Base.new(resource).parser
 end

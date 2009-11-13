@@ -6,8 +6,8 @@ module OFX
       attr_reader :content
       attr_reader :parser
 
-      def initialize(path)
-        @content = open(path).read
+      def initialize(resource)
+        @content = open_resource(resource).read
         @headers, @body = prepare(content)
 
         @parser = case @headers["VERSION"]
@@ -17,10 +17,22 @@ module OFX
         end
       end
 
+      def open_resource(resource)
+        if resource.respond_to?(:read)
+          return resource
+        else
+          begin
+            return open(resource)
+          rescue
+            return StringIO.new(resource)
+          end
+        end
+      end
+
       private
         def prepare(content)
           # Split headers & body
-          headers, body = content.dup.split(/\n{2,}|:?<OFX>/, 2)        
+          headers, body = content.dup.split(/\n{2,}|:?<OFX>/, 2)
 
           # Parse headers. When value is NONE, convert it to nil.
           headers = headers.to_enum(:each_line).inject({}) do |memo, line|
