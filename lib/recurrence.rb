@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'date'
-require 'activesupport'
+require 'active_support'
 
 dirname = File.dirname(__FILE__)
 require dirname + '/recurrence/base'
