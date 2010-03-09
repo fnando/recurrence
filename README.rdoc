@@ -8,10 +8,10 @@ Works on both Ruby 1.8 and 1.9.
 
   require "ofx"
 
-  OFX("file.ofx") do |ofx|
-    p ofx.account
-    p ofx.account.balance
-    p ofx.account.transactions
+  OFX("file.ofx") do
+    p account
+    p account.balance
+    p account.transactions
   end
 
 == Maintainer

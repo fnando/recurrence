@@ -11,5 +11,11 @@ require "ofx/transaction"
 require "ofx/version"
 
 def OFX(resource, &block)
-  yield OFX::Parser::Base.new(resource).parser
+  parser = OFX::Parser::Base.new(resource).parser
+
+  if block.arity == 1
+    yield parser
+  else
+    parser.instance_eval(&block)
+  end
 end

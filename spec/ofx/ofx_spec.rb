@@ -4,7 +4,13 @@ describe OFX do
   describe "#OFX" do
     it "should yield an OFX instance" do
       OFX("spec/fixtures/sample.ofx") do |ofx|
-        ofx.should be_kind_of(OFX::Parser::OFX102)
+        ofx.class.should == OFX::Parser::OFX102
+      end
+    end
+
+    it "should be an OFX instance" do
+      OFX("spec/fixtures/sample.ofx") do
+        self.class.should == OFX::Parser::OFX102
       end
     end
   end

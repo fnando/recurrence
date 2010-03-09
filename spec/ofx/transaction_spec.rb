@@ -6,7 +6,7 @@ describe OFX::Transaction do
     @parser = @ofx.parser
     @account = @parser.account
   end
-  
+
   context "debit" do
     before do
       @transaction = @account.transactions[0]
@@ -33,14 +33,14 @@ describe OFX::Transaction do
     end
 
     it "should have date" do
-      @transaction.posted_at.should == Time.parse("2009-10-09- 08:00:00")
+      @transaction.posted_at.should == Time.parse("2009-10-09 08:00:00")
     end
 
     it "should have type" do
       @transaction.type.should == :debit
     end
   end
-  
+
   context "credit" do
     before do
       @transaction = @account.transactions[1]
@@ -74,12 +74,12 @@ describe OFX::Transaction do
       @transaction.type.should == :credit
     end
   end
-  
+
   context "with more info" do
     before do
       @transaction = @account.transactions[2]
     end
-    
+
     it "should set payee" do
       @transaction.payee.should == "Pagto conta telefone"
     end
@@ -95,7 +95,7 @@ describe OFX::Transaction do
     it "should have type" do
       @transaction.type.should == :other
     end
-    
+
     it "should have reference number" do
       @transaction.ref_number.should == "101.901"
     end
