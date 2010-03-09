@@ -13,7 +13,7 @@ module OFX
         @parser = case @headers["VERSION"]
         when "102"; OFX::Parser::OFX102.new(:headers => headers, :body => body)
         else
-          raise OFX::Parser::InvalidVersion
+          raise OFX::UnsupportedVersionError
         end
       end
 

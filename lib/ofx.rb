@@ -1,12 +1,7 @@
 require "open-uri"
+require "nokogiri"
 
-begin
-  require "nokogiri"
-rescue LoadError => e
-  require "rubygems"
-  require "nokogiri"
-end
-
+require "ofx/errors"
 require "ofx/parser"
 require "ofx/parser/ofx102"
 require "ofx/foundation"

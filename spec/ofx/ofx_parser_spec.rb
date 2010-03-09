@@ -30,6 +30,12 @@ describe OFX::Parser do
     @ofx.body.should_not be_nil
   end
 
+  it "should raise exception when trying to parse an unsupported OFX version" do
+    lambda {
+      OFX::Parser::Base.new("spec/fixtures/invalid_version.ofx")
+    }.should raise_error(OFX::UnsupportedVersionError)
+  end
+
   describe "headers" do
     it "should have OFXHEADER" do
       @ofx.headers["OFXHEADER"].should == "100"
