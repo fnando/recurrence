@@ -10,8 +10,9 @@ module OFX
         @content = open_resource(resource).read
         @headers, @body = prepare(content)
 
-        @parser = case @headers["VERSION"]
-        when "102"; OFX::Parser::OFX102.new(:headers => headers, :body => body)
+        case @headers["VERSION"]
+        when "102" then
+          @parser = OFX::Parser::OFX102.new(:headers => headers, :body => body)
         else
           raise OFX::UnsupportedVersionError
         end
