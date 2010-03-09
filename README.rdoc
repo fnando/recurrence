@@ -1,28 +1,24 @@
-OFX
-===
+= OFX
 
 A simple OFX (Open Financial Exchange) parser built on top of Nokogiri. Currently supports OFX 1.0.2.
 
 Works on both Ruby 1.8 and 1.9.
 
-USAGE
------
+== Usage
 
-	require "ofx"
-	
-	OFX("file.ofx") do |ofx|
-	  p ofx.account
-	  p ofx.account.balance	  
-	  p ofx.transactions
-	end
+  require "ofx"
 
-MAINTAINER
-----------
+  OFX("file.ofx") do |ofx|
+    p ofx.account
+    p ofx.account.balance
+    p ofx.account.transactions
+  end
 
-* Nando Vieira (<http://simplesideias.com.br/>)
+== Maintainer
 
-LICENSE:
---------
+* Nando Vieira - http://simplesideias.com.br
+
+== License
 
 (The MIT License)
 
@@ -44,5 +40,3 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
