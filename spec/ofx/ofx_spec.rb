@@ -13,5 +13,9 @@ describe OFX do
         self.class.should == OFX::Parser::OFX102
       end
     end
+
+    it "should return parser" do
+      OFX("spec/fixtures/sample.ofx").class.should == OFX::Parser::OFX102
+    end
   end
 end
