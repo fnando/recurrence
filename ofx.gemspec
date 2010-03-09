@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ofx}
-  s.version = "0.2.1"
+  s.version = "0.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Nando Vieira"]
@@ -20,11 +20,10 @@ Usage:
 }
   s.email = %q{fnando.vieira@gmail.com}
   s.extra_rdoc_files = [
-    "README.markdown"
+    "README.rdoc"
   ]
   s.files = [
-    "README.markdown",
-     "Rakefile",
+    "Rakefile",
      "lib/ofx.rb",
      "lib/ofx/account.rb",
      "lib/ofx/balance.rb",
