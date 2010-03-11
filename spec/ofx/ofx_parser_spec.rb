@@ -33,7 +33,13 @@ describe OFX::Parser do
   it "should raise exception when trying to parse an unsupported OFX version" do
     lambda {
       OFX::Parser::Base.new("spec/fixtures/invalid_version.ofx")
-    }.should raise_error(OFX::UnsupportedVersionError)
+    }.should raise_error(OFX::UnsupportedFileError)
+  end
+
+  it "should raise exception when trying to parse an invalid file" do
+    lambda {
+      OFX::Parser::Base.new("spec/fixtures/avatar.gif")
+    }.should raise_error(OFX::UnsupportedFileError)
   end
 
   describe "headers" do

@@ -7,14 +7,17 @@ module OFX
       attr_reader :parser
 
       def initialize(resource)
-        @content = open_resource(resource).read
+        resource = open_resource(resource)
+        resource.rewind
+
+        @content = resource.read
         @headers, @body = prepare(content)
 
         case @headers["VERSION"]
         when "102" then
           @parser = OFX::Parser::OFX102.new(:headers => headers, :body => body)
         else
-          raise OFX::UnsupportedVersionError
+          raise OFX::UnsupportedFileError
         end
       end
 
@@ -34,6 +37,8 @@ module OFX
         def prepare(content)
           # Split headers & body
           headers, body = content.dup.split(/\n{2,}|:?<OFX>/, 2)
+
+          raise OFX::UnsupportedFileError unless body
 
           # Parse headers. When value is NONE, convert it to nil.
           headers = headers.to_enum(:each_line).inject({}) do |memo, line|

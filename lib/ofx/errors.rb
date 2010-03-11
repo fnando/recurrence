@@ -1,3 +1,3 @@
 module OFX
-  class UnsupportedVersionError < StandardError; end
+  class UnsupportedFileError < StandardError; end
 end
