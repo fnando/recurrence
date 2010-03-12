@@ -7,11 +7,16 @@ module OFX
       attr_reader :parser
 
       def initialize(resource)
-        resource = open_resource(resource)
-        resource.rewind
+          resource = open_resource(resource)
+          resource.rewind
+          @content = resource.read
 
-        @content = resource.read
-        @headers, @body = prepare(content)
+        begin
+          @headers, @body = prepare(content)
+        rescue Exception
+          raise OFX::UnsupportedFileError
+        end
+
 
         case @headers["VERSION"]
         when "102" then
