@@ -16,6 +16,10 @@ describe OFX::Transaction do
       @transaction.amount.should == -35.34
     end
 
+    it "should cast amount to BigDecimal" do
+      @transaction.amount.class.should == BigDecimal
+    end
+
     it "should set amount in pennies" do
       @transaction.amount_in_pennies.should == -3534
     end

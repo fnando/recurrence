@@ -1,3 +1,5 @@
+require "bigdecimal"
+
 module OFX
   module Parser
     class OFX102
@@ -46,7 +48,7 @@ module OFX
         end
         
         def build_transaction(element)
-          amount = element.search("trnamt").inner_text.to_f
+          amount = BigDecimal.new(element.search("trnamt").inner_text)
           
           OFX::Transaction.new({
             :amount => amount,
