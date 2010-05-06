@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ofx}
-  s.version = "0.2.5"
+  s.version = "0.2.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Nando Vieira"]
-  s.date = %q{2010-03-12}
+  s.date = %q{2010-05-06}
   s.description = %q{A simple OFX (Open Financial Exchange) parser built on top of Nokogiri. Currently supports OFX 1.0.2.
 
 Usage:
@@ -44,7 +44,6 @@ Usage:
      "spec/ofx/transaction_spec.rb",
      "spec/spec_helper.rb"
   ]
-  s.has_rdoc = false
   s.homepage = %q{http://github.com/fnando/ofx}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
