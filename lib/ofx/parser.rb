@@ -42,7 +42,9 @@ module OFX
         def prepare(content)
           # Split headers & body
           headers, body = content.dup.split(/<OFX>/, 2)
-          headers = prepare_line_breaks(headers)
+
+          # Change single CR's to LF's to avoid issues with some banks
+          headers.gsub!(/\r(?!\n)/, "\n") 
 
           raise OFX::UnsupportedFileError unless body
 
@@ -60,10 +62,6 @@ module OFX
           body.gsub!(/<(\w+?)>([^<]+)/m, '<\1>\2</\1>')
 
           [headers, body]
-        end
-
-        def prepare_line_breaks(str)
-          str.gsub(/\r(?!\n)/, "\n")
         end
     end
   end
