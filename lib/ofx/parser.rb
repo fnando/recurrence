@@ -41,7 +41,7 @@ module OFX
       private
         def prepare(content)
           # Split headers & body
-          headers, body = content.dup.split(/\n{2,}|:?<OFX>/, 2)
+          headers, body = content.dup.split(/<OFX>/, 2)
 
           raise OFX::UnsupportedFileError unless body
 
