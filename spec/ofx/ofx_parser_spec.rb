@@ -82,5 +82,16 @@ describe OFX::Parser do
       @ofx.headers.should have_key("NEWFILEUID")
       @ofx.headers["NEWFILEUID"].should be_nil
     end
+    
+    it "should parse headers with CR and without LF" do
+      @ofx = OFX::Parser::Base.new(ofx_with_carriage_return)
+      @ofx.headers.size.should be(9)
+    end
+  end
+  
+  def ofx_with_carriage_return
+    header = %{OFXHEADER:100\rDATA:OFXSGML\rVERSION:102\rSECURITY:NONE\rENCODING:USASCII\rCHARSET:1252\rCOMPRESSION:NONE\rOLDFILEUID:NONE\rNEWFILEUID:NONE\r}
+    body   = open("spec/fixtures/sample.ofx").read.split(/<OFX>/, 2)[1]
+    header + "<OFX>" + body
   end
 end
