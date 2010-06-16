@@ -1,3 +1,6 @@
+require "iconv"
+require "kconv"
+
 module OFX
   module Parser
     class Base
@@ -9,7 +12,7 @@ module OFX
       def initialize(resource)
           resource = open_resource(resource)
           resource.rewind
-          @content = resource.read
+          @content = convert_to_utf8(resource.read)
 
         begin
           @headers, @body = prepare(content)
@@ -62,6 +65,11 @@ module OFX
           body.gsub!(/<(\w+?)>([^<]+)/m, '<\1>\2</\1>')
 
           [headers, body]
+        end
+        
+        def convert_to_utf8(string)
+          return string if Kconv.isutf8(string)
+          Iconv.conv('UTF-8', 'LATIN1//IGNORE', string) 
         end
     end
   end
