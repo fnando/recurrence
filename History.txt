@@ -1,60 +1,54 @@
 == 0.0.1 2008-09-21
 
-* 1 major enhancement:
-  * Initial release
+* Initial release
 
 == 0.0.2 2008-09-21
 
-* 1 minor enhancement:
-  * Added `items` and `items!` methods; returns an array with all events
+* Added `items` and `items!` methods; returns an array with all events
 
 == 0.0.3 2008-09-22
 
-* 1 major enhancement:
-  * The recurrence now considers the starting date and its configurations
-  * Added lots of specs
+* The recurrence now considers the starting date and its configurations
+* Added lots of specs
 
 == 0.0.4 2008-09-30
 
-* 1 major enhancement:
-  * Renamed items method to events
-  * Added each! method
-  * Added lots of specs
+* Renamed items method to events
+* Added each! method
+* Added lots of specs
 
 == 0.0.5 2008-09-30
 
-* 1 major enhancement:
-  * Monthly interval now accepts symbols: monthly, bimonthly, quarterly,
-	semesterly
+* Monthly interval now accepts symbols: monthly, bimonthly, quarterly, semesterly
 
 == 0.0.6 2009-01-06
 
-* 1 major enhancement:
-	* Code refactoring
-	* Added next and next! methods
-	* Added more specs
-	* Yearly interval now accepts symbols: jan-dec and january-december
+* Code refactoring
+* Added next and next! methods
+* Added more specs
+* Yearly interval now accepts symbols: jan-dec and january-december
 
 == 0.0.7 2009-01-06
 
-* 1 major enhancement:
-	* The events method now accepts :starts and :until dates
+* The events method now accepts :starts and :until dates
 
 == 0.0.8 2009-01-07
 
-* 1 small enhancement:
-	* The iteration is stopped when the :until is reached when limiting events
+* The iteration is stopped when the :until is reached when limiting events
 
 == 0.1.0 2009-07-18
 
-* 3 major enhancements:
-  * Allow monthly recurrences to occur by weekday:
-    Recurrence.new(:every => :month, :on => :first, :weekday => :thursday)
-  * Allow several weekdays to be given to weekly recurrence:
-    Recurrence.new(:every => :week, :on => [:monday, :wednesday, :friday])
-  * Added :daily, :weekly, :monthly and :yearly shortcuts to Recurrence.
+* Allow monthly recurrences to occur by weekday:
+  Recurrence.new(:every => :month, :on => :first, :weekday => :thursday)
+* Allow several weekdays to be given to weekly recurrence:
+  Recurrence.new(:every => :week, :on => [:monday, :wednesday, :friday])
+* Added :daily, :weekly, :monthly and :yearly shortcuts to Recurrence.
 
 == 0.1.1 2009-12-18
 
-* 1 small enhancement:
-	* Removed ActiveSupport deprecation; should require active_support instead.
+* Removed ActiveSupport deprecation; should require active_support instead.
+
+== 0.1.2 2010-09-09
+
+* Refactor, refactor, refactor.
+* Using Recurrence as Rails plugin is now deprecated; install it as a gem instead.
