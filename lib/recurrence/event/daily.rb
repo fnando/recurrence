@@ -1,10 +1,12 @@
-class Recurrence::Event::Daily < Recurrence::Event
-
-  protected
-    def next_in_recurrence
-      date  = @date.to_date
-      date += @options[:interval] if initialized?
-      date
+class Recurrence
+  module Event
+    class Daily < Base
+      protected
+      def next_in_recurrence
+        date  = @date.to_date
+        date += @options[:interval] if initialized?
+        date
+      end
     end
-
+  end
 end

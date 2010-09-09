@@ -24,7 +24,7 @@
 == 0.0.5 2008-09-30
 
 * 1 major enhancement:
-  * Monthly interval now accepts symbols: monthly, bimonthly, quarterly, 
+  * Monthly interval now accepts symbols: monthly, bimonthly, quarterly,
 	semesterly
 
 == 0.0.6 2009-01-06
@@ -53,3 +53,8 @@
   * Allow several weekdays to be given to weekly recurrence:
     Recurrence.new(:every => :week, :on => [:monday, :wednesday, :friday])
   * Added :daily, :weekly, :monthly and :yearly shortcuts to Recurrence.
+
+== 0.1.1 2009-12-18
+
+* 1 small enhancement:
+	* Removed ActiveSupport deprecation; should require active_support instead.
