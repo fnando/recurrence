@@ -1,5 +1,5 @@
 require "rspec/core/rake_task"
-require "lib/recurrence/version"
+require File.dirname(__FILE__) + "/lib/recurrence/version"
 
 RSpec::Core::RakeTask.new
 
