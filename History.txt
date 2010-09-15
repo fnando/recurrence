@@ -52,3 +52,7 @@
 
 * Refactor, refactor, refactor.
 * Using Recurrence as Rails plugin is now deprecated; install it as a gem instead.
+
+== 0.1.3 2010-09-14
+
+* Moved Recurrence class to SimpleIdeias namespace; see troubleshooting section for instructions.
