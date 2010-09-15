@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{recurrence}
-  s.version = "0.1.2"
+  s.version = "0.1.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Nando Vieira"]
-  s.date = %q{2010-09-09}
+  s.date = %q{2010-09-14}
   s.description = %q{}
   s.email = %q{fnando.vieira@gmail.com}
   s.extra_rdoc_files = [
@@ -28,9 +28,11 @@ Gem::Specification.new do |s|
      "lib/recurrence/event/monthly.rb",
      "lib/recurrence/event/weekly.rb",
      "lib/recurrence/event/yearly.rb",
+     "lib/recurrence/namespace.rb",
      "lib/recurrence/version.rb",
      "recurrence.gemspec",
-     "spec/recurrence_spec.rb"
+     "spec/recurrence_spec.rb",
+     "spec/spec_helper.rb"
   ]
   s.homepage = %q{http://github.com/fnando/recurrence}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -38,7 +40,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{A simple library to handle recurring events}
   s.test_files = [
-    "spec/recurrence_spec.rb"
+    "spec/recurrence_spec.rb",
+     "spec/spec_helper.rb"
   ]
 
   if s.respond_to? :specification_version then
