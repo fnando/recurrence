@@ -1,8 +1,4 @@
-require "rspec"
-require "recurrence"
-
-Date::DATE_FORMATS[:date] = "%d/%m/%Y"
-Time::DATE_FORMATS[:date] = "%d/%m/%Y"
+require "spec_helper"
 
 describe "recurrence" do
   it "should require :every option" do

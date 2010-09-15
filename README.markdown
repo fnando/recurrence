@@ -25,6 +25,7 @@ USAGE:
 	# Daily
 	r = Recurrence.new(:every => :day)
 	r = Recurrence.new(:every => :day, :interval => 9)
+	r = Recurrence.daily(options = {})
 
 	# Weekly
 	r = Recurrence.new(:every => :week, :on => 5)
@@ -32,6 +33,7 @@ USAGE:
 	r = Recurrence.new(:every => :week, :on => [:monday, :friday])
 	r = Recurrence.new(:every => :week, :on => [:monday, :wednesday, :friday])
 	r = Recurrence.new(:every => :week, :on => :friday, :interval => 2)
+	r = Recurrence.weekly(:on => :thursday)
 
 	# Monthly by month day
 	r = Recurrence.new(:every => :month, :on => 15)
@@ -39,6 +41,7 @@ USAGE:
 	r = Recurrence.new(:every => :month, :on => 7, :interval => 2)
 	r = Recurrence.new(:every => :month, :on => 7, :interval => :monthly)
 	r = Recurrence.new(:every => :month, :on => 7, :interval => :bimonthly)
+	r = Recurrence.monthly(:on => 31)
 
 	# Monthly by week day
 	r = Recurrence.new(:every => :month, :on => :first, :weekday => :sunday)
@@ -53,6 +56,7 @@ USAGE:
 	r = Recurrence.new(:every => :year, :on => [10, 31], :interval => 3)
 	r = Recurrence.new(:every => :year, :on => [:jan, 31])
 	r = Recurrence.new(:every => :year, :on => [:january, 31])
+	r = Recurrence.yearly(:on => [:january, 31])
 
 	# Limit recurrence
 	# :starts defaults to Date.today
@@ -79,6 +83,25 @@ USAGE:
 	# Get next available date
 	r.next 	# => Keep the original date object
 	r.next! # => Change the internal date object to the next available date
+
+TROUBLESHOOTING
+---------------
+
+If you're having problems because already have a class/module called Recurrence that is conflicting with this gem, you can require the namespace and inherit from the `SimplesIdeias::Recurrence` class.
+
+	require "recurrence/namespace"
+
+	class RecurrentEvent < SimplesIdeias::Recurrence
+	end
+
+	r = RecurrentEvent.new(:every => :day)
+
+If you're using Rails/Bundler or something like that, remember to override the `:require` option.
+
+	# Gemfile
+	source :rubygems
+
+	gem "recurrence", :require => "recurrence/namespace"
 
 MAINTAINER
 ----------

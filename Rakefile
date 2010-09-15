@@ -1,5 +1,7 @@
+$LOAD_PATH.unshift File.dirname(__FILE__) + "/lib"
+
 require "rspec/core/rake_task"
-require File.dirname(__FILE__) + "/lib/recurrence/version"
+require "recurrence"
 
 RSpec::Core::RakeTask.new
 
