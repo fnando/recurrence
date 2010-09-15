@@ -87,7 +87,7 @@ USAGE:
 TROUBLESHOOTING
 ---------------
 
-If you're having problems because already have a class/module called Recurrence that is conflicting with this gem, you can require the namespace and inherit from the `SimplesIdeias::Recurrence` class.
+If you're having problems because already have a class/module called Recurrence that is conflicting with this gem, you can require the namespace and create a class that inherits from `SimplesIdeias::Recurrence`.
 
 	require "recurrence/namespace"
 
