@@ -511,6 +511,14 @@ describe "recurrence" do
       @events.size.should == 3
       @events[-1].to_s.should == "2009-01-08"
     end
+
+    context "bug fixes" do
+      specify "using name as symbol [http://github.com/fnando/recurrence/issues#issue/3]" do
+        expect {
+          @recurrence = recurrence(:every => :year, :on => [:jan, 31])
+        }.to_not raise_error
+      end
+    end
   end
 
   private

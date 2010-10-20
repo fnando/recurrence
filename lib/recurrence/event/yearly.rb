@@ -25,7 +25,7 @@ module SimplesIdeias
             valid_month?(@options[:on].first)
           else
             valid_month_name?(@options[:on].first)
-            @options[:on] = [ MONTHS[@options[:on].first.to_s], @options.last ]
+            @options[:on] = [MONTHS[@options[:on].first.to_s], @options[:on].last]
           end
         end
 
