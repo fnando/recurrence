@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 require "recurrence"
 
 Gem::Specification.new do |s|
-  s.name        = "rosetta"
+  s.name        = "recurrence"
   s.version     = Recurrence::Version::STRING
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Nando Vieira"]
