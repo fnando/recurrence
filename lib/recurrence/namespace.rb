@@ -8,7 +8,7 @@ module SimplesIdeias
 
     FREQUENCY = %w(day week month year)
 
-    attr_reader :event
+    attr_reader :event, :options
 
     def self.default_until_date
       @default_until_date ||= Date.new(2037, 12, 31)
@@ -46,18 +46,19 @@ module SimplesIdeias
       raise ArgumentError, ":every option is required" unless options.key?(:every)
       raise ArgumentError, "invalid :every option"     unless FREQUENCY.include?(options[:every].to_s)
 
-      @options = initialize_dates(options)
-      @options[:interval] ||= 1
+      @options = options.dup
+      @normalized_options = initialize_dates(options)
+      @normalized_options[:interval] ||= 1
 
-      @event = case @options[:every].to_sym
+      @event = case @normalized_options[:every].to_sym
         when :day
-          Recurrence::Event::Daily.new(@options)
+          Recurrence::Event::Daily.new(@normalized_options)
         when :week
-          Recurrence::Event::Weekly.new(@options)
+          Recurrence::Event::Weekly.new(@normalized_options)
         when :month
-          Recurrence::Event::Monthly.new(@options)
+          Recurrence::Event::Monthly.new(@normalized_options)
         when :year
-          Recurrence::Event::Yearly.new(@options)
+          Recurrence::Event::Yearly.new(@normalized_options)
       end
     end
 
@@ -69,7 +70,7 @@ module SimplesIdeias
     def include?(required_date)
       required_date = Date.parse(required_date) if required_date.is_a?(String)
 
-      if required_date < @options[:starts] || required_date > @options[:until]
+      if required_date < @normalized_options[:starts] || required_date > @normalized_options[:until]
         false
       else
         each do |date|
