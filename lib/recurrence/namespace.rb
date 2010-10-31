@@ -10,6 +10,26 @@ module SimplesIdeias
 
     attr_reader :event, :options
 
+    def self.default_starts_date
+      if @default_starts_date
+        if @default_starts_date.is_a?(String)
+          eval(@default_starts_date)
+        else
+          @default_starts_date.call
+        end
+      else
+        Date.today
+      end
+    end
+
+    def self.default_starts_date=(date)
+      unless date.respond_to?(:call) || date.is_a?(String) || date == nil
+        raise ArgumentError, 'default_starts_date must be a proc or an evaluatable string such as "Date.current"'
+      end
+
+      @default_starts_date = date
+    end
+
     def self.default_until_date
       @default_until_date ||= Date.new(2037, 12, 31)
     end
@@ -136,7 +156,7 @@ module SimplesIdeias
         options[name] = Date.parse(options[name]) if options[name].is_a?(String)
       end
 
-      options[:starts] ||= Date.today
+      options[:starts] ||= self.class.default_starts_date
       options[:until]  ||= self.class.default_until_date
 
       options

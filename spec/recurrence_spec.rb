@@ -33,6 +33,44 @@ describe "recurrence" do
     expect { recurrence(:every => :month, :on => 10, :interval => :invalid) }.to raise_error(ArgumentError)
   end
 
+  describe '.default_starts_date' do
+    it 'should return Date.today by default' do
+      Recurrence.default_starts_date.should == Date.today
+    end
+
+    it 'should require only strings and procs' do
+      expect { Recurrence.default_starts_date = Date.tomorrow }.to raise_error(ArgumentError)
+    end
+
+    context 'when .default_starts_date is reassigned to "Date.tomorrow" string' do
+      before { Recurrence.default_starts_date = 'Date.tomorrow' }
+      after { Recurrence.default_starts_date = nil }
+
+      it 'should return Date.tomorrow' do
+        Recurrence.default_starts_date.should == Date.tomorrow
+      end
+
+      it 'should have effect on generated events' do
+        r = Recurrence.new(:every => :day, :until => 3.days.from_now.to_date)
+        r.events.first.should == Date.tomorrow
+      end
+    end
+
+    context 'when .default_starts_date is reassigned to lambda { Date.tomorrow } proc' do
+      before { Recurrence.default_starts_date = lambda { Date.tomorrow } }
+      after { Recurrence.default_starts_date = nil }
+
+      it 'should return Date.tomorrow' do
+        Recurrence.default_starts_date.should == Date.tomorrow
+      end
+
+      it 'should have effect on generated events' do
+        r = Recurrence.new(:every => :day, :until => 3.days.from_now.to_date)
+        r.events.first.should == Date.tomorrow
+      end
+    end
+  end
+
   context "with daily recurring" do
     it "should recur until limit date" do
       @recurrence = Recurrence.daily
