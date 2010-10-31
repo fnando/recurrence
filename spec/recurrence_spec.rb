@@ -359,6 +359,13 @@ describe "recurrence" do
     end
   end
 
+  describe "#options" do
+    it "should return passed-in options" do
+      @recurrence = recurrence(:every => :day)
+      @recurrence.options.should == {:every => :day}
+    end
+  end
+
   describe "#include?" do
     it "should include date (day)" do
       @recurrence = recurrence(:every => :day, :starts => "2008-09-30")
