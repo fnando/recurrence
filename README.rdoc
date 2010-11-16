@@ -1,26 +1,15 @@
-Recurrence
-==========
-
-* [http://github.com/fnando/recurrence](http://github.com/fnando/recurrence)
-
-DESCRIPTION:
-------------
+= Recurrence
 
 A simple library to handle recurring events.
 
-
-INSTALLATION:
--------------
-
-Recurrence can be installed by running
+== Installation
 
 	gem install recurrence
 
-USAGE:
-------
+== Usage
 
-	require 'rubygems'
-	require 'recurrence'
+	require "rubygems"
+	require "recurrence"
 
 	# Daily
 	r = Recurrence.new(:every => :day)
@@ -84,10 +73,9 @@ USAGE:
 	r.next 	# => Keep the original date object
 	r.next! # => Change the internal date object to the next available date
 
-TROUBLESHOOTING
----------------
+== Troubleshooting
 
-If you're having problems because already have a class/module called Recurrence that is conflicting with this gem, you can require the namespace and create a class that inherits from `SimplesIdeias::Recurrence`.
+If you're having problems because already have a class/module called Recurrence that is conflicting with this gem, you can require the namespace and create a class that inherits from <tt>SimplesIdeias::Recurrence</tt>.
 
 	require "recurrence/namespace"
 
@@ -96,25 +84,23 @@ If you're having problems because already have a class/module called Recurrence 
 
 	r = RecurrentEvent.new(:every => :day)
 
-If you're using Rails/Bundler or something like that, remember to override the `:require` option.
+If you're using Rails/Bundler or something like that, remember to override the <tt>:require</tt> option.
 
 	# Gemfile
 	source :rubygems
 
 	gem "recurrence", :require => "recurrence/namespace"
 
-MAINTAINER
-----------
+== Maintainer
 
-* Nando Vieira (<http://simplesideias.com.br/>)
+* Nando Vieira (http://nandovieira.com.br)
 
-CONTRIBUTORS
-------------
+== Contributors
 
-* José Valim (<http://josevalim.blogspot.com/>)
+* José Valim (http://plataformatec.com.br)
+* Maxim Chernyak (http://mediumexposure.com)
 
-LICENSE:
---------
+== License
 
 (The MIT License)
 

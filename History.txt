@@ -64,4 +64,4 @@
 == 0.1.5 2010-11-03
 
 * Recurrence.default_starts_date is now configurable; pass in a String or block
-* Add #options reader so we'll be able to use Recurrence with ActiveRecord.composed_of
+* Add Recurrence#options reader so we'll be able to use Recurrence with ActiveRecord.composed_of

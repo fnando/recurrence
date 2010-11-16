@@ -1,6 +1,6 @@
 module SimplesIdeias
   class Recurrence
-    module Event
+    module Event # :nodoc: all
       class Base
         CARDINALS = %w(first second third fourth fifth)
         DAYS = %w(sunday monday tuesday wednesday thursday friday saturday)

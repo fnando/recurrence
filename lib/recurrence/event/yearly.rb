@@ -1,7 +1,7 @@
 module SimplesIdeias
   class Recurrence
     module Event
-      class Yearly < Base
+      class Yearly < Base # :nodoc: all
         MONTHS = {
           "jan" => 1, "january" => 1,
           "feb" => 2, "february" => 2,

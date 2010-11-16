@@ -1,16 +1,16 @@
 module SimplesIdeias
   class Recurrence
     module Event
-      class Monthly < Base
+      class Monthly < Base # :nodoc: all
         INTERVALS = {
-          :monthly => 1,
-          :bimonthly => 2,
-          :quarterly => 3,
+          :monthly    => 1,
+          :bimonthly  => 2,
+          :quarterly  => 3,
           :semesterly => 6
         }
 
         protected
-        def validate
+        def validate # :nodoc:
           if @options.key?(:weekday)
 
             # Allow :on => :last, :weekday => :thursday contruction.
@@ -34,7 +34,7 @@ module SimplesIdeias
           end
         end
 
-        def next_in_recurrence
+        def next_in_recurrence # :nodoc:
           return next_month if self.respond_to?(:next_month)
           type = @options.key?(:weekday) ? :weekday : :monthday
 
@@ -53,7 +53,7 @@ module SimplesIdeias
           next_month
         end
 
-        def advance_to_month_by_monthday(date, interval=@options[:interval])
+        def advance_to_month_by_monthday(date, interval=@options[:interval]) # :nodoc:
           # Have a raw month from 0 to 11 interval
           raw_month  = date.month + interval - 1
 
@@ -64,7 +64,7 @@ module SimplesIdeias
           Date.new(next_year, next_month, next_day)
         end
 
-        def advance_to_month_by_weekday(date, interval=@options[:interval])
+        def advance_to_month_by_weekday(date, interval=@options[:interval]) # :nodoc:
           raw_month  = date.month + interval - 1
           next_year  = date.year + raw_month / 12
           next_month = (raw_month % 12) + 1 # change back to ruby interval

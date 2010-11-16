@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "recurrence" do
+describe Recurrence do
   it "should require :every option" do
     expect { recurrence({}) }.to raise_error(ArgumentError)
   end
@@ -11,6 +11,14 @@ describe "recurrence" do
 
   it "should require :interval to be greater than zero when provided" do
     expect { recurrence(:every => :day, :interval => 0) }.to raise_error(ArgumentError)
+  end
+
+  it "should return an enumerator when Recurrence#each is called without a block" do
+    recurrence(:every => :day).each.should be_instance_of(Enumerator)
+  end
+
+  it "should return an enumerator when Recurrence#each! is called without a block" do
+    recurrence(:every => :day).each!.should be_instance_of(Enumerator)
   end
 
   Recurrence::Event::Monthly::INTERVALS.each do |interval|

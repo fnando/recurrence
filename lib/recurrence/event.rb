@@ -1,6 +1,6 @@
 module SimplesIdeias
   class Recurrence
-    module Event
+    module Event # :nodoc: all
       autoload :Base,     "recurrence/event/base"
       autoload :Daily,    "recurrence/event/daily"
       autoload :Monthly,  "recurrence/event/monthly"
