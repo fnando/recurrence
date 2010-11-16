@@ -48,11 +48,11 @@ module SimplesIdeias
         end
 
         private
-        def valid_month?(month) #:nodoc:
+        def valid_month?(month)
           raise ArgumentError, "invalid month #{month}" unless (1..12).include?(month)
         end
 
-        def valid_month_name?(month) #:nodoc:
+        def valid_month_name?(month)
           raise ArgumentError, "invalid month #{month}" unless MONTHS.keys.include?(month.to_s)
         end
       end

@@ -270,7 +270,7 @@ module SimplesIdeias
     end
 
     private
-    def initialize_dates(options) #:nodoc:
+    def initialize_dates(options) # :nodoc:
       [:starts, :until].each do |name|
         options[name] = as_date(options[name])
       end
@@ -281,7 +281,7 @@ module SimplesIdeias
       options
     end
 
-    def as_date(date)
+    def as_date(date) # :nodoc:
       case date
       when String
         Date.parse(date)

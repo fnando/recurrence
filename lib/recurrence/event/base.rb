@@ -59,7 +59,7 @@ module SimplesIdeias
 
         # Common validation for inherited classes.
         #
-        def valid_month_day?(day) #:nodoc:
+        def valid_month_day?(day)
           raise ArgumentError, "invalid day #{day}" unless (1..31).include?(day)
         end
 

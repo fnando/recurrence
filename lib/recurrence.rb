@@ -10,7 +10,7 @@ require "recurrence/namespace"
 #
 #   r = RecurrentEvent.new(:every => :day)
 #
-# Remember require <tt>recurrence/namespace<tt> instead of just <tt>recurrence</tt>.
+# Remember require <tt>recurrence/namespace</tt> instead of just <tt>recurrence</tt>.
 # If you’re using Rails/Bundler or something like that, remember to override the
 # <tt>:require</tt> option.
 #

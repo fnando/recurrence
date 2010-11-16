@@ -10,7 +10,7 @@ module SimplesIdeias
         }
 
         protected
-        def validate # :nodoc:
+        def validate
           if @options.key?(:weekday)
 
             # Allow :on => :last, :weekday => :thursday contruction.
@@ -34,7 +34,7 @@ module SimplesIdeias
           end
         end
 
-        def next_in_recurrence # :nodoc:
+        def next_in_recurrence
           return next_month if self.respond_to?(:next_month)
           type = @options.key?(:weekday) ? :weekday : :monthday
 
@@ -53,7 +53,7 @@ module SimplesIdeias
           next_month
         end
 
-        def advance_to_month_by_monthday(date, interval=@options[:interval]) # :nodoc:
+        def advance_to_month_by_monthday(date, interval=@options[:interval])
           # Have a raw month from 0 to 11 interval
           raw_month  = date.month + interval - 1
 
@@ -64,7 +64,7 @@ module SimplesIdeias
           Date.new(next_year, next_month, next_day)
         end
 
-        def advance_to_month_by_weekday(date, interval=@options[:interval]) # :nodoc:
+        def advance_to_month_by_weekday(date, interval=@options[:interval])
           raw_month  = date.month + interval - 1
           next_year  = date.year + raw_month / 12
           next_month = (raw_month % 12) + 1 # change back to ruby interval
@@ -88,15 +88,15 @@ module SimplesIdeias
         end
 
         private
-        def valid_cardinal?(cardinal) #:nodoc:
+        def valid_cardinal?(cardinal)
           raise ArgumentError, "invalid cardinal #{cardinal}" unless CARDINALS.include?(cardinal.to_s)
         end
 
-        def valid_interval?(interval) #:nodoc:
+        def valid_interval?(interval)
           raise ArgumentError, "invalid cardinal #{interval}" unless INTERVALS.key?(interval)
         end
 
-        def valid_week?(week) #:nodoc:
+        def valid_week?(week)
           raise ArgumentError, "invalid week #{week}" unless (1..5).include?(week)
         end
       end
