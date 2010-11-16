@@ -65,3 +65,10 @@
 
 * Recurrence.default_starts_date is now configurable; pass in a String or block
 * Add Recurrence#options reader so we'll be able to use Recurrence with ActiveRecord.composed_of
+
+== 1.0.0 2010-11-16
+
+* Recurrence#each returns an enumerator when no block is given
+* Recurrence now includes Enumerable
+* The public API is now documented
+* Remove support for Rails plugin
