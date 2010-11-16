@@ -3,20 +3,19 @@ require "active_support/all"
 
 module SimplesIdeias
   class Recurrence
-    autoload :Event, "recurrence/event"
-    autoload :Version, "recurrence/version"
+    autoload :Event,    "recurrence/event"
+    autoload :Version,  "recurrence/version"
 
     FREQUENCY = %w(day week month year)
 
     attr_reader :event, :options
 
     def self.default_starts_date
-      if @default_starts_date
-        if @default_starts_date.kind_of?(String)
-          eval(@default_starts_date)
-        else
-          @default_starts_date.call
-        end
+      case @default_starts_date
+      when String
+        eval(@default_starts_date)
+      when Proc
+        @default_starts_date.call
       else
         Date.today
       end
@@ -66,19 +65,19 @@ module SimplesIdeias
       raise ArgumentError, ":every option is required" unless options.key?(:every)
       raise ArgumentError, "invalid :every option"     unless FREQUENCY.include?(options[:every].to_s)
 
-      @options = options.dup
-      @normalized_options = initialize_dates(options)
+      @options = options
+      @normalized_options = initialize_dates(options.dup)
       @normalized_options[:interval] ||= 1
 
       @event = case @normalized_options[:every].to_sym
         when :day
-          Event::Daily.new(@options)
+          Event::Daily.new(@normalized_options)
         when :week
-          Event::Weekly.new(@options)
+          Event::Weekly.new(@normalized_options)
         when :month
-          Event::Monthly.new(@options)
+          Event::Monthly.new(@normalized_options)
         when :year
-          Event::Yearly.new(@options)
+          Event::Yearly.new(@normalized_options)
       end
     end
 
