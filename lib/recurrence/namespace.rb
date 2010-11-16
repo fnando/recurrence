@@ -72,13 +72,13 @@ module SimplesIdeias
 
       @event = case @normalized_options[:every].to_sym
         when :day
-          Recurrence::Event::Daily.new(@normalized_options)
+          Event::Daily.new(@options)
         when :week
-          Recurrence::Event::Weekly.new(@normalized_options)
+          Event::Weekly.new(@options)
         when :month
-          Recurrence::Event::Monthly.new(@normalized_options)
+          Event::Monthly.new(@options)
         when :year
-          Recurrence::Event::Yearly.new(@normalized_options)
+          Event::Yearly.new(@options)
       end
     end
 

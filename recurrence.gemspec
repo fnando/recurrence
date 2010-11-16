@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency "activesupport"
-  s.add_development_dependency "rspec-rails", ">= 2.0.0"
+  s.add_dependency "activesupport", ">= 3.0.0"
+  s.add_development_dependency "rspec", ">= 2.0.0"
+  s.add_development_dependency "ruby-debug19"
 end
