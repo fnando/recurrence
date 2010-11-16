@@ -12,7 +12,7 @@ module SimplesIdeias
 
     def self.default_starts_date
       if @default_starts_date
-        if @default_starts_date.is_a?(String)
+        if @default_starts_date.kind_of?(String)
           eval(@default_starts_date)
         else
           @default_starts_date.call
@@ -23,7 +23,7 @@ module SimplesIdeias
     end
 
     def self.default_starts_date=(date)
-      unless date.respond_to?(:call) || date.is_a?(String) || date == nil
+      unless date.respond_to?(:call) || date.kind_of?(String) || date == nil
         raise ArgumentError, 'default_starts_date must be a proc or an evaluatable string such as "Date.current"'
       end
 
@@ -35,7 +35,7 @@ module SimplesIdeias
     end
 
     def self.default_until_date=(date)
-      @default_until_date = if date.is_a?(String)
+      @default_until_date = if date.kind_of?(String)
         Date.parse(date)
       else
         date
@@ -88,7 +88,7 @@ module SimplesIdeias
     end
 
     def include?(required_date)
-      required_date = Date.parse(required_date) if required_date.is_a?(String)
+      required_date = Date.parse(required_date) if required_date.kind_of?(String)
 
       if required_date < @normalized_options[:starts] || required_date > @normalized_options[:until]
         false
@@ -110,8 +110,8 @@ module SimplesIdeias
     end
 
     def events(options={})
-      options[:starts] = Date.parse(options[:starts]) if options[:starts].is_a?(String)
-      options[:until]  = Date.parse(options[:until])  if options[:until].is_a?(String)
+      options[:starts] = Date.parse(options[:starts]) if options[:starts].kind_of?(String)
+      options[:until]  = Date.parse(options[:until])  if options[:until].kind_of?(String)
 
       reset! if options[:starts] || options[:until]
 
@@ -153,7 +153,7 @@ module SimplesIdeias
     private
     def initialize_dates(options) #:nodoc:
       [:starts, :until].each do |name|
-        options[name] = Date.parse(options[name]) if options[name].is_a?(String)
+        options[name] = Date.parse(options[name]) if options[name].kind_of?(String)
       end
 
       options[:starts] ||= self.class.default_starts_date

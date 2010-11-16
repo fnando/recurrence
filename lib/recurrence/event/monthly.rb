@@ -28,7 +28,7 @@ module SimplesIdeias
             valid_month_day?(@options[:on])
           end
 
-          if @options[:interval].is_a?(Symbol)
+          if @options[:interval].kind_of?(Symbol)
             valid_interval?(@options[:interval])
             @options[:interval] = INTERVALS[@options[:interval]]
           end

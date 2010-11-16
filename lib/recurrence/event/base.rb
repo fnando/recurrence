@@ -8,7 +8,7 @@ module SimplesIdeias
         attr_accessor :start_date
 
         def initialize(options={})
-          every, options = nil, every if every.is_a?(Hash)
+          every, options = nil, every if every.kind_of?(Hash)
 
           @options    = options
           @date       = options[:starts]
