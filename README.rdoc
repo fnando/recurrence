@@ -4,92 +4,92 @@ A simple library to handle recurring events.
 
 == Installation
 
-	gem install recurrence
+  gem install recurrence
 
 == Usage
 
-	require "rubygems"
-	require "recurrence"
+  require "rubygems"
+  require "recurrence"
 
-	# Daily
-	r = Recurrence.new(:every => :day)
-	r = Recurrence.new(:every => :day, :interval => 9)
-	r = Recurrence.daily(options = {})
+  # Daily
+  r = Recurrence.new(:every => :day)
+  r = Recurrence.new(:every => :day, :interval => 9)
+  r = Recurrence.daily(options = {})
 
-	# Weekly
-	r = Recurrence.new(:every => :week, :on => 5)
-	r = Recurrence.new(:every => :week, :on => :monday)
-	r = Recurrence.new(:every => :week, :on => [:monday, :friday])
-	r = Recurrence.new(:every => :week, :on => [:monday, :wednesday, :friday])
-	r = Recurrence.new(:every => :week, :on => :friday, :interval => 2)
-	r = Recurrence.weekly(:on => :thursday)
+  # Weekly
+  r = Recurrence.new(:every => :week, :on => 5)
+  r = Recurrence.new(:every => :week, :on => :monday)
+  r = Recurrence.new(:every => :week, :on => [:monday, :friday])
+  r = Recurrence.new(:every => :week, :on => [:monday, :wednesday, :friday])
+  r = Recurrence.new(:every => :week, :on => :friday, :interval => 2)
+  r = Recurrence.weekly(:on => :thursday)
 
-	# Monthly by month day
-	r = Recurrence.new(:every => :month, :on => 15)
-	r = Recurrence.new(:every => :month, :on => 31)
-	r = Recurrence.new(:every => :month, :on => 7, :interval => 2)
-	r = Recurrence.new(:every => :month, :on => 7, :interval => :monthly)
-	r = Recurrence.new(:every => :month, :on => 7, :interval => :bimonthly)
-	r = Recurrence.monthly(:on => 31)
+  # Monthly by month day
+  r = Recurrence.new(:every => :month, :on => 15)
+  r = Recurrence.new(:every => :month, :on => 31)
+  r = Recurrence.new(:every => :month, :on => 7, :interval => 2)
+  r = Recurrence.new(:every => :month, :on => 7, :interval => :monthly)
+  r = Recurrence.new(:every => :month, :on => 7, :interval => :bimonthly)
+  r = Recurrence.monthly(:on => 31)
 
-	# Monthly by week day
-	r = Recurrence.new(:every => :month, :on => :first, :weekday => :sunday)
-	r = Recurrence.new(:every => :month, :on => :third, :weekday => :monday)
-	r = Recurrence.new(:every => :month, :on => :last,  :weekday => :friday)
-	r = Recurrence.new(:every => :month, :on => :last,  :weekday => :friday, :interval => 2)
-	r = Recurrence.new(:every => :month, :on => :last,  :weekday => :friday, :interval => :quarterly)
-	r = Recurrence.new(:every => :month, :on => :last,  :weekday => :friday, :interval => :semesterly)
+  # Monthly by week day
+  r = Recurrence.new(:every => :month, :on => :first, :weekday => :sunday)
+  r = Recurrence.new(:every => :month, :on => :third, :weekday => :monday)
+  r = Recurrence.new(:every => :month, :on => :last,  :weekday => :friday)
+  r = Recurrence.new(:every => :month, :on => :last,  :weekday => :friday, :interval => 2)
+  r = Recurrence.new(:every => :month, :on => :last,  :weekday => :friday, :interval => :quarterly)
+  r = Recurrence.new(:every => :month, :on => :last,  :weekday => :friday, :interval => :semesterly)
 
-	# Yearly
-	r = Recurrence.new(:every => :year, :on => [7, 4]) # => [month, day]
-	r = Recurrence.new(:every => :year, :on => [10, 31], :interval => 3)
-	r = Recurrence.new(:every => :year, :on => [:jan, 31])
-	r = Recurrence.new(:every => :year, :on => [:january, 31])
-	r = Recurrence.yearly(:on => [:january, 31])
+  # Yearly
+  r = Recurrence.new(:every => :year, :on => [7, 4]) # => [month, day]
+  r = Recurrence.new(:every => :year, :on => [10, 31], :interval => 3)
+  r = Recurrence.new(:every => :year, :on => [:jan, 31])
+  r = Recurrence.new(:every => :year, :on => [:january, 31])
+  r = Recurrence.yearly(:on => [:january, 31])
 
-	# Limit recurrence
-	# :starts defaults to Date.today
-	# :until defaults to 2037-12-31
-	r = Recurrence.new(:every => :day, :starts => Date.today)
-	r = Recurrence.new(:every => :day, :until => '2010-01-31')
-	r = Recurrence.new(:every => :day, :starts => Date.today, :until => '2010-01-31')
+  # Limit recurrence
+  # :starts defaults to Date.today
+  # :until defaults to 2037-12-31
+  r = Recurrence.new(:every => :day, :starts => Date.today)
+  r = Recurrence.new(:every => :day, :until => '2010-01-31')
+  r = Recurrence.new(:every => :day, :starts => Date.today, :until => '2010-01-31')
 
-	# Getting an array with all events
-	r.events.each {|date| puts date.to_s }  # => Memoized array
-	r.events!.each {|date| puts date.to_s } # => reset items cache and re-execute it
-	r.events(:starts => '2009-01-01').each {|date| puts date.to_s }
-	r.events(:until => '2009-01-10').each {|date| puts date.to_s }
-	r.events(:starts => '2009-01-05', :until => '2009-01-10').each {|date| puts date.to_s }
+  # Getting an array with all events
+  r.events.each {|date| puts date.to_s }  # => Memoized array
+  r.events!.each {|date| puts date.to_s } # => reset items cache and re-execute it
+  r.events(:starts => '2009-01-01').each {|date| puts date.to_s }
+  r.events(:until => '2009-01-10').each {|date| puts date.to_s }
+  r.events(:starts => '2009-01-05', :until => '2009-01-10').each {|date| puts date.to_s }
 
-	# Iterating events
-	r.each { |date| puts date.to_s } # => Use items method
-	r.each! { |date| puts date.to_s } # => Use items! method
+  # Iterating events
+  r.each { |date| puts date.to_s } # => Use items method
+  r.each! { |date| puts date.to_s } # => Use items! method
 
-	# Check if a date is included
-	r.include?(Date.today) # => true or false
-	r.include?('2008-09-21')
+  # Check if a date is included
+  r.include?(Date.today) # => true or false
+  r.include?('2008-09-21')
 
-	# Get next available date
-	r.next 	# => Keep the original date object
-	r.next! # => Change the internal date object to the next available date
+  # Get next available date
+  r.next   # => Keep the original date object
+  r.next! # => Change the internal date object to the next available date
 
 == Troubleshooting
 
 If you're having problems because already have a class/module called Recurrence that is conflicting with this gem, you can require the namespace and create a class that inherits from <tt>SimplesIdeias::Recurrence</tt>.
 
-	require "recurrence/namespace"
+  require "recurrence/namespace"
 
-	class RecurrentEvent < SimplesIdeias::Recurrence
-	end
+  class RecurrentEvent < SimplesIdeias::Recurrence
+  end
 
-	r = RecurrentEvent.new(:every => :day)
+  r = RecurrentEvent.new(:every => :day)
 
 If you're using Rails/Bundler or something like that, remember to override the <tt>:require</tt> option.
 
-	# Gemfile
-	source :rubygems
+  # Gemfile
+  source :rubygems
 
-	gem "recurrence", :require => "recurrence/namespace"
+  gem "recurrence", :require => "recurrence/namespace"
 
 == Maintainer
 
