@@ -14,6 +14,7 @@ A simple library to handle recurring events.
   # Daily
   r = Recurrence.new(:every => :day)
   r = Recurrence.new(:every => :day, :interval => 9)
+  r = Recurrence.new(:every => :day, :repeat => 7)
   r = Recurrence.daily(options = {})
 
   # Weekly
@@ -22,6 +23,7 @@ A simple library to handle recurring events.
   r = Recurrence.new(:every => :week, :on => [:monday, :friday])
   r = Recurrence.new(:every => :week, :on => [:monday, :wednesday, :friday])
   r = Recurrence.new(:every => :week, :on => :friday, :interval => 2)
+  r = Recurrence.new(:every => :week, :on => :friday, :repeat => 4)
   r = Recurrence.weekly(:on => :thursday)
 
   # Monthly by month day
@@ -30,6 +32,7 @@ A simple library to handle recurring events.
   r = Recurrence.new(:every => :month, :on => 7, :interval => 2)
   r = Recurrence.new(:every => :month, :on => 7, :interval => :monthly)
   r = Recurrence.new(:every => :month, :on => 7, :interval => :bimonthly)
+  r = Recurrence.new(:every => :month, :on => 7, :repeat => 6)
   r = Recurrence.monthly(:on => 31)
 
   # Monthly by week day
@@ -39,12 +42,14 @@ A simple library to handle recurring events.
   r = Recurrence.new(:every => :month, :on => :last,  :weekday => :friday, :interval => 2)
   r = Recurrence.new(:every => :month, :on => :last,  :weekday => :friday, :interval => :quarterly)
   r = Recurrence.new(:every => :month, :on => :last,  :weekday => :friday, :interval => :semesterly)
+  r = Recurrence.new(:every => :month, :on => :last,  :weekday => :friday, :repeat => 3)
 
   # Yearly
   r = Recurrence.new(:every => :year, :on => [7, 4]) # => [month, day]
   r = Recurrence.new(:every => :year, :on => [10, 31], :interval => 3)
   r = Recurrence.new(:every => :year, :on => [:jan, 31])
   r = Recurrence.new(:every => :year, :on => [:january, 31])
+  r = Recurrence.new(:every => :year, :on => [10, 31], :repeat => 3)
   r = Recurrence.yearly(:on => [:january, 31])
 
   # Limit recurrence

@@ -13,6 +13,10 @@ describe Recurrence do
     expect { recurrence(:every => :day, :interval => 0) }.to raise_error(ArgumentError)
   end
 
+  it "should require :repeat to be greater than zero when provided" do
+    expect { recurrence(:every => :day, :repeat => 0) }.to raise_error(ArgumentError)
+  end
+
   it "should return an enumerator when Recurrence#each is called without a block" do
     recurrence(:every => :day).each.should be_instance_of(Enumerator)
   end
@@ -123,6 +127,11 @@ describe Recurrence do
       @recurrence.events[2].to_s.should == "2008-09-25"
     end
 
+    it "should use repeat" do
+      @recurrence = recurrence(:every => :day, :starts => "2008-09-21", :repeat => 10)
+      @recurrence.events.size.should == 10
+    end
+
     it "should have a lacking day if the interval does not match the last day" do
       @recurrence = recurrence(
         :every    => :day,
@@ -190,6 +199,18 @@ describe Recurrence do
       @recurrence.events[4].to_s.should == "2008-11-16"
       @recurrence.events[5].to_s.should == "2008-11-30"
       @recurrence.events[6].to_s.should == "2008-12-14"
+    end
+    
+    it "should use repeat" do
+      starts = Date.parse("2008-09-21")
+      @recurrence = recurrence(
+        :every    => :week,
+        :on       => starts.wday,
+        :starts   => starts,
+        :until    => "2011-01-01",
+        :repeat    => 5
+      )
+      @recurrence.events.size.should == 5
     end
 
     it "should occur several times per week" do
@@ -328,6 +349,18 @@ describe Recurrence do
         @recurrence.events[2].to_s.should == "2008-10-31"
         @recurrence.events[3].to_s.should == "2009-02-28"
       end
+      
+      it "should use repeat" do
+        starts = Date.parse("2008-01-31")
+        @recurrence = recurrence(
+          :every    => :month,
+          :on       => 31,
+          :starts   => starts,
+          :until    => "2010-01-01",
+          :repeat    => 5
+        )
+        @recurrence.events.size.should == 5
+      end
     end
 
     context "using weekday" do
@@ -407,6 +440,19 @@ describe Recurrence do
         @recurrence.events[4].to_s.should == "2009-09-20"
         @recurrence.events[5].to_s.should == "2009-11-15"
         @recurrence.events[6].to_s.should == "2010-01-17"
+      end
+      
+      it "should use repeat" do
+        starts = Date.parse("2009-01-01")
+        @recurrence = recurrence(
+          :every    => :month,
+          :on       => :third,
+          :weekday  => :sunday,
+          :starts   => starts,
+          :until    => "2011-02-01",
+          :repeat    => 5
+        )
+        @recurrence.events.size.should == 5
       end
     end
 
@@ -517,6 +563,18 @@ describe Recurrence do
       @recurrence.events[1].to_s.should == "2010-09-21"
       @recurrence.events[2].to_s.should == "2012-09-21"
       @recurrence.events[3].to_s.should == "2014-09-21"
+    end
+    
+    it "should use repeat" do
+      starts = Date.parse("2008-09-21")
+
+      @recurrence = recurrence(
+        :every    => :year,
+        :on       => [starts.month, starts.day],
+        :starts   => starts,
+        :repeat    => 5
+      )
+      @recurrence.events.size.should == 5
     end
 
     it "should run until next available date when chosen settings are greater than start date" do

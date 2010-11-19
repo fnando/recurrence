@@ -135,6 +135,7 @@ module SimplesIdeias
       @options = options
       @normalized_options = initialize_dates(options.dup)
       @normalized_options[:interval] ||= 1
+      @normalized_options[:repeat] ||= nil
 
       @event = case @normalized_options[:every].to_sym
         when :day
@@ -228,7 +229,7 @@ module SimplesIdeias
           valid_until = options[:until].nil?  || date <= options[:until]
           _events << date if valid_start && valid_until
 
-          break if options[:until] && options[:until] <= date
+          break if (!@event.repeat.nil? && _events.size == @event.repeat) or (options[:until] && options[:until] <= date)
         end
 
         _events

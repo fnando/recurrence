@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    recurrence (0.1.5)
-      activesupport (>= 3.0.0)
+    recurrence (1.0.0)
+      activesupport
 
 GEM
   remote: http://rubygems.org/
@@ -36,7 +36,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport (>= 3.0.0)
+  activesupport
   recurrence!
   rspec (>= 2.0.0)
   ruby-debug19

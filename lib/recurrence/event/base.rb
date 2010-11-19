@@ -16,8 +16,13 @@ module SimplesIdeias
 
           validate
           raise ArgumentError, "interval should be greater than zero" if @options[:interval] <= 0
+          raise ArgumentError, "repeat should be greater than zero" if !@options[:repeat].nil? && @options[:repeat] <= 0
 
           prepare!
+        end
+        
+        def repeat
+          @options[:repeat]
         end
 
         def next!
