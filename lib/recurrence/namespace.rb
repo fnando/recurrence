@@ -69,6 +69,7 @@ module SimplesIdeias
     #   Recurrence.daily(:interval => 2) #=> every 2 days
     #   Recurrence.daily(:starts => 3.days.from_now)
     #   Recurrence.daily(:until => 10.days.from_now)
+    #   Recurrence.daily(:repeat => 5)
     #
     def self.daily(options = {})
       options[:every] = :day
@@ -81,6 +82,7 @@ module SimplesIdeias
     #   Recurrence.weekly(:on => :saturday)
     #   Recurrence.weekly(:on => [sunday, :saturday])
     #   Recurrence.weekly(:on => :saturday, :interval => 2)
+    #   Recurrence.weekly(:on => :saturday, :repeat => 5)
     #
     def self.weekly(options = {})
       options[:every] = :week
@@ -101,6 +103,7 @@ module SimplesIdeias
     #   Recurrence.monthly(:on => 15, :interval => :bimonthly)
     #   Recurrence.monthly(:on => 15, :interval => :quarterly)
     #   Recurrence.monthly(:on => 15, :interval => :semesterly)
+    #   Recurrence.monthly(:on => 15, :repeat => 5)
     #
     def self.monthly(options = {})
       options[:every] = :month
@@ -113,6 +116,7 @@ module SimplesIdeias
     #   Recurrence.yearly(:on => [7, 14], :interval => 2) #=> every 2 years on Jul 14
     #   Recurrence.yearly(:on => [:jan, 14], :interval => 2)
     #   Recurrence.yearly(:on => [:january, 14], :interval => 2)
+    #   Recurrence.yearly(:on => [:january, 14], :repeat => 5)
     #
     def self.yearly(options = {})
       options[:every] = :year
@@ -133,19 +137,18 @@ module SimplesIdeias
       raise ArgumentError, "invalid :every option"     unless FREQUENCY.include?(options[:every].to_s)
 
       @options = options
-      @normalized_options = initialize_dates(options.dup)
-      @normalized_options[:interval] ||= 1
-      @normalized_options[:repeat] ||= nil
+      @_options = initialize_dates(options.dup)
+      @_options[:interval] ||= 1
 
-      @event = case @normalized_options[:every].to_sym
+      @event = case @_options[:every].to_sym
         when :day
-          Event::Daily.new(@normalized_options)
+          Event::Daily.new(@_options)
         when :week
-          Event::Weekly.new(@normalized_options)
+          Event::Weekly.new(@_options)
         when :month
-          Event::Monthly.new(@normalized_options)
+          Event::Monthly.new(@_options)
         when :year
-          Event::Yearly.new(@normalized_options)
+          Event::Yearly.new(@_options)
       end
     end
 
@@ -164,7 +167,7 @@ module SimplesIdeias
     def include?(required_date)
       required_date = as_date(required_date)
 
-      if required_date < @normalized_options[:starts] || required_date > @normalized_options[:until]
+      if required_date < @_options[:starts] || required_date > @_options[:until]
         false
       else
         each do |date|
@@ -215,25 +218,24 @@ module SimplesIdeias
       options[:starts] = as_date(options[:starts])
       options[:until]  = as_date(options[:until])
       options[:repeat] ||= @options[:repeat]
-      
+
       reset! if options[:starts] || options[:until]
 
-      @events ||= begin
-        _events = []
-
+      @events ||= Array.new.tap do |list|
         loop do
           date = @event.next!
 
-          break if date.nil?
+          break unless date
 
           valid_start = options[:starts].nil? || date >= options[:starts]
           valid_until = options[:until].nil?  || date <= options[:until]
-          _events << date if valid_start && valid_until
+          list << date if valid_start && valid_until
 
-          break if (!options[:repeat].nil? && _events.size == options[:repeat]) or (options[:until] && options[:until] <= date)
+          stop_repeat = options[:repeat] && list.size == options[:repeat]
+          stop_until = options[:until] && options[:until] <= date
+
+          break if stop_until || stop_repeat
         end
-
-        _events
       end
     end
 
