@@ -20,10 +20,6 @@ module SimplesIdeias
 
           prepare!
         end
-        
-        def repeat
-          @options[:repeat]
-        end
 
         def next!
           return nil if finished?

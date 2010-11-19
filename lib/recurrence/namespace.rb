@@ -214,7 +214,8 @@ module SimplesIdeias
     def events(options={})
       options[:starts] = as_date(options[:starts])
       options[:until]  = as_date(options[:until])
-
+      options[:repeat] ||= @options[:repeat]
+      
       reset! if options[:starts] || options[:until]
 
       @events ||= begin
@@ -229,7 +230,7 @@ module SimplesIdeias
           valid_until = options[:until].nil?  || date <= options[:until]
           _events << date if valid_start && valid_until
 
-          break if (!@event.repeat.nil? && _events.size == @event.repeat) or (options[:until] && options[:until] <= date)
+          break if (!options[:repeat].nil? && _events.size == options[:repeat]) or (options[:until] && options[:until] <= date)
         end
 
         _events
