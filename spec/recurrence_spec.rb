@@ -200,7 +200,7 @@ describe Recurrence do
       @recurrence.events[5].to_s.should == "2008-11-30"
       @recurrence.events[6].to_s.should == "2008-12-14"
     end
-    
+
     it "should use repeat" do
       starts = Date.parse("2008-09-21")
       @recurrence = recurrence(
@@ -349,7 +349,7 @@ describe Recurrence do
         @recurrence.events[2].to_s.should == "2008-10-31"
         @recurrence.events[3].to_s.should == "2009-02-28"
       end
-      
+
       it "should use repeat" do
         starts = Date.parse("2008-01-31")
         @recurrence = recurrence(
@@ -366,6 +366,11 @@ describe Recurrence do
     context "using weekday" do
       it "should recur until limit date" do
         @recurrence = Recurrence.daily(:on => 5, :weekday => :thursday)
+        @recurrence.events[-1].should == Date.parse("2037-12-31")
+      end
+
+      it "should use weekday shortcut" do
+        @recurrence = Recurrence.daily(:on => 5, :weekday => :thu)
         @recurrence.events[-1].should == Date.parse("2037-12-31")
       end
 
@@ -441,7 +446,7 @@ describe Recurrence do
         @recurrence.events[5].to_s.should == "2009-11-15"
         @recurrence.events[6].to_s.should == "2010-01-17"
       end
-      
+
       it "should use repeat" do
         starts = Date.parse("2009-01-01")
         @recurrence = recurrence(
@@ -564,7 +569,7 @@ describe Recurrence do
       @recurrence.events[2].to_s.should == "2012-09-21"
       @recurrence.events[3].to_s.should == "2014-09-21"
     end
-    
+
     it "should use repeat" do
       starts = Date.parse("2008-09-21")
 

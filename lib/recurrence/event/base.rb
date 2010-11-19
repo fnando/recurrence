@@ -3,11 +3,19 @@ module SimplesIdeias
     module Event # :nodoc: all
       class Base
         CARDINALS = %w(first second third fourth fifth)
-        DAYS = %w(sunday monday tuesday wednesday thursday friday saturday)
+        WEEKDAYS = {
+          "sun" => 0, "sunday"    => 0,
+          "mon" => 1, "monday"    => 1,
+          "tue" => 2, "tuesday"   => 2,
+          "wed" => 3, "wednesday" => 3,
+          "thu" => 4, "thursday"  => 4,
+          "fri" => 5, "friday"    => 5,
+          "sat" => 6, "saturday"  => 6
+        }
 
         attr_accessor :start_date
 
-        def initialize(options={})
+        def initialize(options = {})
           every, options = nil, every if every.kind_of?(Hash)
 
           @options    = options
@@ -73,8 +81,9 @@ module SimplesIdeias
             raise ArgumentError, "invalid day #{value}" unless (0..6).include?(value)
             value
           else
-            raise ArgumentError, "invalid weekday #{value}" unless DAYS.include?(value.to_s)
-            DAYS.index(value.to_s)
+            weekday = WEEKDAYS[value.to_s]
+            raise ArgumentError, "invalid weekday #{value}" unless weekday
+            weekday
           end
         end
       end

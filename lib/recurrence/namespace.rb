@@ -105,6 +105,11 @@ module SimplesIdeias
     #   Recurrence.monthly(:on => 15, :interval => :semesterly)
     #   Recurrence.monthly(:on => 15, :repeat => 5)
     #
+    # The <tt>:on</tt> option can be one of the following:
+    #
+    #   * :sunday, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday
+    #   * :sun, :mon, :tue, :wed, :thu, :fri, :sat
+    #
     def self.monthly(options = {})
       options[:every] = :month
       new(options)

@@ -42,7 +42,7 @@ module SimplesIdeias
         def advance_to_year(date, interval=@options[:interval])
           next_year  = date.year + interval
           next_month = @options[:on].first
-          next_day   = [ @options[:on].last, Time.days_in_month(next_month, next_year) ].min
+          next_day   = [@options[:on].last, Time.days_in_month(next_month, next_year)].min
 
           Date.new(next_year, next_month, next_day)
         end
