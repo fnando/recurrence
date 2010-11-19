@@ -104,6 +104,7 @@ If you're using Rails/Bundler or something like that, remember to override the <
 
 * José Valim (http://plataformatec.com.br)
 * Maxim Chernyak (http://mediumexposure.com)
+* Ricardo H. (https://github.com/ricardohsd)
 
 == License
 
