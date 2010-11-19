@@ -72,3 +72,8 @@
 * Recurrence now includes Enumerable
 * The public API is now documented
 * Remove support for Rails plugin
+
+== 1.0.1 2010-11-19
+
+* Added :repeat option
+* Added support for weekday shortcut (sun..sat)
