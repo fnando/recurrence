@@ -1,7 +1,7 @@
-require "date"
-require "active_support/all"
-require "enumerator"
+require "active_support/core_ext"
 
+require "date"
+require "enumerator"
 module SimplesIdeias
   class Recurrence
     autoload :Event,    "recurrence/event"

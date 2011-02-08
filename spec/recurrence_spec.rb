@@ -1,6 +1,8 @@
 require "spec_helper"
 
 describe Recurrence do
+  let(:enumerator_constant){ RUBY_VERSION > "1.9.0" ? Enumerator : Enumerable::Enumerator }
+
   it "should require :every option" do
     expect { recurrence({}) }.to raise_error(ArgumentError)
   end
@@ -18,11 +20,11 @@ describe Recurrence do
   end
 
   it "should return an enumerator when Recurrence#each is called without a block" do
-    recurrence(:every => :day).each.should be_instance_of(Enumerator)
+    recurrence(:every => :day).each.should be_instance_of(enumerator_constant)
   end
 
   it "should return an enumerator when Recurrence#each! is called without a block" do
-    recurrence(:every => :day).each!.should be_instance_of(Enumerator)
+    recurrence(:every => :day).each!.should be_instance_of(enumerator_constant)
   end
 
   Recurrence::Event::Monthly::INTERVALS.each do |interval|
