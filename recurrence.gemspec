@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-
 require "recurrence"
+
 Gem::Specification.new do |s|
   s.name        = "recurrence"
   s.version     = Recurrence::Version::STRING
@@ -10,9 +10,7 @@ Gem::Specification.new do |s|
   s.email       = ["fnando.vieira@gmail.com"]
   s.homepage    = "http://rubygems.org/gems/recurrence"
   s.summary     = "A simple library to handle recurring events"
-  s.description = "A simple library to handle recurring events"
-
-  s.rubyforge_project = "recurrence"
+  s.description = s.summary
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
@@ -20,10 +18,5 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency "activesupport", ">= 2.3.0"
-  s.add_development_dependency "rspec", ">= 2.0.0"
-  if RUBY_VERSION >= "1.9.0"
-    s.add_development_dependency "ruby-debug19"
-  else
-    s.add_development_dependency "ruby-debug"
-  end
+  s.add_development_dependency "rspec", "~> 2.5.0"
 end
