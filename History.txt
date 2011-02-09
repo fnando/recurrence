@@ -77,3 +77,7 @@
 
 * Added :repeat option
 * Added support for weekday shortcut (sun..sat)
+
+== 1.0.2 2011-02-09
+
+* Added Ruby 1.8 support
