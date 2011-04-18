@@ -14,6 +14,15 @@ module SimplesIdeias
     FREQUENCY = %w(day week month year)
 
     attr_reader :event, :options
+    
+    def self.as_date(date) # :nodoc:
+      case date
+      when String
+        Date.parse(date)
+      else
+        date
+      end
+    end
 
     # Return the default starting date.
     #
@@ -291,12 +300,7 @@ module SimplesIdeias
     end
 
     def as_date(date) # :nodoc:
-      case date
-      when String
-        Date.parse(date)
-      else
-        date
-      end
+      self.class.as_date(date)
     end
   end
 end

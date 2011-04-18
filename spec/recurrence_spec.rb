@@ -94,6 +94,51 @@ describe Recurrence do
       end
     end
   end
+  
+  describe ".default_until_date" do
+    after(:each){ Recurrence.default_until_date = Date.new(2037, 12, 31)}
+    
+    it "should return 2037-12-31 by default" do
+      Recurrence.default_until_date.should == Date.new(2037, 12, 31)
+    end
+
+    it "should return new until when changed" do
+      Recurrence.default_until_date = Date.new(2057, 12, 31)
+      Recurrence.default_until_date.should == Date.new(2057, 12, 31)
+    end
+
+    it "should alter event end with new default until" do
+      @recurrence = Recurrence.daily
+      @recurrence.events[-1].should == Date.parse("2037-12-31")
+
+      Recurrence.default_until_date = Date.new(2057, 12, 31)
+
+      @recurrence = Recurrence.daily
+      @recurrence.events[-1].should == Date.parse("2057-12-31")
+    end
+
+    it "should not return any events when default until is past" do
+      Recurrence.default_until_date = Date.new(2007, 12, 31)
+      @recurrence = Recurrence.daily
+      @recurrence.events.length.should == 0
+    end  
+
+    it "should allow value to be changed multiple times" do
+      Recurrence.default_until_date = Date.new(2057, 12, 31)
+      Recurrence.default_until_date.should == Date.new(2057, 12, 31)
+      @recurrence1 = Recurrence.monthly(:on => 2)
+
+      Recurrence.default_until_date = Date.new(2187, 12, 31)
+      Recurrence.default_until_date.should == Date.new(2187, 12, 31)
+      @recurrence2 = Recurrence.monthly(:on => 2)
+      @recurrence2.events.length.should == @recurrence1.events.length + 130 * 12
+
+      Recurrence.default_until_date = Date.new(2257, 12, 31)
+      Recurrence.default_until_date.should == Date.new(2257, 12, 31)
+      @recurrence3 = Recurrence.monthly(:on => 2)
+      @recurrence3.events.length.should == @recurrence2.events.length + 70 * 12
+    end
+  end
 
   context "with daily recurring" do
     it "should recur until limit date" do
