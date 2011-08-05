@@ -18,5 +18,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency "activesupport", ">= 2.3.0"
-  s.add_development_dependency "rspec", "~> 2.5.0"
+  s.add_dependency "i18n"
+  s.add_development_dependency "rspec", "~> 2.6"
+  s.add_development_dependency "rake", "~> 0.9"
 end
