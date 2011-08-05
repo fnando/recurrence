@@ -1,6 +1,6 @@
 module SimplesIdeias
   class Recurrence
-    module Boundary # :nodoc: all
+    module Handler # :nodoc: all
       ##
       # If the given date is invalid - beyond the end of the month - then this
       # will move the day back to the last day of the given month.

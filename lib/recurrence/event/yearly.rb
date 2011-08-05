@@ -43,7 +43,7 @@ module SimplesIdeias
           next_year  = date.year + interval
           next_month = @options[:on].first
 
-          @options[:boundary].call(@options[:on].last, next_month, next_year)
+          @options[:handler].call(@options[:on].last, next_month, next_year)
         end
 
         private

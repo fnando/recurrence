@@ -59,6 +59,9 @@ A simple library to handle recurring events.
   r = Recurrence.new(:every => :day, :until => '2010-01-31')
   r = Recurrence.new(:every => :day, :starts => Date.today, :until => '2010-01-31')
 
+  # Override the next date handler
+  r = Recurrence.new(:every => :month, :on => 1, :handler => Proc.new { |day, month, year| raise("Date not allowed!") if year == 2011 && month == 12 && day == 31 })
+
   # Getting an array with all events
   r.events.each {|date| puts date.to_s }  # => Memoized array
   r.events!.each {|date| puts date.to_s } # => reset items cache and re-execute it
