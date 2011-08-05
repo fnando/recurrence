@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "recurrence"
+require 'recurrence/version'
 
 Gem::Specification.new do |s|
   s.name        = "recurrence"
-  s.version     = Recurrence::Version::STRING
+  s.version     = SimplesIdeias::Recurrence::Version::STRING
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Nando Vieira"]
   s.email       = ["fnando.vieira@gmail.com"]
