@@ -4,6 +4,7 @@ require "enumerator"
 
 module SimplesIdeias
   class Recurrence
+    autoload :Boundary, "recurrence/boundary"
     autoload :Event,    "recurrence/event"
     autoload :Version,  "recurrence/version"
 
@@ -144,6 +145,7 @@ module SimplesIdeias
       @options = options
       @_options = initialize_dates(options.dup)
       @_options[:interval] ||= 1
+      @_options[:boundary] ||= Boundary::FallBack
 
       @event = case @_options[:every].to_sym
         when :day

@@ -59,9 +59,8 @@ module SimplesIdeias
 
           next_year  = date.year + raw_month / 12
           next_month = (raw_month % 12) + 1 # change back to ruby interval
-          next_day   = [ @options[:on], Time.days_in_month(next_month, next_year) ].min
 
-          Date.new(next_year, next_month, next_day)
+          @options[:boundary].call(@options[:on], next_month, next_year)
         end
 
         def advance_to_month_by_weekday(date, interval=@options[:interval])
