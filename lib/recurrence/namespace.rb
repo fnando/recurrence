@@ -5,6 +5,7 @@ require "enumerator"
 module SimplesIdeias
   class Recurrence
     autoload :Event,    "recurrence/event"
+    autoload :Handler, "recurrence/handler"
     autoload :Version,  "recurrence/version"
 
     include Enumerable
@@ -144,6 +145,7 @@ module SimplesIdeias
       @options = options
       @_options = initialize_dates(options.dup)
       @_options[:interval] ||= 1
+      @_options[:handler] ||= Handler::FallBack
 
       @event = case @_options[:every].to_sym
         when :day

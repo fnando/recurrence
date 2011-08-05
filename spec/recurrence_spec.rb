@@ -771,6 +771,23 @@ describe Recurrence do
     end
   end
 
+  context "with custom handlers" do
+    let(:exception_handler) { Proc.new { raise 'HANDLED' } }
+    let(:shift_handler) { Proc.new { |day, month, year| day += 1 if month % 2 == 0; Date.new(year, month, day) } }
+
+    it 'offsets every other month day' do
+      r = recurrence(:every => :month, :on => 1, :starts => '2011-01-01', :handler => shift_handler)
+      r.events[0].should == Date.new(2011, 1, 1)
+      r.events[1].should == Date.new(2011, 2, 2)
+      r.events[2].should == Date.new(2011, 3, 1)
+      r.events[3].should == Date.new(2011, 4, 2)
+    end
+
+    it 'raises an exception from the handler' do
+      expect { recurrence(:every => :day, :handler => exception_handler) }.to raise_error(RuntimeError, 'HANDLED')
+    end
+  end
+
   private
   def recurrence(options)
     Recurrence.new(options)

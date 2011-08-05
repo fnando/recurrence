@@ -35,16 +35,15 @@ module SimplesIdeias
           else
             new_date = advance_to_year(@date, 0)
             new_date = advance_to_year(new_date) if @date > new_date
-            new_date
+            @options[:handler].call(new_date.day, new_date.month, new_date.year)
           end
         end
 
         def advance_to_year(date, interval=@options[:interval])
           next_year  = date.year + interval
           next_month = @options[:on].first
-          next_day   = [@options[:on].last, Time.days_in_month(next_month, next_year)].min
 
-          Date.new(next_year, next_month, next_day)
+          @options[:handler].call(@options[:on].last, next_month, next_year)
         end
 
         private

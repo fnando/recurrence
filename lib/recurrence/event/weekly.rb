@@ -22,7 +22,8 @@ module SimplesIdeias
             to_add += @options[:on].first            # Go to first required day
           end
 
-          @date.to_date + to_add
+          new_date = @date.to_date + to_add
+          @options[:handler].call(new_date.day, new_date.month, new_date.year)
         end
       end
     end
