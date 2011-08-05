@@ -83,7 +83,7 @@ module SimplesIdeias
             date -= weeks * 7
           end
 
-          date
+          @options[:handler].call(date.day, date.month, date.year)
         end
 
         private
