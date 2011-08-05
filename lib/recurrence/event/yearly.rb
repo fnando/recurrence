@@ -35,7 +35,7 @@ module SimplesIdeias
           else
             new_date = advance_to_year(@date, 0)
             new_date = advance_to_year(new_date) if @date > new_date
-            @options[:handler].call(new_date.last, new_date.month, new_date.year)
+            @options[:handler].call(new_date.day, new_date.month, new_date.year)
           end
         end
 
