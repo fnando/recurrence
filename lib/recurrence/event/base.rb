@@ -36,6 +36,7 @@ module SimplesIdeias
           @date = next_in_recurrence
 
           @finished, @date = true, nil if @date > @options[:until]
+          shift_to @date if @date && @options[:shift]
           @date
         end
 
@@ -85,6 +86,10 @@ module SimplesIdeias
             raise ArgumentError, "invalid weekday #{value}" unless weekday
             weekday
           end
+        end
+
+        def shift_to(date)
+          # no-op
         end
       end
     end

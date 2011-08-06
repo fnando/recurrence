@@ -86,6 +86,10 @@ module SimplesIdeias
           @options[:handler].call(date.day, date.month, date.year)
         end
 
+        def shift_to(date)
+          @options[:on] = date.day
+        end
+
         private
         def valid_cardinal?(cardinal)
           raise ArgumentError, "invalid cardinal #{cardinal}" unless CARDINALS.include?(cardinal.to_s)

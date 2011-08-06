@@ -46,6 +46,10 @@ module SimplesIdeias
           @options[:handler].call(@options[:on].last, next_month, next_year)
         end
 
+        def shift_to(date)
+          @options[:on] = [date.month, date.day]
+        end
+
         private
         def valid_month?(month)
           raise ArgumentError, "invalid month #{month}" unless (1..12).include?(month)
