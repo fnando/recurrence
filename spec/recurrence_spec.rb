@@ -772,25 +772,25 @@ describe Recurrence do
   end
 
   context "with custom handlers" do
-    let(:exception_handler) { Proc.new { raise 'HANDLED' } }
+    let(:exception_handler) { Proc.new { raise "HANDLED" } }
     let(:shift_handler) { Proc.new { |day, month, year| day += 1 if month % 2 == 0; Date.new(year, month, day) } }
 
-    it 'offsets every other month day' do
-      r = recurrence(:every => :month, :on => 1, :starts => '2011-01-01', :handler => shift_handler)
+    it "offsets every other month day" do
+      r = recurrence(:every => :month, :on => 1, :starts => "2011-01-01", :handler => shift_handler)
       r.events[0].should == Date.new(2011, 1, 1)
       r.events[1].should == Date.new(2011, 2, 2)
       r.events[2].should == Date.new(2011, 3, 1)
       r.events[3].should == Date.new(2011, 4, 2)
     end
 
-    it 'raises an exception from the handler' do
-      expect { recurrence(:every => :day, :handler => exception_handler) }.to raise_error(RuntimeError, 'HANDLED')
+    it "raises an exception from the handler" do
+      expect { recurrence(:every => :day, :handler => exception_handler) }.to raise_error(RuntimeError, "HANDLED")
     end
   end
 
   context "with shifting enabled" do
     it "shifts yearly recurrences around February 29" do
-      r = recurrence(:every => :year, :starts => '2012-02-29', :on => [2,29], :shift => true)
+      r = recurrence(:every => :year, :starts => "2012-02-29", :on => [2,29], :shift => true)
       r.events[0].should == Date.new(2012, 2, 29)
       r.events[1].should == Date.new(2013, 2, 28)
       r.events[2].should == Date.new(2014, 2, 28)
@@ -799,39 +799,39 @@ describe Recurrence do
     end
 
     it "shifts monthly recurrences around the 31st" do
-      r = recurrence(:every => :month, :starts => '2011-01-31', :on => 31, :shift => true)
+      r = recurrence(:every => :month, :starts => "2011-01-31", :on => 31, :shift => true)
       r.events[0].should == Date.new(2011, 1, 31)
       r.events[1].should == Date.new(2011, 2, 28)
       r.events[2].should == Date.new(2011, 3, 28)
     end
 
     it "shifts monthly recurrences around the 30th" do
-      r = recurrence(:every => :month, :starts => '2011-01-30', :on => 30, :shift => true)
+      r = recurrence(:every => :month, :starts => "2011-01-30", :on => 30, :shift => true)
       r.events[0].should == Date.new(2011, 1, 30)
       r.events[1].should == Date.new(2011, 2, 28)
       r.events[2].should == Date.new(2011, 3, 28)
     end
 
     it "shifts monthly recurrences around the 29th" do
-      r = recurrence(:every => :month, :starts => '2011-01-29', :on => 29, :shift => true)
+      r = recurrence(:every => :month, :starts => "2011-01-29", :on => 29, :shift => true)
       r.events[0].should == Date.new(2011, 1, 29)
       r.events[1].should == Date.new(2011, 2, 28)
       r.events[2].should == Date.new(2011, 3, 28)
 
-      r = recurrence(:every => :month, :starts => '2012-01-29', :on => 29, :shift => true)
+      r = recurrence(:every => :month, :starts => "2012-01-29", :on => 29, :shift => true)
       r.events[0].should == Date.new(2012, 1, 29)
       r.events[1].should == Date.new(2012, 2, 29)
       r.events[2].should == Date.new(2012, 3, 29)
     end
 
     it "correctly resets to original day for monthly" do
-      r = recurrence(:every => :month, :starts => '2011-01-31', :on => 31, :shift => true)
+      r = recurrence(:every => :month, :starts => "2011-01-31", :on => 31, :shift => true)
       r.next!; r.next!
       expect { r.reset! }.to change(r, :next).from(Date.new(2011, 2, 28)).to(Date.new(2011, 1, 31))
     end
 
     it "correctly resets to original month and day for yearly" do
-      r = recurrence(:every => :year, :starts => '2012-02-29', :on => [2,29], :shift => true)
+      r = recurrence(:every => :year, :starts => "2012-02-29", :on => [2,29], :shift => true)
       r.next!; r.next!
       expect { r.reset! }.to change(r, :next).from(Date.new(2013, 2, 28)).to(Date.new(2012, 2, 29))
     end
