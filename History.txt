@@ -81,3 +81,7 @@
 == 1.0.2 2011-02-09
 
 * Added Ruby 1.8 support
+
+== 1.0.3 2011-19-14
+
+* Added support for default ending date through Recurrence.default_until_date
