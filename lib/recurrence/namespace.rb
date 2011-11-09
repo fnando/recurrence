@@ -224,9 +224,10 @@ module SimplesIdeias
     def events(options={})
       options[:starts] = as_date(options[:starts])
       options[:until]  = as_date(options[:until])
+      options[:through]  = as_date(options[:through])
       options[:repeat] ||= @options[:repeat]
 
-      reset! if options[:starts] || options[:until]
+      reset! if options[:starts] || options[:until] || options[:through]
 
       @events ||= Array.new.tap do |list|
         loop do
@@ -240,8 +241,9 @@ module SimplesIdeias
 
           stop_repeat = options[:repeat] && list.size == options[:repeat]
           stop_until = options[:until] && options[:until] <= date
+          stop_through = options[:through] && options[:through] <= date
 
-          break if stop_until || stop_repeat
+          break if stop_until || stop_repeat || stop_through
         end
       end
     end
@@ -282,7 +284,7 @@ module SimplesIdeias
 
     private
     def initialize_dates(options) # :nodoc:
-      [:starts, :until].each do |name|
+      [:starts, :until, :through].each do |name|
         options[name] = as_date(options[name])
       end
 
