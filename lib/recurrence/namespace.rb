@@ -237,13 +237,13 @@ module SimplesIdeias
 
           valid_start = options[:starts].nil? || date >= options[:starts]
           valid_until = options[:until].nil?  || date <= options[:until]
-          valid_through = options[:through].nil? || date >= options[:through]
-          list << date if valid_start && valid_until && valid_through
+          list << date if valid_start && valid_until
 
           stop_repeat = options[:repeat] && list.size == options[:repeat]
           stop_until = options[:until] && options[:until] <= date
+          stop_through = options[:through] && options[:through] <= date
 
-          break if stop_until || stop_repeat
+          break if stop_until || stop_repeat || stop_through
         end
       end
     end
