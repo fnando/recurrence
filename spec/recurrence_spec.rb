@@ -107,6 +107,12 @@ describe Recurrence do
       @recurrence.events[-1].should == date.to_date
     end
 
+    it "should recur through 1 month from now" do
+      date = 1.month.from_now
+      @recurrence = recurrence(:every => :day, :through => date.to_date)
+      @recurrence.events[-1].should == date.to_date
+    end
+
     it "should start 2 months ago (#{2.months.ago.to_s(:date)})" do
       date = 2.months.ago
       @recurrence = recurrence(:every => :day, :starts => date.to_date)
@@ -117,6 +123,13 @@ describe Recurrence do
 
     it "should start at 2008-03-19 and repeat until 2008-04-24" do
       @recurrence = recurrence(:every => :day, :starts => "2008-03-19", :until => "2008-04-24")
+      @recurrence.events[0].to_s.should == "2008-03-19"
+      @recurrence.events[1].to_s.should == "2008-03-20"
+      @recurrence.events[-1].to_s.should == "2008-04-24"
+    end
+
+    it "should start at 2008-03-19 and repeat through 2008-04-24" do
+      @recurrence = recurrence(:every => :day, :starts => "2008-03-19", :through => "2008-04-24")
       @recurrence.events[0].to_s.should == "2008-03-19"
       @recurrence.events[1].to_s.should == "2008-03-20"
       @recurrence.events[-1].to_s.should == "2008-04-24"
@@ -143,6 +156,16 @@ describe Recurrence do
       )
       @recurrence.events[-1].to_s.should == "2008-04-24"
     end
+
+    it "should not have a lacking day if the interval does not match the last day" do
+      @recurrence = recurrence(
+        :every    => :day,
+        :starts   => "2008-03-19",
+        :through  => "2008-04-25",
+        :interval => 2
+      )
+      @recurrence.events[-1].to_s.should == "2008-04-26"
+    end
   end
 
   context "with weekly recurring" do
@@ -154,6 +177,12 @@ describe Recurrence do
     it "should repeat 6 weeks from now" do
       date = 6.weeks.from_now
       @recurrence = recurrence(:every => :week, :on => date.wday, :until => date.to_date)
+      @recurrence.events[-1].should == date.to_date
+    end
+
+    it "should repeat through 6 weeks from now" do
+      date = 6.weeks.from_now
+      @recurrence = recurrence(:every => :week, :on => date.wday, :through => date.to_date)
       @recurrence.events[-1].should == date.to_date
     end
 
@@ -179,6 +208,21 @@ describe Recurrence do
         :on     => :friday,
         :starts => starts,
         :until  => ends.to_date
+      )
+      @recurrence.events[0].to_s.should == "2008-02-29"
+      @recurrence.events[1].to_s.should == "2008-03-07"
+      @recurrence.events[-1].to_s.should == ends.to_s
+    end
+
+    it "should start at 2008-02-29 and repeat through 2008-03-14" do
+      starts = Date.parse("2008-02-29")
+      ends = Date.parse("2008-03-14")
+
+      @recurrence = recurrence(
+        :every  => :week,
+        :on     => :friday,
+        :starts => starts,
+        :through=> ends.to_date
       )
       @recurrence.events[0].to_s.should == "2008-02-29"
       @recurrence.events[1].to_s.should == "2008-03-07"
@@ -273,6 +317,12 @@ describe Recurrence do
         @recurrence.events[-1].should == date.to_date
       end
 
+      it "should repeat through 8 months from now" do
+        date = 8.months.from_now
+        @recurrence = recurrence(:every => :month, :on => date.day, :through => date.to_date)
+        @recurrence.events[-1].should == date.to_date
+      end
+
       it "should start 9 months ago" do
         date = 9.months.ago
 
@@ -294,6 +344,20 @@ describe Recurrence do
         @recurrence.events[-1].to_s.should == "2008-11-07"
       end
 
+      it "should start at 2008-06-07 and repeat through 2008-11-07" do
+        starts = Date.parse("2008-06-07")
+        ends = Date.parse("2008-11-07")
+
+        @recurrence = recurrence(
+          :every  => :month,
+          :on     => starts.day,
+          :starts => starts,
+          :through=> ends
+        )
+        @recurrence.events[0].to_s.should == "2008-06-07"
+        @recurrence.events[-1].to_s.should == "2008-11-07"
+      end
+
       it "should run until next available 27th" do
         starts = Date.parse("2008-09-28")
 
@@ -304,6 +368,18 @@ describe Recurrence do
           :until  => "2009-01-01"
         )
         @recurrence.events[0].to_s.should == "2008-10-27"
+      end
+
+      it "should run through final available 27th" do
+        starts = Date.parse("2008-09-28")
+
+        @recurrence = recurrence(
+          :every  => :month,
+          :on     => 27,
+          :starts => starts,
+          :through=> "2009-01-01"
+        )
+        @recurrence.events[-1].to_s.should == "2009-01-27"
       end
 
       it "should use interval" do
@@ -384,6 +460,18 @@ describe Recurrence do
           :on      => week,
           :weekday => date.wday,
           :until   => date.to_date
+        )
+        @recurrence.events[-1].should == date.to_date
+      end
+
+      it "should repeat through 8 months from now" do
+        date = 8.months.from_now
+        week = (date.day - 1) / 7 + 1
+        @recurrence = recurrence(
+          :every   => :month,
+          :on      => week,
+          :weekday => date.wday,
+          :through => date.to_date
         )
         @recurrence.events[-1].should == date.to_date
       end
@@ -533,6 +621,16 @@ describe Recurrence do
       @recurrence.events[-1].should == date.to_date
     end
 
+    it "should repeat through 7 years from now" do
+      date = 7.years.from_now
+      @recurrence = recurrence(
+        :every    => :year,
+        :on       => [date.month, date.day],
+        :through  => date.to_date
+      )
+      @recurrence.events[-1].should == date.to_date
+    end
+
     it "should start 2 years ago" do
       date = 2.years.ago
       @recurrence = recurrence(
@@ -552,6 +650,20 @@ describe Recurrence do
         :on     => [starts.month, starts.day],
         :starts => starts,
         :until  => ends
+      )
+      @recurrence.events[0].to_s.should == "2003-06-07"
+      @recurrence.events[-1].to_s.should == "2018-06-07"
+    end
+
+    it "should start at 2003-06-07 and repeat through 2018-06-07" do
+      starts = Date.parse("2003-06-07")
+      ends = Date.parse("2018-06-07")
+
+      @recurrence = recurrence(
+        :every  => :year,
+        :on     => [starts.month, starts.day],
+        :starts => starts,
+        :through=> ends
       )
       @recurrence.events[0].to_s.should == "2003-06-07"
       @recurrence.events[-1].to_s.should == "2018-06-07"
@@ -582,6 +694,19 @@ describe Recurrence do
         :repeat    => 5
       )
       @recurrence.events.size.should == 5
+    end
+
+    it "should include the through date when less than a perfect interval" do
+      starts = Date.parse("2003-06-07")
+      ends = Date.parse("2018-07-12")
+
+      @recurrence = recurrence(
+        :every    => :year,
+        :on       => [starts.month, starts.day],
+        :starts   => starts,
+        :through  => ends
+      )
+      @recurrence.events[-1].to_s.should == '2019-06-07'
     end
 
     it "should run until next available date when chosen settings are greater than start date" do

@@ -35,6 +35,7 @@ module SimplesIdeias
 
           @date = next_in_recurrence
 
+          @finished = true if @options[:through] && @date >= @options[:through]
           @finished, @date = true, nil if @date > @options[:until]
           shift_to @date if @date && @options[:shift]
           @date
