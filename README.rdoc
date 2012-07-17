@@ -64,6 +64,11 @@ A simple library to handle recurring events.
   r = Recurrence.new(:every => :day, :through => '2010-01-31')
   r = Recurrence.new(:every => :day, :starts => Date.today, :through => '2010-01-31')
 
+  # Remove a date in the series on the given except date(s)
+  # :except defaults to being unset
+  r = Recurrence.new(:every => :day, :except => '2010-01-31')
+  r = Recurrence.new(:every => :day, :except => [Date.today, '2010-01-31'])
+
   # Override the next date handler
   r = Recurrence.new(:every => :month, :on => 1, :handler => Proc.new { |day, month, year| raise("Date not allowed!") if year == 2011 && month == 12 && day == 31 })
 

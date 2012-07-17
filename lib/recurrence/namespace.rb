@@ -71,6 +71,7 @@ module SimplesIdeias
     #   Recurrence.daily(:starts => 3.days.from_now)
     #   Recurrence.daily(:until => 10.days.from_now)
     #   Recurrence.daily(:repeat => 5)
+    #   Recurrence.daily(:except => Date.tomorrow)
     #
     def self.daily(options = {})
       options[:every] = :day
@@ -141,6 +142,8 @@ module SimplesIdeias
     def initialize(options)
       raise ArgumentError, ":every option is required" unless options.key?(:every)
       raise ArgumentError, "invalid :every option"     unless FREQUENCY.include?(options[:every].to_s)
+
+      options[:except] = [options[:except]].flatten.map {|d| as_date(d)} if options[:except]
 
       @options = options
       @_options = initialize_dates(options.dup)
@@ -226,6 +229,7 @@ module SimplesIdeias
       options[:until]  = as_date(options[:until])
       options[:through]  = as_date(options[:through])
       options[:repeat] ||= @options[:repeat]
+      options[:except] ||= @options[:except]
 
       reset! if options[:starts] || options[:until] || options[:through]
 
@@ -237,7 +241,8 @@ module SimplesIdeias
 
           valid_start = options[:starts].nil? || date >= options[:starts]
           valid_until = options[:until].nil?  || date <= options[:until]
-          list << date if valid_start && valid_until
+          valid_except = options[:except].nil? || !options[:except].include?(date)
+          list << date if valid_start && valid_until && valid_except
 
           stop_repeat = options[:repeat] && list.size == options[:repeat]
           stop_until = options[:until] && options[:until] <= date
