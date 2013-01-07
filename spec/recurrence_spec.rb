@@ -166,6 +166,12 @@ describe Recurrence do
       )
       @recurrence.events[-1].to_s.should == "2008-04-26"
     end
+
+    it "should use except" do
+      @recurrence = Recurrence.daily(:except => Date.tomorrow)
+      @recurrence.events.include?(Date.tomorrow).should be_false
+      @recurrence.events.include?(Date.tomorrow+1.day).should be_true
+    end
   end
 
   context "with weekly recurring" do
@@ -301,6 +307,13 @@ describe Recurrence do
         :until  => "2009-01-01"
       )
       @recurrence.events[0].to_s.should == "2008-09-27"
+    end
+
+    it "should use except" do
+      date = 6.weeks.from_now
+      @recurrence = recurrence(:every => :week, :on => date.wday, :except => 2.weeks.from_now.to_date)
+      @recurrence.events.include?(1.week.from_now.to_date).should be_true
+      @recurrence.events.include?(2.weeks.from_now.to_date).should be_false
     end
   end
 
@@ -438,6 +451,12 @@ describe Recurrence do
           :repeat    => 5
         )
         @recurrence.events.size.should == 5
+      end
+
+      it "should use except" do
+        @recurrence = recurrence(:every => :month, :on => Date.today.day, :except => 8.months.from_now.to_date)
+        @recurrence.events.include?(7.months.from_now.to_date).should be_true
+        @recurrence.events.include?(8.months.from_now.to_date).should be_false
       end
     end
 
@@ -724,6 +743,34 @@ describe Recurrence do
       starts = Date.parse("2008-09-03")
       @recurrence = recurrence(:every => :year, :on => [9, 1], :starts => starts)
       @recurrence.events[0].to_s.should == "2009-09-01"
+    end
+
+    it "should use except" do
+      @recurrence = Recurrence.yearly(:on => [12,31], :except => "#{Time.now.year+3}-12-31")
+
+      @recurrence.events.include?("#{Time.now.year+2}-12-31".to_date).should be_true
+      @recurrence.events.include?("#{Time.now.year+3}-12-31".to_date).should be_false
+    end
+  end
+
+  context "with except", :focus => true do
+    it "should accept only valid date strings or Dates" do
+      expect { recurrence(:except => :symbol) }.to raise_error(ArgumentError)
+      expect { recurrence(:except => "invalid") }.to raise_error(ArgumentError)
+    end
+
+    it "should skip day specified in except" do
+      @recurrence = recurrence(:every => :day, :except => Date.tomorrow)
+      @recurrence.include?(Date.today).should be_true
+      @recurrence.include?(Date.tomorrow).should be_false
+      @recurrence.include?(Date.tomorrow+1.day).should be_true
+    end
+
+    it "should skip multiple days specified in except" do
+      @recurrence = recurrence(:every => :day, :except => [Date.tomorrow, "2012-02-29"])
+      @recurrence.include?(Date.today).should be_true
+      @recurrence.include?(Date.tomorrow).should be_false
+      @recurrence.include?("2012-02-29").should be_false
     end
   end
 
