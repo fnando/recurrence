@@ -456,7 +456,7 @@ describe Recurrence do
       it "should use except" do
         @recurrence = recurrence(:every => :month, :on => Date.today.day, :except => 8.months.from_now.to_date)
         @recurrence.events.include?(7.months.from_now.to_date).should be_true
-        @recurrence.events.include?(8.weeks.from_now.to_date).should be_false
+        @recurrence.events.include?(8.months.from_now.to_date).should be_false
       end
     end
 
