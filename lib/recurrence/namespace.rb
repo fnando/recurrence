@@ -5,7 +5,7 @@ require "enumerator"
 module SimplesIdeias
   class Recurrence
     autoload :Event,    "recurrence/event"
-    autoload :Handler, "recurrence/handler"
+    autoload :Handler,  "recurrence/handler"
     autoload :Version,  "recurrence/version"
 
     include Enumerable
@@ -140,12 +140,12 @@ module SimplesIdeias
     #
     def initialize(options)
       raise ArgumentError, ":every option is required" unless options.key?(:every)
-      raise ArgumentError, "invalid :every option"     unless FREQUENCY.include?(options[:every].to_s)
+      raise ArgumentError, ":every option is invalid!" unless FREQUENCY.include?(options[:every].to_s)
 
       @options = options
       @_options = initialize_dates(options.dup)
-      @_options[:interval] ||= 1
-      @_options[:handler] ||= Handler::FallBack
+      @_options[:interval] = options.fetch(:interval, 1).to_i
+      @_options[:handler] = options[:handler] || Handler::FallBack
 
       @event = case @_options[:every].to_sym
         when :day
