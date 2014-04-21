@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    recurrence (1.2.0)
+    recurrence (1.3.0)
       activesupport
       i18n
 
