@@ -140,8 +140,7 @@ module SimplesIdeias
     #   Recurrence.new(:every => :year, :on => [:jan, 14])
     #
     def initialize(options)
-      raise ArgumentError, ":every option is required" unless options.key?(:every)
-      raise ArgumentError, ":every option is invalid"  unless FREQUENCY.include?(options[:every].to_s)
+      validate_initialize_options(options)
 
       options[:except] = [options[:except]].flatten.map {|d| as_date(d)} if options[:except]
 
@@ -150,16 +149,7 @@ module SimplesIdeias
       @_options[:interval] ||= 1
       @_options[:handler] ||= Handler::FallBack
 
-      @event = case @_options[:every].to_sym
-        when :day
-          Event::Daily.new(@_options)
-        when :week
-          Event::Weekly.new(@_options)
-        when :month
-          Event::Monthly.new(@_options)
-        when :year
-          Event::Yearly.new(@_options)
-      end
+      @event = initialize_event(@_options[:every])
     end
 
     # Reset the recurrence cache, returning to the first available date.
@@ -224,7 +214,7 @@ module SimplesIdeias
     #     [5] Sat, 20 Nov 2010
     # ]
     #
-    def events(options={})
+    def events(options = {})
       options[:starts] = as_date(options[:starts])
       options[:until]  = as_date(options[:until])
       options[:through]  = as_date(options[:through])
@@ -288,6 +278,24 @@ module SimplesIdeias
     end
 
     private
+    def validate_initialize_options(options)
+      raise ArgumentError, ":every option is required" unless options.key?(:every)
+      raise ArgumentError, ":every option is invalid"  unless FREQUENCY.include?(options[:every].to_s)
+    end
+
+    def initialize_event(type)
+      case type.to_sym
+        when :day
+          Event::Daily.new(@_options)
+        when :week
+          Event::Weekly.new(@_options)
+        when :month
+          Event::Monthly.new(@_options)
+        when :year
+          Event::Yearly.new(@_options)
+      end
+    end
+
     def initialize_dates(options) # :nodoc:
       [:starts, :until, :through].each do |name|
         options[name] = as_date(options[name])
