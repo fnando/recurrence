@@ -141,7 +141,7 @@ module SimplesIdeias
     #
     def initialize(options)
       raise ArgumentError, ":every option is required" unless options.key?(:every)
-      raise ArgumentError, "invalid :every option"     unless FREQUENCY.include?(options[:every].to_s)
+      raise ArgumentError, ":every option is invalid"  unless FREQUENCY.include?(options[:every].to_s)
 
       options[:except] = [options[:except]].flatten.map {|d| as_date(d)} if options[:except]
 
