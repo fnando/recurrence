@@ -57,7 +57,7 @@ module SimplesIdeias
           # Have a raw month from 0 to 11 interval
           raw_month  = date.month + interval - 1
 
-          next_year  = date.year + raw_month / 12
+          next_year  = date.year + raw_month.div(12)
           next_month = (raw_month % 12) + 1 # change back to ruby interval
 
           @options[:handler].call(@options[:on], next_month, next_year)
@@ -65,7 +65,7 @@ module SimplesIdeias
 
         def advance_to_month_by_weekday(date, interval=@options[:interval])
           raw_month  = date.month + interval - 1
-          next_year  = date.year + raw_month / 12
+          next_year  = date.year + raw_month.div(12)
           next_month = (raw_month % 12) + 1 # change back to ruby interval
           date       = Date.new(next_year, next_month, 1)
 
@@ -79,7 +79,7 @@ module SimplesIdeias
 
           # Go to the previous month if we lost it
           if date.month != month
-            weeks = (date.day - 1) / 7 + 1
+            weeks = (date.day - 1).div(7) + 1
             date -= weeks * 7
           end
 
