@@ -2,7 +2,7 @@ module SimplesIdeias
   class Recurrence
     module Event # :nodoc: all
       class Base
-        CARDINALS = %w(first second third fourth fifth)
+        ORDINALS = %w(first second third fourth fifth)
         WEEKDAYS = {
           "sun" => 0, "sunday"    => 0,
           "mon" => 1, "monday"    => 1,
