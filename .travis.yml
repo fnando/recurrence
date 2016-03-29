@@ -4,6 +4,6 @@ rvm:
   - '2.3.0'
 cache: bundler
 sudo: false
-script: bundle exec rspec
+script: bundle exec rake
 notifications:
   email: false
