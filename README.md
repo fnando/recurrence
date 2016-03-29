@@ -2,6 +2,11 @@
 
 A simple library to handle recurring events.
 
+[![Travis-CI](https://travis-ci.org/fnando/recurrence.png)](https://travis-ci.org/fnando/recurrence)
+[![CodeClimate](https://codeclimate.com/github/fnando/recurrence.png)](https://codeclimate.com/github/fnando/recurrence)
+[![Gem](https://img.shields.io/gem/v/recurrence.svg)](https://rubygems.org/gems/recurrence)
+[![Gem](https://img.shields.io/gem/dt/recurrence.svg)](https://rubygems.org/gems/recurrence)
+
 ## Installation
 
     gem install recurrence
