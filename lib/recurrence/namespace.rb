@@ -5,9 +5,9 @@ require "enumerator"
 
 module SimplesIdeias
   class Recurrence
-    autoload :Event,    "recurrence/event"
-    autoload :Handler, "recurrence/handler"
-    autoload :Version,  "recurrence/version"
+    require "recurrence/event"
+    require "recurrence/handler"
+    require "recurrence/version"
 
     include Enumerable
 
