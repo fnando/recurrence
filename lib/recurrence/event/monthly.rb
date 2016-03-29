@@ -19,8 +19,8 @@ module SimplesIdeias
             elsif @options[:on].kind_of?(Numeric)
               valid_week?(@options[:on])
             else
-              valid_cardinal?(@options[:on])
-              @options[:on] = CARDINALS.index(@options[:on].to_s) + 1
+              valid_ordinal?(@options[:on])
+              @options[:on] = ORDINALS.index(@options[:on].to_s) + 1
             end
 
             @options[:weekday] = valid_weekday_or_weekday_name?(@options[:weekday])
@@ -91,12 +91,12 @@ module SimplesIdeias
         end
 
         private
-        def valid_cardinal?(cardinal)
-          raise ArgumentError, "invalid cardinal #{cardinal}" unless CARDINALS.include?(cardinal.to_s)
+        def valid_ordinal?(ordinal)
+          raise ArgumentError, "invalid ordinal #{ordinal}" unless ORDINALS.include?(ordinal.to_s)
         end
 
         def valid_interval?(interval)
-          raise ArgumentError, "invalid cardinal #{interval}" unless INTERVALS.key?(interval)
+          raise ArgumentError, "invalid ordinal #{interval}" unless INTERVALS.key?(interval)
         end
 
         def valid_week?(week)
