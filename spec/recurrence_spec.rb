@@ -1010,6 +1010,7 @@ describe Recurrence do
   end
 
   private
+
   def recurrence(options)
     Recurrence.new(options)
   end

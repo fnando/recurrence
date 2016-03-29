@@ -2,7 +2,8 @@ module SimplesIdeias
   class Recurrence
     module Event
       class Weekly < Base # :nodoc: all
-        protected
+        private
+
         def validate
           @options[:on] = Array.wrap(@options[:on]).inject([]) do |days, value|
             days << valid_weekday_or_weekday_name?(value)

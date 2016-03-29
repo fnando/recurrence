@@ -9,7 +9,8 @@ module SimplesIdeias
           :semesterly => 6
         }
 
-        protected
+        private
+
         def validate
           if @options.key?(:weekday)
 
@@ -91,6 +92,7 @@ module SimplesIdeias
         end
 
         private
+
         def valid_ordinal?(ordinal)
           raise ArgumentError, "invalid ordinal #{ordinal}" unless ORDINALS.include?(ordinal.to_s)
         end

@@ -17,7 +17,8 @@ module SimplesIdeias
           "dec" => 12, "december" => 12
         }
 
-        protected
+        private
+
         def validate
           valid_month_day?(@options[:on].last)
 
@@ -51,6 +52,7 @@ module SimplesIdeias
         end
 
         private
+
         def valid_month?(month)
           raise ArgumentError, "invalid month #{month}" unless (1..12).include?(month)
         end

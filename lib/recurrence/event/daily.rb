@@ -2,7 +2,8 @@ module SimplesIdeias
   class Recurrence
     module Event
       class Daily < Base # :nodoc: all
-        protected
+        private
+
         def next_in_recurrence
           date  = @date.to_date
           date += @options[:interval] if initialized?

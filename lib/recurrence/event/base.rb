@@ -55,6 +55,7 @@ module SimplesIdeias
         end
 
         private
+
         def initialized?
           !!@start_date
         end

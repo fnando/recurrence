@@ -279,6 +279,7 @@ module SimplesIdeias
     end
 
     private
+
     def validate_initialize_options(options)
       raise ArgumentError, ":every option is required" unless options.key?(:every)
       raise ArgumentError, ":every option is invalid"  unless FREQUENCY.include?(options[:every].to_s)
