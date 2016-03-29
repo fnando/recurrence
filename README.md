@@ -126,7 +126,7 @@ gem "recurrence", :require => "recurrence/namespace"
 
 ## Maintainer
 
-* Nando Vieira (http://nandovieira.com.br)
+* Nando Vieira (http://nandovieira.com)
 
 ## Contributors
 
