@@ -104,12 +104,12 @@ r.next! # => Change the internal date object to the next available date
 
 ## Troubleshooting
 
-If you're having problems because already have a class/module called Recurrence that is conflicting with this gem, you can require the namespace and create a class that inherits from `SimplesIdeias::Recurrence`.
+If you're having problems because already have a class/module called Recurrence that is conflicting with this gem, you can require the namespace and create a class that inherits from `Recurrence_`.
 
 ```ruby
 require "recurrence/namespace"
 
-class RecurrentEvent < SimplesIdeias::Recurrence
+class RecurrentEvent < Recurrence_
 end
 
 r = RecurrentEvent.new(:every => :day)

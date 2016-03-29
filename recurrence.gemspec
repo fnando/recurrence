@@ -3,7 +3,7 @@ require "./lib/recurrence/version"
 Gem::Specification.new do |s|
   s.required_ruby_version = ">= 2.0"
   s.name        = "recurrence"
-  s.version     = SimplesIdeias::Recurrence::Version::STRING
+  s.version     = Recurrence_::Version::STRING
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Nando Vieira"]
   s.email       = ["fnando.vieira@gmail.com"]

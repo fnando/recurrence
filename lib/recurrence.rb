@@ -1,11 +1,11 @@
 require "recurrence/namespace"
 
 # The default namespace. If you already have Recurrence constant set on your codebase,
-# you can inherit from SimplesIdeias::Recurrence and have your own namespace.
+# you can inherit from `Recurrence_` and have your own namespace.
 #
 #   require "recurrence/namespace"
 #
-#   class RecurrentEvent < SimplesIdeias::Recurrence
+#   class RecurrentEvent < Recurrence_
 #   end
 #
 #   r = RecurrentEvent.new(:every => :day)
@@ -18,5 +18,5 @@ require "recurrence/namespace"
 #   source :rubygems
 #   gem "recurrence", :require => "recurrence/namespace"
 #
-class Recurrence < SimplesIdeias::Recurrence
+class Recurrence < Recurrence_
 end
