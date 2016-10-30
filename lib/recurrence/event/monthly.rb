@@ -22,6 +22,7 @@ class Recurrence_
             valid_ordinal?(@options[:on])
             @options[:on] = ORDINALS.index(@options[:on].to_s) + 1
           end
+          @options[:on] << @date.day if @options[:on].empty?
 
           @options[:weekday] = valid_weekday_or_weekday_name?(@options[:weekday])
         else
