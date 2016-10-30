@@ -7,6 +7,7 @@ class Recurrence_
         @options[:on] = Array.wrap(@options[:on]).inject([]) do |days, value|
           days << valid_weekday_or_weekday_name?(value)
         end
+        @options[:on] << @date.wday if @options[:on].empty?
 
         @options[:on].sort!
       end
