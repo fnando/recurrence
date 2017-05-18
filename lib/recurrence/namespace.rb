@@ -94,6 +94,7 @@ class Recurrence_
   # Create a monthly recurrence.
   #
   #   Recurrence.monthly(:on => 15) #=> every 15th day
+  #   Recurrence.monthly(:on => [1, 15]) #=> every 1st and 15th day
   #   Recurrence.monthly(:on => :first, :weekday => :sunday)
   #   Recurrence.monthly(:on => :second, :weekday => :sunday)
   #   Recurrence.monthly(:on => :third, :weekday => :sunday)

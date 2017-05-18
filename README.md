@@ -32,9 +32,10 @@ r = Recurrence.new(:every => :week, :on => :friday, :interval => 2)
 r = Recurrence.new(:every => :week, :on => :friday, :repeat => 4)
 r = Recurrence.weekly(:on => :thursday)
 
-# Monthly by month day
+# Monthly by month day(s)
 r = Recurrence.new(:every => :month, :on => 15)
 r = Recurrence.new(:every => :month, :on => 31)
+r = Recurrence.new(:every => :month, :on => [15, 31])
 r = Recurrence.new(:every => :month, :on => 7, :interval => 2)
 r = Recurrence.new(:every => :month, :on => 7, :interval => :monthly)
 r = Recurrence.new(:every => :month, :on => 7, :interval => :bimonthly)
@@ -79,6 +80,7 @@ r = Recurrence.new(:every => :day, :except => [Date.today, '2010-01-31'])
 r = Recurrence.new(:every => :month, :on => 1, :handler => Proc.new { |day, month, year| raise("Date not allowed!") if year == 2011 && month == 12 && day == 31 })
 
 # Shift the recurrences to maintain dates around boundaries (Jan 31 -> Feb 28 -> Mar 28)
+# Shift cannot be used with multiple month days e.g: :on => [1,15]
 r = Recurrence.new(:every => :month, :on => 31, :shift => true)
 
 # Getting an array with all events

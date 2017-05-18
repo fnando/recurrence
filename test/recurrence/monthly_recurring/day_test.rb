@@ -141,4 +141,30 @@ class MonthlyRecurringDayTest < Minitest::Test
     assert r.events.include?(7.months.from_now.to_date)
     refute r.events.include?(8.months.from_now.to_date)
   end
+
+  test "allows multiple days" do
+    r = recurrence(
+      every: :month,
+      on: [1, 15],
+      starts: "2017-05-01",
+      until: "2017-06-30"
+    )
+    assert_equal "2017-05-01", r.events[0].to_s
+    assert_equal "2017-05-15", r.events[1].to_s
+    assert_equal "2017-06-01", r.events[2].to_s
+    assert_equal "2017-06-15", r.events[3].to_s
+    assert_nil r.events[4]
+  end
+
+  test "raises when :shift is true and :on is multiple days" do
+    assert_raises(ArgumentError) {
+      recurrence(
+        every: :month,
+        on: [1, 15],
+        starts: "2017-05-01",
+        until: "2017-06-30",
+        shift: true
+      )
+    }
+  end
 end
