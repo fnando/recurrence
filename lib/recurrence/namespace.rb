@@ -28,15 +28,15 @@ class Recurrence_
     when Proc
       @default_starts_date.call
     else
-      Date.today
+      Date.current
     end
   end
 
   # Set the default starting date globally.
   # Can be a proc or a string.
   #
-  #   Recurrence.default_starts_date = proc { Date.today }
-  #   Recurrence.default_starts_date = "Date.today"
+  #   Recurrence.default_starts_date = proc { Date.current }
+  #   Recurrence.default_starts_date = "Date.current"
   #
   def self.default_starts_date=(date)
     unless date.respond_to?(:call) || date.kind_of?(String) || date == nil

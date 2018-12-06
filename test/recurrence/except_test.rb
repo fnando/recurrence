@@ -9,7 +9,7 @@ class ExceptTest < Minitest::Test
   test "skips day specified in except" do
     r = recurrence(:every => :day, :except => Date.tomorrow)
 
-    assert r.include?(Date.today)
+    assert r.include?(Date.current)
     refute r.include?(Date.tomorrow)
     assert r.include?(Date.tomorrow + 1.day)
   end
@@ -17,7 +17,7 @@ class ExceptTest < Minitest::Test
   test "skips multiple days specified in except" do
     r = recurrence(:every => :day, :except => [Date.tomorrow, "2012-02-29"])
 
-    assert r.include?(Date.today)
+    assert r.include?(Date.current)
     refute r.include?(Date.tomorrow)
     refute r.include?("2012-02-29")
   end

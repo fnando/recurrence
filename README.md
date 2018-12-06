@@ -59,21 +59,21 @@ r = Recurrence.new(:every => :year, :on => [10, 31], :repeat => 3)
 r = Recurrence.yearly(:on => [:january, 31])
 
 # Limit recurrence
-# :starts defaults to Date.today
+# :starts defaults to Date.current
 # :until defaults to 2037-12-31
-r = Recurrence.new(:every => :day, :starts => Date.today)
+r = Recurrence.new(:every => :day, :starts => Date.current)
 r = Recurrence.new(:every => :day, :until => '2010-01-31')
-r = Recurrence.new(:every => :day, :starts => Date.today, :until => '2010-01-31')
+r = Recurrence.new(:every => :day, :starts => Date.current, :until => '2010-01-31')
 
 # Generate a collection of events which always includes a final event with the given through date
 # :through defaults to being unset
 r = Recurrence.new(:every => :day, :through => '2010-01-31')
-r = Recurrence.new(:every => :day, :starts => Date.today, :through => '2010-01-31')
+r = Recurrence.new(:every => :day, :starts => Date.current, :through => '2010-01-31')
 
 # Remove a date in the series on the given except date(s)
 # :except defaults to being unset
 r = Recurrence.new(:every => :day, :except => '2010-01-31')
-r = Recurrence.new(:every => :day, :except => [Date.today, '2010-01-31'])
+r = Recurrence.new(:every => :day, :except => [Date.current, '2010-01-31'])
 
 # Override the next date handler
 r = Recurrence.new(:every => :month, :on => 1, :handler => Proc.new { |day, month, year| raise("Date not allowed!") if year == 2011 && month == 12 && day == 31 })
@@ -94,7 +94,7 @@ r.each { |date| puts date.to_s } # => Use items method
 r.each! { |date| puts date.to_s } # => Use items! method
 
 # Check if a date is included
-r.include?(Date.today) # => true or false
+r.include?(Date.current) # => true or false
 r.include?('2008-09-21')
 
 # Get next available date
@@ -105,6 +105,8 @@ r.next! # => Change the internal date object to the next available date
 ## Troubleshooting
 
 If you're having problems because already have a class/module called Recurrence that is conflicting with this gem, you can require the namespace and create a class that inherits from `Recurrence_`.
+
+Using Date.today can cause issues because it doesn't use Time.zone whereas Time.tomorrow and Time.yesterday do.  Date.current is the equivalent that uses Time.zone.    Otherwise in specific timezones Date.today can equal Date.yesterday and Date.today can equal Date.tomorrow in others.
 
 ```ruby
 require "recurrence/namespace"
