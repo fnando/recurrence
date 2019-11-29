@@ -47,6 +47,7 @@ class Recurrence_
 
       def reset!
         @date = nil
+        @finished = false
       end
 
       def finished?

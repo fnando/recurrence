@@ -22,6 +22,17 @@ class RecurrenceTest < Minitest::Test
     assert_equal "2008-02-29", r.next.to_s
   end
 
+  test "resets to the first available date even when the event iterator is finished" do
+    r = recurrence(:every => :month, :on => 1, :starts => "2008-01-01", :until => "2008-01-01")
+
+    assert_equal "2008-01-01", r.next!.to_s
+    assert_nil r.next!
+
+    r.reset!
+
+    assert_equal "2008-01-01", r.next!.to_s
+  end
+
   test "returns passed-in options" do
     r = recurrence(:every => :day)
     options = {every: :day}
