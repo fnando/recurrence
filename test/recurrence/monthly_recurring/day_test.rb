@@ -138,7 +138,7 @@ class MonthlyRecurringDayTest < Minitest::Test
   end
 
   test "uses except" do
-    r = recurrence(every: :month, on: Date.today.day,
+    r = recurrence(every: :month, on: Date.current.day,
                    except: 8.months.from_now.to_date)
 
     assert r.events.include?(7.months.from_now.to_date)

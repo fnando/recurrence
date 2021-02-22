@@ -15,6 +15,8 @@ module Minitest
       Recurrence.new(options)
     end
 
-    setup { Recurrence.default_starts_date = nil }
+    setup do
+      Recurrence.default_starts_date = Recurrence::DEFAULT_STARTS_DATE
+    end
   end
 end

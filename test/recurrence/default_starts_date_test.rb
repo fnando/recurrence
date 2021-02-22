@@ -3,8 +3,8 @@
 require "test_helper"
 
 class DefaultStartsDateTest < Minitest::Test
-  test "returns Date.today by default" do
-    assert_equal Date.today, Recurrence.default_starts_date
+  test "returns Date.current by default" do
+    assert_equal Date.current, Recurrence.default_starts_date
   end
 
   test "requires only strings and procs" do

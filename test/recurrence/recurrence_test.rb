@@ -33,14 +33,14 @@ class RecurrenceTest < Minitest::Test
   test "returns next date" do
     r = recurrence(every: :day)
 
-    assert_equal Date.today.to_s, r.next.to_s
-    assert_equal Date.today.to_s, r.next.to_s
+    assert_equal Date.current.to_s, r.next.to_s
+    assert_equal Date.current.to_s, r.next.to_s
   end
 
   test "returns next date and advance internal state" do
     r = recurrence(every: :day)
 
-    assert_equal Date.today.to_s, r.next!.to_s
+    assert_equal Date.current.to_s, r.next!.to_s
     assert_equal 1.day.from_now.to_date.to_s, r.next!.to_s
     assert_equal 2.days.from_now.to_date.to_s, r.next!.to_s
     assert_equal 3.days.from_now.to_date.to_s, r.next!.to_s

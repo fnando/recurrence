@@ -11,9 +11,20 @@ class Recurrence_
 
   include Enumerable
 
+  def self.extended(target)
+    target.default_starts_date = default_starts_date
+  end
+
   # This is the available frequency options accepted by
   # <tt>:every</tt> option.
   FREQUENCY = %w[day week month year].freeze
+
+  # This is the default callable that is used as the current date.
+  # If `Date.current` is available, use it. Otherwise, fall back to
+  # `Date.current`.
+  DEFAULT_STARTS_DATE = lambda do
+    Date.current
+  end
 
   attr_reader :event, :options
 
@@ -23,27 +34,23 @@ class Recurrence_
   #   #=> <Date>
   #
   def self.default_starts_date
-    case @default_starts_date
-    when Proc
-      @default_starts_date.call
-    else
-      Date.today
-    end
+    @default_starts_date.call
   end
 
   # Set the default starting date globally.
   # Can be a proc or a string.
   #
-  #   Recurrence.default_starts_date = proc { Date.today }
+  #   Recurrence.default_starts_date = proc { Date.current }
   #
   def self.default_starts_date=(date)
-    if date.respond_to?(:call) || date.nil?
-      @default_starts_date = date
-      return
+    unless date.respond_to?(:call)
+      raise ArgumentError, "default_starts_date must be a proc"
     end
 
-    raise ArgumentError, "default_starts_date must be a proc"
+    @default_starts_date = date
   end
+
+  self.default_starts_date = DEFAULT_STARTS_DATE
 
   # Return the default ending date. Defaults to 2037-12-31.
   #
