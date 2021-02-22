@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Recurrence_
   module Event # :nodoc: all
     require "recurrence/event/base"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Recurrence_
   module Event
     class Yearly < Base # :nodoc: all
@@ -14,14 +16,12 @@ class Recurrence_
         "oct" => 10, "october" => 10,
         "nov" => 11, "november" => 11,
         "dec" => 12, "december" => 12
-      }
+      }.freeze
 
-      private
-
-      def validate
+      private def validate
         valid_month_day?(@options[:on].last)
 
-        if @options[:on].first.kind_of?(Numeric)
+        if @options[:on].first.is_a?(Numeric)
           valid_month?(@options[:on].first)
         else
           valid_month_name?(@options[:on].first)
@@ -29,7 +29,7 @@ class Recurrence_
         end
       end
 
-      def next_in_recurrence
+      private def next_in_recurrence
         if initialized?
           advance_to_year(@date)
         else
@@ -39,25 +39,27 @@ class Recurrence_
         end
       end
 
-      def advance_to_year(date, interval=@options[:interval])
+      private def advance_to_year(date, interval = @options[:interval])
         next_year  = date.year + interval
         next_month = @options[:on].first
 
         @options[:handler].call(@options[:on].last, next_month, next_year)
       end
 
-      def shift_to(date)
+      private def shift_to(date)
         @options[:on] = [date.month, date.day]
       end
 
-      private
+      private def valid_month?(month)
+        return if (1..12).cover?(month)
 
-      def valid_month?(month)
-        raise ArgumentError, "invalid month #{month}" unless (1..12).include?(month)
+        raise ArgumentError, "invalid month #{month}"
       end
 
-      def valid_month_name?(month)
-        raise ArgumentError, "invalid month #{month}" unless MONTHS.keys.include?(month.to_s)
+      private def valid_month_name?(month)
+        return if MONTHS.key?(month.to_s)
+
+        raise ArgumentError, "invalid month #{month}"
       end
     end
   end
