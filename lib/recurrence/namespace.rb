@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require "active_support"
 require "active_support/core_ext"
 require "date"
-require "enumerator"
 
 class Recurrence_
   require "recurrence/event"
@@ -12,7 +13,7 @@ class Recurrence_
 
   # This is the available frequency options accepted by
   # <tt>:every</tt> option.
-  FREQUENCY = %w(day week month year)
+  FREQUENCY = %w[day week month year].freeze
 
   attr_reader :event, :options
 
@@ -23,8 +24,6 @@ class Recurrence_
   #
   def self.default_starts_date
     case @default_starts_date
-    when String
-      eval(@default_starts_date)
     when Proc
       @default_starts_date.call
     else
@@ -36,14 +35,14 @@ class Recurrence_
   # Can be a proc or a string.
   #
   #   Recurrence.default_starts_date = proc { Date.today }
-  #   Recurrence.default_starts_date = "Date.today"
   #
   def self.default_starts_date=(date)
-    unless date.respond_to?(:call) || date.kind_of?(String) || date == nil
-      raise ArgumentError, 'default_starts_date must be a proc or an evaluatable string such as "Date.current"'
+    if date.respond_to?(:call) || date.nil?
+      @default_starts_date = date
+      return
     end
 
-    @default_starts_date = date
+    raise ArgumentError, "default_starts_date must be a proc"
   end
 
   # Return the default ending date. Defaults to 2037-12-31.
@@ -67,11 +66,11 @@ class Recurrence_
   # Create a daily recurrence.
   #
   #   Recurrence.daily
-  #   Recurrence.daily(:interval => 2) #=> every 2 days
-  #   Recurrence.daily(:starts => 3.days.from_now)
-  #   Recurrence.daily(:until => 10.days.from_now)
-  #   Recurrence.daily(:repeat => 5)
-  #   Recurrence.daily(:except => Date.tomorrow)
+  #   Recurrence.daily(interval: 2) #=> every 2 days
+  #   Recurrence.daily(starts: 3.days.from_now)
+  #   Recurrence.daily(until: 10.days.from_now)
+  #   Recurrence.daily(repeat: 5)
+  #   Recurrence.daily(except: Date.tomorrow)
   #
   def self.daily(options = {})
     options[:every] = :day
@@ -80,11 +79,11 @@ class Recurrence_
 
   # Create a weekly recurrence.
   #
-  #   Recurrence.weekly(:on => 5) #=> 0 = sunday, 1 = monday, ...
-  #   Recurrence.weekly(:on => :saturday)
-  #   Recurrence.weekly(:on => [sunday, :saturday])
-  #   Recurrence.weekly(:on => :saturday, :interval => 2)
-  #   Recurrence.weekly(:on => :saturday, :repeat => 5)
+  #   Recurrence.weekly(on: 5) #=> 0 = sunday, 1 = monday, ...
+  #   Recurrence.weekly(on: :saturday)
+  #   Recurrence.weekly(on: [sunday, :saturday])
+  #   Recurrence.weekly(on: :saturday, interval: 2)
+  #   Recurrence.weekly(on: :saturday, repeat: 5)
   #
   def self.weekly(options = {})
     options[:every] = :week
@@ -93,19 +92,19 @@ class Recurrence_
 
   # Create a monthly recurrence.
   #
-  #   Recurrence.monthly(:on => 15) #=> every 15th day
-  #   Recurrence.monthly(:on => :first, :weekday => :sunday)
-  #   Recurrence.monthly(:on => :second, :weekday => :sunday)
-  #   Recurrence.monthly(:on => :third, :weekday => :sunday)
-  #   Recurrence.monthly(:on => :fourth, :weekday => :sunday)
-  #   Recurrence.monthly(:on => :fifth, :weekday => :sunday)
-  #   Recurrence.monthly(:on => :last, :weekday => :sunday)
-  #   Recurrence.monthly(:on => 15, :interval => 2)
-  #   Recurrence.monthly(:on => 15, :interval => :monthly)
-  #   Recurrence.monthly(:on => 15, :interval => :bimonthly)
-  #   Recurrence.monthly(:on => 15, :interval => :quarterly)
-  #   Recurrence.monthly(:on => 15, :interval => :semesterly)
-  #   Recurrence.monthly(:on => 15, :repeat => 5)
+  #   Recurrence.monthly(on: 15) #=> every 15th day
+  #   Recurrence.monthly(on: :first, :weekday => :sunday)
+  #   Recurrence.monthly(on: :second, :weekday => :sunday)
+  #   Recurrence.monthly(on: :third, :weekday => :sunday)
+  #   Recurrence.monthly(on: :fourth, :weekday => :sunday)
+  #   Recurrence.monthly(on: :fifth, :weekday => :sunday)
+  #   Recurrence.monthly(on: :last, :weekday => :sunday)
+  #   Recurrence.monthly(on: 15, interval: 2)
+  #   Recurrence.monthly(on: 15, interval: :monthly)
+  #   Recurrence.monthly(on: 15, interval: :bimonthly)
+  #   Recurrence.monthly(on: 15, interval: :quarterly)
+  #   Recurrence.monthly(on: 15, interval: :semesterly)
+  #   Recurrence.monthly(on: 15, repeat: 5)
   #
   # The <tt>:on</tt> option can be one of the following:
   #
@@ -119,11 +118,11 @@ class Recurrence_
 
   # Create a yearly recurrence.
   #
-  #   Recurrence.yearly(:on => [7, 14]) #=> every Jul 14
-  #   Recurrence.yearly(:on => [7, 14], :interval => 2) #=> every 2 years on Jul 14
-  #   Recurrence.yearly(:on => [:jan, 14], :interval => 2)
-  #   Recurrence.yearly(:on => [:january, 14], :interval => 2)
-  #   Recurrence.yearly(:on => [:january, 14], :repeat => 5)
+  #   Recurrence.yearly(on: [7, 14]) #=> every Jul 14
+  #   Recurrence.yearly(on: [7, 14], interval: 2) #=> every 2 years on Jul 14
+  #   Recurrence.yearly(on: [:jan, 14], interval: 2)
+  #   Recurrence.yearly(on: [:january, 14], interval: 2)
+  #   Recurrence.yearly(on: [:january, 14], repeat: 5)
   #
   def self.yearly(options = {})
     options[:every] = :year
@@ -131,18 +130,23 @@ class Recurrence_
   end
 
   # Initialize a recurrence object. All options from shortcut methods
-  # (Recurrence.daily, Recurrence.monthly, and so on) and requires the <tt>:every</tt> option to
-  # be one of these options: <tt>:day</tt>, <tt>:week</tt>, <tt>:month</tt>, or <tt>:year</tt>.
+  # (Recurrence.daily, Recurrence.monthly, and so on) and requires the
+  # <tt>:every</tt> option to be one of these options: <tt>:day</tt>,
+  # <tt>:week</tt>, <tt>:month</tt>, or <tt>:year</tt>.
   #
-  #   Recurrence.new(:every => :day)
-  #   Recurrence.new(:every => :week, :on => :sunday)
-  #   Recurrence.new(:every => :month, :on => 14)
-  #   Recurrence.new(:every => :year, :on => [:jan, 14])
+  #   Recurrence.new(every: :day)
+  #   Recurrence.new(every: :week, on: :sunday)
+  #   Recurrence.new(every: :month, on: 14)
+  #   Recurrence.new(every: :year, on: [:jan, 14])
   #
   def initialize(options)
     validate_initialize_options(options)
 
-    options[:except] = [options[:except]].flatten.map {|d| as_date(d)} if options[:except]
+    if options[:except]
+      options[:except] = [options[:except]].flatten.map do |d|
+        as_date(d)
+      end
+    end
 
     @options = options
     @_options = initialize_dates(options.dup)
@@ -160,7 +164,7 @@ class Recurrence_
 
   # Check if a given date can be retrieve from the current recurrence options.
   #
-  #   r = Recurrence.weekly(:on => :sunday)
+  #   r = Recurrence.weekly(on: :sunday)
   #   r.include?("2010-11-16")
   #   #=> false, because "2010-11-16" is monday
   #
@@ -178,9 +182,10 @@ class Recurrence_
     false
   end
 
-  # Return the next date in recurrence, without changing the internal date object.
+  # Return the next date in recurrence, without changing the internal date
+  # object.
   #
-  #   r = Recurrence.weekly(:on => :sunday, :starts => "2010-11-15")
+  #   r = Recurrence.weekly(on: :sunday, starts: "2010-11-15")
   #   r.next #=> Sun, 21 Nov 2010
   #   r.next #=> Sun, 21 Nov 2010
   #
@@ -190,7 +195,7 @@ class Recurrence_
 
   # Return the next date in recurrence, and changes the internal date object.
   #
-  #   r = Recurrence.weekly(:on => :sunday, :starts => "2010-11-15")
+  #   r = Recurrence.weekly(on: :sunday, starts: "2010-11-15")
   #   r.next! #=> Sun, 21 Nov 2010
   #   r.next! #=> Sun, 28 Nov 2010
   #
@@ -198,9 +203,10 @@ class Recurrence_
     @event.next!
   end
 
-  # Return an array with all dates within a given recurrence, caching the result.
+  # Return an array with all dates within a given recurrence, caching the
+  # result.
   #
-  #   r = Recurrence.daily(:starts => "2010-11-15", :until => "2010-11-20")
+  #   r = Recurrence.daily(starts: "2010-11-15", until: "2010-11-20")
   #   r.events
   #
   # The return will be
@@ -223,7 +229,7 @@ class Recurrence_
 
     reset! if options[:starts] || options[:until] || options[:through]
 
-    @events ||= Array.new.tap do |list|
+    @events ||= [].tap do |list|
       loop do
         date = @event.next!
 
@@ -243,15 +249,16 @@ class Recurrence_
     end
   end
 
-  # Works like SimplesIdeias::Recurrence::Namespace#events, but removes the cache first.
-  def events!(options={})
+  # Works like SimplesIdeias::Recurrence::Namespace#events, but removes the
+  # cache first.
+  def events!(options = {})
     reset!
     events(options)
   end
 
   # Iterate in all events between <tt>:starts</tt> and <tt>:until</tt> options.
   #
-  #   r = Recurrence.daily(:starts => "2010-11-15", :until => "2010-11-17")
+  #   r = Recurrence.daily(starts: "2010-11-15", until: "2010-11-16")
   #   r.each do |date|
   #     puts date
   #   end
@@ -260,45 +267,45 @@ class Recurrence_
   #
   #   Sun, 15 Nov 2010
   #   Sun, 16 Nov 2010
-  #   Sun, 17 Nov 2010
   #
   # When called without a block, it will return a Enumerator.
   #
   #   r.each
-  #   #=> #<Enumerator: [Mon, 15 Nov 2010, Tue, 16 Nov 2010, Wed, 17 Nov 2010]:each>
+  #   #=> #<Enumerator: [Mon, 15 Nov 2010, Tue, 16 Nov 2010]:each>
   #
   def each(&block)
     events.each(&block)
   end
 
-  # Works like SimplesIdeias::Recurrence::Namespace#each, but removes the cache first.
+  # Works like Recurrence::Namespace#each, but removes the cache first.
   def each!(&block)
     reset!
     each(&block)
   end
 
-  private
-
-  def validate_initialize_options(options)
+  private def validate_initialize_options(options)
     raise ArgumentError, ":every option is required" unless options.key?(:every)
-    raise ArgumentError, ":every option is invalid"  unless FREQUENCY.include?(options[:every].to_s)
+
+    return if FREQUENCY.include?(options[:every].to_s)
+
+    raise ArgumentError, ":every option is invalid"
   end
 
-  def initialize_event(type)
+  private def initialize_event(type)
     case type.to_sym
-      when :day
-        Event::Daily.new(@_options)
-      when :week
-        Event::Weekly.new(@_options)
-      when :month
-        Event::Monthly.new(@_options)
-      when :year
-        Event::Yearly.new(@_options)
+    when :day
+      Event::Daily.new(@_options)
+    when :week
+      Event::Weekly.new(@_options)
+    when :month
+      Event::Monthly.new(@_options)
+    when :year
+      Event::Yearly.new(@_options)
     end
   end
 
-  def initialize_dates(options) # :nodoc:
-    [:starts, :until, :through].each do |name|
+  private def initialize_dates(options) # :nodoc:
+    %i[starts until through].each do |name|
       options[name] = as_date(options[name])
     end
 
@@ -308,7 +315,7 @@ class Recurrence_
     options
   end
 
-  def as_date(date) # :nodoc:
+  private def as_date(date) # :nodoc:
     case date
     when String
       Date.parse(date)

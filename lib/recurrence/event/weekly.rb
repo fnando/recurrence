@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 class Recurrence_
   module Event
     class Weekly < Base # :nodoc: all
-      private
-
-      def validate
+      private def validate
         @options[:on] = Array.wrap(@options[:on]).inject([]) do |days, value|
           days << valid_weekday_or_weekday_name?(value)
         end
@@ -11,10 +11,10 @@ class Recurrence_
         @options[:on].sort!
       end
 
-      def next_in_recurrence
+      private def next_in_recurrence
         return @date if !initialized? && @options[:on].include?(@date.wday)
 
-        if next_day = @options[:on].find { |day| day > @date.wday }
+        if (next_day = @options[:on].find {|day| day > @date.wday })
           to_add = next_day - @date.wday
         else
           to_add = (7 - @date.wday)                # Move to next week

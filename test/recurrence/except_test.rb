@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class ExceptTest < Minitest::Test
@@ -7,7 +9,7 @@ class ExceptTest < Minitest::Test
   end
 
   test "skips day specified in except" do
-    r = recurrence(:every => :day, :except => Date.tomorrow)
+    r = recurrence(every: :day, except: Date.tomorrow)
 
     assert r.include?(Date.today)
     refute r.include?(Date.tomorrow)
@@ -15,7 +17,7 @@ class ExceptTest < Minitest::Test
   end
 
   test "skips multiple days specified in except" do
-    r = recurrence(:every => :day, :except => [Date.tomorrow, "2012-02-29"])
+    r = recurrence(every: :day, except: [Date.tomorrow, "2012-02-29"])
 
     assert r.include?(Date.today)
     refute r.include?(Date.tomorrow)

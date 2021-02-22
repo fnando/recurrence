@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class RecurrenceTest < Minitest::Test
   test "returns the first available date based on initialization" do
-    r = recurrence(:every => :year, :on => [2, 31], :starts => "2008-01-01")
+    r = recurrence(every: :year, on: [2, 31], starts: "2008-01-01")
 
     assert_equal "2008-02-29", r.next!.to_s
     assert_equal "2009-02-28", r.next!.to_s
@@ -12,7 +14,7 @@ class RecurrenceTest < Minitest::Test
   end
 
   test "resets to the first available date" do
-    r = recurrence(:every => :year, :on => [2, 31], :starts => "2008-01-01")
+    r = recurrence(every: :year, on: [2, 31], starts: "2008-01-01")
 
     assert_equal "2008-02-29", r.next!.to_s
     assert_equal "2009-02-28", r.next!.to_s
@@ -23,20 +25,20 @@ class RecurrenceTest < Minitest::Test
   end
 
   test "returns passed-in options" do
-    r = recurrence(:every => :day)
+    r = recurrence(every: :day)
     options = {every: :day}
     assert_equal options, r.options
   end
 
   test "returns next date" do
-    r = recurrence(:every => :day)
+    r = recurrence(every: :day)
 
     assert_equal Date.today.to_s, r.next.to_s
     assert_equal Date.today.to_s, r.next.to_s
   end
 
   test "returns next date and advance internal state" do
-    r = recurrence(:every => :day)
+    r = recurrence(every: :day)
 
     assert_equal Date.today.to_s, r.next!.to_s
     assert_equal 1.day.from_now.to_date.to_s, r.next!.to_s
@@ -64,27 +66,31 @@ class RecurrenceTest < Minitest::Test
     assert_instance_of Enumerator, recurrence(every: :day).each
   end
 
-  test "returns an enumerator when Recurrence#each! is called without a block" do
+  test "returns an enumerator when Recurrence#each! is called with no block" do
     assert_instance_of Enumerator, recurrence(every: :day).each!
   end
 
-  Recurrence::Event::Monthly::INTERVALS.each do |interval|
-    test "accepts valid :interval symbol for monthly recurrence (#{interval[0]})" do
-      recurrence(:every => :month, :on => 10, :interval => interval[0])
+  Recurrence::Event::Monthly::INTERVALS.each do |(interval)|
+    test "accepts :interval symbol for monthly recurrence (#{interval})" do
+      recurrence(every: :month, on: 10, interval: interval)
     end
   end
 
-  Recurrence::Event::Yearly::MONTHS.each do |month_name, month_number|
+  Recurrence::Event::Yearly::MONTHS.each do |month_name, _month_number|
     test "accepts month as symbol for yearly recurrence (#{month_name})" do
-      recurrence(:every => :year, :on => [month_name, 10])
+      recurrence(every: :year, on: [month_name, 10])
     end
   end
 
   test "requires month to be a valid symbol for yearly recurrence" do
-    assert_raises(ArgumentError) { recurrence(every: :year, on: [:invalid, 10]) }
+    assert_raises(ArgumentError) do
+      recurrence(every: :year, on: [:invalid, 10])
+    end
   end
 
   test "requires :interval to be a valid symbol for monthly recurrence" do
-    assert_raises(ArgumentError) { recurrence(every: :month, on: 10, interval: :invalid) }
+    assert_raises(ArgumentError) do
+      recurrence(every: :month, on: 10, interval: :invalid)
+    end
   end
 end

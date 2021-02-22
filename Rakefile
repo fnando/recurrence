@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "bundler"
 require "bundler/setup"
 Bundler::GemHelper.install_tasks
@@ -11,4 +13,7 @@ Rake::TestTask.new(:test) do |t|
   t.warning = false
 end
 
-task default: "test"
+require "rubocop/rake_task"
+RuboCop::RakeTask.new
+
+task default: %i[test rubocop]
