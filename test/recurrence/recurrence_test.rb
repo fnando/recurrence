@@ -93,4 +93,16 @@ class RecurrenceTest < Minitest::Test
       recurrence(every: :month, on: 10, interval: :invalid)
     end
   end
+
+  test "resets even when the event iterator has finished" do
+    r = recurrence(every: :month, on: 1, starts: "2008-01-01",
+                   until: "2008-01-01")
+
+    assert_equal "2008-01-01", r.next!.to_s
+    assert_nil r.next!
+
+    r.reset!
+
+    assert_equal "2008-01-01", r.next!.to_s
+  end
 end
