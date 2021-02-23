@@ -19,7 +19,7 @@ class Recurrence_
       }.freeze
 
       private def validate
-        valid_month_day?(@options[:on].last)
+        valid_month_day?(@options[:on]&.last)
 
         if @options[:on].first.is_a?(Numeric)
           valid_month?(@options[:on].first)
