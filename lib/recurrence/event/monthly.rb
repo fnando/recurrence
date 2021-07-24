@@ -12,27 +12,12 @@ class Recurrence_
 
       private def validate
         if @options.key?(:weekday)
-
-          # Allow :on => :last, :weekday => :thursday contruction.
-          if @options[:on].to_s == "last"
-            @options[:on] = 5
-          elsif @options[:on].is_a?(Numeric)
-            valid_week?(@options[:on])
-          else
-            valid_ordinal?(@options[:on])
-            @options[:on] = ORDINALS.index(@options[:on].to_s) + 1
-          end
-
-          @options[:weekday] =
-            valid_weekday_or_weekday_name?(@options[:weekday])
+          extend Weekday
         else
-          valid_month_day?(@options[:on])
+          extend Monthday
         end
 
-        return unless @options[:interval].is_a?(Symbol)
-
-        valid_interval?(@options[:interval])
-        @options[:interval] = INTERVALS[@options[:interval]]
+        validate_and_prepare!
       end
 
       private def next_in_recurrence
@@ -100,8 +85,6 @@ class Recurrence_
           weeks = (date.day - 1).div(7) + 1
           date -= weeks * 7
         end
-
-        @options[:handler].call(date.day, date.month, date.year)
       end
 
       private def shift_to(date)
