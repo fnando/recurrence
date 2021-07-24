@@ -21,14 +21,14 @@ class Recurrence_
       end
 
       private def next_in_recurrence
-		if initialized?
-		  advance(@date)
-		else
-		  new_date = advance(@date, 0)
-		  new_date = advance(new_date) if @date > new_date
-		  new_date
-		end
-	  end
+        if initialized?
+          advance(@date)
+        else
+          new_date = advance(@date, 0)
+          new_date = advance(new_date) if @date > new_date
+          new_date
+        end
+      end
 
       private def valid_ordinal?(ordinal)
         return if ORDINALS.include?(ordinal.to_s)

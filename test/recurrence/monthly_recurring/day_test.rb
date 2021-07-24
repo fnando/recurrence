@@ -160,7 +160,7 @@ class MonthlyRecurringDayTest < Minitest::Test
   end
 
   test "raises when :shift is true and :on is multiple days" do
-    assert_raises(ArgumentError) {
+    assert_raises(ArgumentError) do
       recurrence(
         every: :month,
         on: [1, 15],
@@ -168,6 +168,6 @@ class MonthlyRecurringDayTest < Minitest::Test
         until: "2017-06-30",
         shift: true
       )
-    }
+    end
   end
 end

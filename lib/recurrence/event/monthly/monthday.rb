@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class Recurrence_
   module Event
     class Monthly < Base
       module Monthday
-        def advance(date, interval=@options[:interval])
+        def advance(date, interval = @options[:interval])
           if initialized? && @_day_count > @_day_pointer += 1
             @options[:handler].call(
               @options[:on][@_day_pointer],
@@ -34,7 +36,7 @@ class Recurrence_
 
           valid_shift_options?
 
-          if @options[:interval].kind_of?(Symbol)
+          if @options[:interval].is_a?(Symbol)
             valid_interval?(@options[:interval])
             @options[:interval] = INTERVALS[@options[:interval]]
           end
@@ -45,7 +47,8 @@ class Recurrence_
 
         def valid_shift_options?
           if @options[:shift] && @options[:on].length > 1
-            raise ArgumentError, "Invalid options. Unable to use :shift with multiple :on days"
+            raise ArgumentError,
+                  "Invalid options. Unable to use :shift with multiple :on days"
           end
         end
 
@@ -56,4 +59,3 @@ class Recurrence_
     end
   end
 end
-
