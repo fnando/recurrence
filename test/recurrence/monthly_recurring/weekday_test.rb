@@ -15,7 +15,7 @@ class MonthlyRecurringWeekdayTest < Minitest::Test
 
   test "repeats until 8 months from now" do
     date = 8.months.from_now
-    week = (date.day - 1) / 7 + 1
+    week = ((date.day - 1) / 7) + 1
     r = recurrence(
       every: :month,
       on: week,
@@ -27,7 +27,7 @@ class MonthlyRecurringWeekdayTest < Minitest::Test
 
   test "repeats through 8 months from now" do
     date = 8.months.from_now
-    week = (date.day - 1) / 7 + 1
+    week = ((date.day - 1) / 7) + 1
     r = recurrence(
       every: :month,
       on: week,
@@ -39,7 +39,7 @@ class MonthlyRecurringWeekdayTest < Minitest::Test
 
   test "starts 9 months ago" do
     date = 9.months.ago
-    week = (date.day - 1) / 7 + 1
+    week = ((date.day - 1) / 7) + 1
     r = recurrence(
       every: :month,
       on: week,
