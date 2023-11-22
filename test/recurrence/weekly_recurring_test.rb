@@ -20,7 +20,7 @@ class WeeklyRecurringTest < Minitest::Test
     assert_equal date.to_date, r.events[-1]
   end
 
-  test "starts 3 months ago (#{3.months.ago.to_s(:date)})" do
+  test "starts 3 months ago (#{3.months.ago})" do
     date = 3.months.ago
 
     r = recurrence(every: :week, on: date.wday, starts: date.to_date)

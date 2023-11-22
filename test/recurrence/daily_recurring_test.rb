@@ -20,7 +20,7 @@ class DailyRecurringTest < Minitest::Test
     assert_equal date.to_date, r.events[-1]
   end
 
-  test "starts 2 months ago (#{2.months.ago.to_s(:date)})" do
+  test "starts 2 months ago (#{2.months.ago})" do
     date = 2.months.ago
     r = recurrence(every: :day, starts: date.to_date)
     assert_equal date.to_date, r.events[0]
