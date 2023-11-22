@@ -105,7 +105,7 @@ class Recurrence_
       end
 
       private def shift_to(date)
-        @options[:on] = date.day
+        @options[:on] = date.day unless @options[:weekday].present?
       end
 
       private def valid_ordinal?(ordinal)
