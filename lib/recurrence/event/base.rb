@@ -92,17 +92,16 @@ class Recurrence_
       # name (defined in the DAYS constant). If a weekday name (String) is
       # given, convert it to a weekday (Integer).
       #
-      private def valid_weekday_or_weekday_name?(value)
+      private def expand_weekday!(value)
         if value.is_a?(Numeric)
           unless (0..6).cover?(value)
-            raise ArgumentError,
-                  "invalid day #{value}"
+            raise ArgumentError, "invalid weekday: #{value}"
           end
 
           value
         else
           weekday = WEEKDAYS[value.to_s]
-          raise ArgumentError, "invalid weekday #{value}" unless weekday
+          raise ArgumentError, "invalid weekday: #{value}" unless weekday
 
           weekday
         end
