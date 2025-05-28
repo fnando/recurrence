@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.version     = Recurrence_::Version::STRING
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Nando Vieira"]
-  s.email       = ["fnando.vieira@gmail.com"]
+  s.email       = ["me@fnando.com"]
   s.homepage    = "http://rubygems.org/gems/recurrence"
   s.summary     = "A simple library to handle recurring events"
   s.description = s.summary
