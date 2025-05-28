@@ -146,4 +146,12 @@ class YearlyRecurringTest < Minitest::Test
     assert_includes r.events, Date.parse("#{Time.now.year + 2}-12-31")
     refute_includes r.events, Date.parse("#{Time.now.year + 3}-12-31")
   end
+
+  test "it doesn't fail when :on is not present" do
+    error = assert_raises ArgumentError do
+      Recurrence.yearly
+    end
+
+    assert_equal "invalid day: nil", error.message
+  end
 end

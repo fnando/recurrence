@@ -75,4 +75,16 @@ class DateShiftTest < Minitest::Test
 
     assert_equal Date.new(2012, 2, 29), r.next
   end
+
+  test "correctly recurrs for weekdays" do
+    r = recurrence(every: :month,
+                   starts: "2011-01-31",
+                   on: "first",
+                   weekday: "monday",
+                   shift: true)
+
+    assert_equal Date.new(2011, 2, 7), r.events[0]
+    assert_equal Date.new(2011, 3, 7), r.events[1]
+    assert_equal Date.new(2011, 4, 4), r.events[2]
+  end
 end

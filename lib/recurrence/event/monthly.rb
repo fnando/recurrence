@@ -26,7 +26,7 @@ class Recurrence_
           @options[:weekday] =
             valid_weekday_or_weekday_name?(@options[:weekday])
         else
-          valid_month_day?(@options[:on])
+          validate_month_day(@options[:on])
         end
 
         return unless @options[:interval].is_a?(Symbol)
@@ -105,7 +105,7 @@ class Recurrence_
       end
 
       private def shift_to(date)
-        @options[:on] = date.day
+        @options[:on] = date.day unless @options[:weekday]
       end
 
       private def valid_ordinal?(ordinal)

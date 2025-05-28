@@ -82,8 +82,10 @@ class Recurrence_
 
       # Common validation for inherited classes.
       #
-      private def valid_month_day?(day)
-        raise ArgumentError, "invalid day #{day}" unless (1..31).cover?(day)
+      private def validate_month_day(day)
+        return if (1..31).cover?(day)
+
+        raise ArgumentError, "invalid day: #{day.inspect}"
       end
 
       # Check if the given key has a valid weekday (0 upto 6) or a valid weekday
