@@ -20,7 +20,6 @@ Gem::Specification.new do |s|
   end
   s.require_paths = ["lib"]
 
-  s.add_dependency "activesupport"
   s.add_development_dependency "minitest-utils"
   s.add_development_dependency "pry-meta"
   s.add_development_dependency "rake"

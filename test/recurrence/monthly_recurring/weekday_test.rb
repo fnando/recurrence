@@ -3,6 +3,8 @@
 require "test_helper"
 
 class MonthlyRecurringWeekdayTest < Minitest::Test
+  using Recurrence::Refinements
+
   test "recurs until limit date" do
     r = Recurrence.daily(on: 5, weekday: :thursday)
 
@@ -16,7 +18,7 @@ class MonthlyRecurringWeekdayTest < Minitest::Test
   end
 
   test "repeats until 8 months from now" do
-    date = 8.months.from_now
+    date = advance_months(8)
     week = ((date.day - 1) / 7) + 1
     r = recurrence(
       every: :month,
@@ -29,7 +31,7 @@ class MonthlyRecurringWeekdayTest < Minitest::Test
   end
 
   test "repeats through 8 months from now" do
-    date = 8.months.from_now
+    date = advance_months(8)
     week = ((date.day - 1) / 7) + 1
     r = recurrence(
       every: :month,
@@ -42,7 +44,7 @@ class MonthlyRecurringWeekdayTest < Minitest::Test
   end
 
   test "starts 9 months ago" do
-    date = 9.months.ago
+    date = advance_months(9)
     week = ((date.day - 1) / 7) + 1
     r = recurrence(
       every: :month,

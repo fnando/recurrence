@@ -3,6 +3,8 @@
 require "test_helper"
 
 class WeeklyRecurringTest < Minitest::Test
+  using Recurrence::Refinements
+
   test "recurs until limit date" do
     r = Recurrence.weekly(on: :thursday)
 
@@ -10,31 +12,31 @@ class WeeklyRecurringTest < Minitest::Test
   end
 
   test "repeats 6 weeks from now" do
-    date = 6.weeks.from_now
+    date = advance_weeks(6)
     r = recurrence(every: :week, on: date.wday, until: date.to_date)
 
     assert_equal date.to_date, r.events[-1]
   end
 
   test "repeats through 6 weeks from now" do
-    date = 6.weeks.from_now
-    r = recurrence(every: :week, on: date.wday, through: date.to_date)
+    date = advance_weeks(6)
+    r = recurrence(every: :week, on: date.wday, through: date)
 
     assert_equal date.to_date, r.events[-1]
   end
 
-  test "starts 3 months ago (#{3.months.ago.to_date})" do
-    date = 3.months.ago
+  test "starts 3 months ago (#{advance_months(3)})" do
+    date = advance_months(3)
 
     r = recurrence(every: :week, on: date.wday, starts: date.to_date)
 
     assert_equal date.to_date, r.events[0]
-    assert_equal (date + 1.week).to_date, r.events[1]
-    assert_equal (date + 2.weeks).to_date, r.events[2]
-    assert_equal (date + 3.weeks).to_date, r.events[3]
-    assert_equal (date + 4.weeks).to_date, r.events[4]
-    assert_equal (date + 5.weeks).to_date, r.events[5]
-    assert_equal (date + 6.weeks).to_date, r.events[6]
+    assert_equal advance_weeks(1, date), r.events[1]
+    assert_equal advance_weeks(2, date), r.events[2]
+    assert_equal advance_weeks(3, date), r.events[3]
+    assert_equal advance_weeks(4, date), r.events[4]
+    assert_equal advance_weeks(5, date), r.events[5]
+    assert_equal advance_weeks(6, date), r.events[6]
   end
 
   test "starts at 2008-02-29 and repeat until 2008-03-14" do
@@ -149,11 +151,11 @@ class WeeklyRecurringTest < Minitest::Test
   end
 
   test "uses except" do
-    date = 6.weeks.from_now
+    date = advance_weeks(6)
     r = recurrence(every: :week, on: date.wday,
-                   except: 2.weeks.from_now.to_date)
+                   except: advance_weeks(2))
 
-    assert_includes r.events, 1.week.from_now.to_date
-    refute_includes r.events, 2.weeks.from_now.to_date
+    assert_includes r.events, advance_weeks(1)
+    refute_includes r.events, advance_weeks(2)
   end
 end

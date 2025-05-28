@@ -3,6 +3,8 @@
 require "test_helper"
 
 class DailyRecurringTest < Minitest::Test
+  using Recurrence::Refinements
+
   test "recurs until limit date" do
     r = Recurrence.daily
 
@@ -10,26 +12,26 @@ class DailyRecurringTest < Minitest::Test
   end
 
   test "repeats until 1 month from now" do
-    date = 1.month.from_now
+    date = advance_months(1)
     r = recurrence(every: :day, until: date.to_date)
 
     assert_equal date.to_date, r.events[-1]
   end
 
   test "recurs through 1 month from now" do
-    date = 1.month.from_now
+    date = advance_months(1)
     r = recurrence(every: :day, through: date.to_date)
 
     assert_equal date.to_date, r.events[-1]
   end
 
-  test "starts 2 months ago (#{2.months.ago.to_date})" do
-    date = 2.months.ago
+  test "starts 2 months ago (#{advance_months(2)})" do
+    date = advance_months(2)
     r = recurrence(every: :day, starts: date.to_date)
 
     assert_equal date.to_date, r.events[0]
-    assert_equal (date + 1.day).to_date, r.events[1].to_date
-    assert_equal (date + 2.day).to_date, r.events[2].to_date
+    assert_equal (date + 1).to_date, r.events[1].to_date
+    assert_equal (date + 2).to_date, r.events[2].to_date
   end
 
   test "starts at 2008-03-19 and repeat until 2008-04-24" do
@@ -87,9 +89,9 @@ class DailyRecurringTest < Minitest::Test
   end
 
   test "uses except" do
-    r = Recurrence.daily(except: Date.tomorrow)
+    r = Recurrence.daily(except: Date.tomorrow, until: advance_days(2))
 
     refute_includes r.events, Date.tomorrow
-    assert_includes r.events, Date.tomorrow + 1.day
+    assert_includes r.events, Date.tomorrow + 1
   end
 end

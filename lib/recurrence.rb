@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "recurrence/namespace"
+require_relative "recurrence/namespace"
 
 # The default namespace. If you already have Recurrence constant set on your
 # codebase, you can inherit from `Recurrence_` and have your own namespace.

@@ -3,8 +3,10 @@
 require "test_helper"
 
 class DefaultStartsDateTest < Minitest::Test
+  using Recurrence::Refinements
+
   test "returns Date.current by default" do
-    assert_equal Date.current, Recurrence.default_starts_date
+    assert_equal Date.today, Recurrence.default_starts_date
   end
 
   test "requires only strings and procs" do
@@ -18,7 +20,7 @@ class DefaultStartsDateTest < Minitest::Test
 
     assert_equal Date.tomorrow, Recurrence.default_starts_date
 
-    r = Recurrence.new(every: :day, until: 3.days.from_now.to_date)
+    r = Recurrence.new(every: :day, until: advance_days(3))
 
     assert_equal Date.tomorrow, r.events.first
   end

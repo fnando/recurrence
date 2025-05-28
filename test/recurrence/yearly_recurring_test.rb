@@ -3,6 +3,8 @@
 require "test_helper"
 
 class YearlyRecurringTest < Minitest::Test
+  using Recurrence::Refinements
+
   test "recurs until limit date" do
     r = Recurrence.yearly(on: [12, 31])
 
@@ -10,7 +12,7 @@ class YearlyRecurringTest < Minitest::Test
   end
 
   test "repeats until 7 years from now" do
-    date = 7.years.from_now
+    date = advance_years(7)
     r = recurrence(
       every: :year,
       on: [date.month, date.day],
@@ -21,7 +23,7 @@ class YearlyRecurringTest < Minitest::Test
   end
 
   test "repeats through 7 years from now" do
-    date = 7.years.from_now
+    date = advance_years(7)
     r = recurrence(
       every: :year,
       on: [date.month, date.day],
@@ -32,7 +34,7 @@ class YearlyRecurringTest < Minitest::Test
   end
 
   test "starts 2 years ago" do
-    date = 2.years.ago
+    date = advance_years(2)
     r = recurrence(
       every: :year,
       on: [date.month, date.day],
@@ -141,7 +143,7 @@ class YearlyRecurringTest < Minitest::Test
     r = Recurrence.yearly(on: [12, 31],
                           except: "#{Time.now.year + 3}-12-31")
 
-    assert_includes r.events, "#{Time.now.year + 2}-12-31".to_date
-    refute_includes r.events, "#{Time.now.year + 3}-12-31".to_date
+    assert_includes r.events, Date.parse("#{Time.now.year + 2}-12-31")
+    refute_includes r.events, Date.parse("#{Time.now.year + 3}-12-31")
   end
 end

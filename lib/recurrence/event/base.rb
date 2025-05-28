@@ -41,11 +41,14 @@ class Recurrence_
         @date = next_in_recurrence
 
         @finished = true if @options[:through] && @date >= @options[:through]
+
         if @date > @options[:until]
           @finished = true
           @date = nil
         end
+
         shift_to @date if @date && @options[:shift]
+
         @date
       end
 

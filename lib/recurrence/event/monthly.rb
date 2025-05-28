@@ -40,7 +40,7 @@ class Recurrence_
 
         type = @options.key?(:weekday) ? :weekday : :monthday
 
-        class_eval <<-METHOD, __FILE__, __LINE__ + 1
+        singleton_class.class_eval <<-METHOD, __FILE__, __LINE__ + 1
           # private def next_month
           #   if initialized?
           #     advance_to_month_by_weekday(@date)

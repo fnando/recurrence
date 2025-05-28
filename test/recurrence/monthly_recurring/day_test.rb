@@ -3,6 +3,8 @@
 require "test_helper"
 
 class MonthlyRecurringDayTest < Minitest::Test
+  using Recurrence::Refinements
+
   test "recurs until limit date" do
     r = Recurrence.monthly(on: 31)
 
@@ -10,21 +12,21 @@ class MonthlyRecurringDayTest < Minitest::Test
   end
 
   test "repeats until 8 months from now" do
-    date = 8.months.from_now
+    date = advance_months(8)
     r = recurrence(every: :month, on: date.day, until: date.to_date)
 
     assert_equal date.to_date, r.events[-1]
   end
 
   test "repeats through 8 months from now" do
-    date = 8.months.from_now
+    date = advance_months(8)
     r = recurrence(every: :month, on: date.day, through: date.to_date)
 
     assert_equal date.to_date, r.events[-1]
   end
 
   test "starts 9 months ago" do
-    date = 9.months.ago
+    date = Date.today << 9
 
     r = recurrence(every: :month, on: date.day, starts: date.to_date)
 
@@ -150,10 +152,14 @@ class MonthlyRecurringDayTest < Minitest::Test
   end
 
   test "uses except" do
-    r = recurrence(every: :month, on: Date.current.day,
-                   except: 8.months.from_now.to_date)
+    r = recurrence(every: :month,
+                   on: Date.today.day,
+                   except: advance_months(7),
+                   until: advance_months(9))
 
-    assert_includes r.events, 7.months.from_now.to_date
-    refute_includes r.events, 8.months.from_now.to_date
+    assert_includes r.events, advance_months(6)
+    refute_includes r.events, advance_months(7)
+    assert_includes r.events, advance_months(8)
+    assert_includes r.events, advance_months(9)
   end
 end
