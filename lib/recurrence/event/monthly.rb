@@ -109,17 +109,19 @@ class Recurrence_
       private def validate_ordinal(ordinal)
         return if ORDINALS.include?(ordinal.to_s)
 
-        raise ArgumentError, "invalid ordinal #{ordinal}"
+        raise ArgumentError, "invalid ordinal: #{ordinal}"
       end
 
       private def validate_interval(interval)
         return if INTERVALS.key?(interval)
 
-        raise ArgumentError, "invalid ordinal #{interval}"
+        raise ArgumentError, "invalid ordinal: #{interval.inspect}"
       end
 
       private def validate_week(week)
-        raise ArgumentError, "invalid week #{week}" unless (1..5).cover?(week)
+        return if (1..5).cover?(week)
+
+        raise ArgumentError, "invalid week: #{week.inspect}"
       end
     end
   end

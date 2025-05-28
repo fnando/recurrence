@@ -261,7 +261,7 @@ class Recurrence_
     end
   end
 
-  # Works like SimplesIdeias::Recurrence::Namespace#events, but removes the
+  # Works like Recurrence::Namespace#events, but removes the
   # cache first.
   def events!(options = {})
     reset!

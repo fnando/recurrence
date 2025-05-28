@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
+require "simplecov"
+
+SimpleCov.start
+
 require "bundler/setup"
 require "minitest/utils"
 require "minitest/autorun"
 
 require "recurrence"
-
-# Date::DATE_FORMATS[:date] = "%d/%m/%Y"
-# Time::DATE_FORMATS[:date] = "%d/%m/%Y"
 
 module Minitest
   class Test
