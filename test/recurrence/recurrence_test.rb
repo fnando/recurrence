@@ -27,6 +27,7 @@ class RecurrenceTest < Minitest::Test
   test "returns passed-in options" do
     r = recurrence(every: :day)
     options = {every: :day}
+
     assert_equal options, r.options
   end
 
@@ -76,7 +77,7 @@ class RecurrenceTest < Minitest::Test
     end
   end
 
-  Recurrence::Event::Yearly::MONTHS.each do |month_name, _month_number|
+  Recurrence::Event::Yearly::MONTHS.each_key do |month_name|
     test "accepts month as symbol for yearly recurrence (#{month_name})" do
       recurrence(every: :year, on: [month_name, 10])
     end

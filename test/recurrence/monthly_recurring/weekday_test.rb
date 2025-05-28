@@ -5,11 +5,13 @@ require "test_helper"
 class MonthlyRecurringWeekdayTest < Minitest::Test
   test "recurs until limit date" do
     r = Recurrence.daily(on: 5, weekday: :thursday)
+
     assert_equal Date.parse("2037-12-31"), r.events[-1]
   end
 
   test "uses weekday shortcut" do
     r = Recurrence.daily(on: 5, weekday: :thu)
+
     assert_equal Date.parse("2037-12-31"), r.events[-1]
   end
 
@@ -22,6 +24,7 @@ class MonthlyRecurringWeekdayTest < Minitest::Test
       weekday: date.wday,
       until: date.to_date
     )
+
     assert_equal date.to_date, r.events[-1]
   end
 
@@ -34,6 +37,7 @@ class MonthlyRecurringWeekdayTest < Minitest::Test
       weekday: date.wday,
       through: date.to_date
     )
+
     assert_equal date.to_date, r.events[-1]
   end
 
@@ -46,6 +50,7 @@ class MonthlyRecurringWeekdayTest < Minitest::Test
       weekday: date.wday,
       starts: date.to_date
     )
+
     assert_equal date.to_date, r.events[0]
   end
 
@@ -60,6 +65,7 @@ class MonthlyRecurringWeekdayTest < Minitest::Test
       starts: starts,
       until: ends
     )
+
     assert_equal "2008-06-07", r.events[0].to_s
     assert_equal "2008-11-01", r.events[-1].to_s
   end
@@ -75,6 +81,7 @@ class MonthlyRecurringWeekdayTest < Minitest::Test
       starts: starts,
       until: ends
     )
+
     assert_equal "2008-06-29", r.events[0].to_s
     assert_equal "2008-11-30", r.events[-1].to_s
   end
@@ -89,6 +96,7 @@ class MonthlyRecurringWeekdayTest < Minitest::Test
       starts: starts,
       until: "2010-02-01"
     )
+
     assert_equal "2009-01-18", r.events[0].to_s
     assert_equal "2009-03-15", r.events[1].to_s
     assert_equal "2009-05-17", r.events[2].to_s
@@ -108,6 +116,7 @@ class MonthlyRecurringWeekdayTest < Minitest::Test
       until: "2011-02-01",
       repeat: 5
     )
+
     assert_equal 5, r.events.size
   end
 end

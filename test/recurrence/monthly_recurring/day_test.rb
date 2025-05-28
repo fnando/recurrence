@@ -5,18 +5,21 @@ require "test_helper"
 class MonthlyRecurringDayTest < Minitest::Test
   test "recurs until limit date" do
     r = Recurrence.monthly(on: 31)
+
     assert_equal Date.parse("2037-12-31"), r.events[-1]
   end
 
   test "repeats until 8 months from now" do
     date = 8.months.from_now
     r = recurrence(every: :month, on: date.day, until: date.to_date)
+
     assert_equal date.to_date, r.events[-1]
   end
 
   test "repeats through 8 months from now" do
     date = 8.months.from_now
     r = recurrence(every: :month, on: date.day, through: date.to_date)
+
     assert_equal date.to_date, r.events[-1]
   end
 
@@ -24,6 +27,7 @@ class MonthlyRecurringDayTest < Minitest::Test
     date = 9.months.ago
 
     r = recurrence(every: :month, on: date.day, starts: date.to_date)
+
     assert_equal date.to_date, r.events[0]
   end
 
@@ -37,6 +41,7 @@ class MonthlyRecurringDayTest < Minitest::Test
       starts: starts,
       until: ends
     )
+
     assert_equal "2008-06-07", r.events[0].to_s
     assert_equal "2008-11-07", r.events[-1].to_s
   end
@@ -51,6 +56,7 @@ class MonthlyRecurringDayTest < Minitest::Test
       starts: starts,
       through: ends
     )
+
     assert_equal "2008-06-07", r.events[0].to_s
     assert_equal "2008-11-07", r.events[-1].to_s
   end
@@ -64,6 +70,7 @@ class MonthlyRecurringDayTest < Minitest::Test
       starts: starts,
       until: "2009-01-01"
     )
+
     assert_equal "2008-10-27", r.events[0].to_s
   end
 
@@ -76,6 +83,7 @@ class MonthlyRecurringDayTest < Minitest::Test
       starts: starts,
       through: "2009-01-01"
     )
+
     assert_equal "2009-01-27", r.events[-1].to_s
   end
 
@@ -88,6 +96,7 @@ class MonthlyRecurringDayTest < Minitest::Test
       starts: starts,
       until: "2010-01-01"
     )
+
     assert_equal "2008-01-31", r.events[0].to_s
     assert_equal "2008-03-31", r.events[1].to_s
     assert_equal "2008-05-31", r.events[2].to_s
@@ -104,6 +113,7 @@ class MonthlyRecurringDayTest < Minitest::Test
       starts: starts,
       until: "2010-01-01"
     )
+
     assert_equal "2008-04-29", r.events[0].to_s
     assert_equal "2008-07-29", r.events[1].to_s
     assert_equal "2008-10-29", r.events[2].to_s
@@ -119,6 +129,7 @@ class MonthlyRecurringDayTest < Minitest::Test
       starts: starts,
       until: "2010-01-01"
     )
+
     assert_equal "2008-02-29", r.events[0].to_s
     assert_equal "2008-06-30", r.events[1].to_s
     assert_equal "2008-10-31", r.events[2].to_s
@@ -134,6 +145,7 @@ class MonthlyRecurringDayTest < Minitest::Test
       until: "2010-01-01",
       repeat: 5
     )
+
     assert_equal 5, r.events.size
   end
 
@@ -141,7 +153,7 @@ class MonthlyRecurringDayTest < Minitest::Test
     r = recurrence(every: :month, on: Date.current.day,
                    except: 8.months.from_now.to_date)
 
-    assert r.events.include?(7.months.from_now.to_date)
-    refute r.events.include?(8.months.from_now.to_date)
+    assert_includes r.events, 7.months.from_now.to_date
+    refute_includes r.events, 8.months.from_now.to_date
   end
 end

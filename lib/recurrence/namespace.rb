@@ -179,11 +179,11 @@ class Recurrence_
     required_date = as_date(required_date)
 
     if required_date < @_options[:starts] || required_date > @_options[:until]
-      false
-    else
-      each do |date|
-        return true if date == required_date
-      end
+      return false
+    end
+
+    each do |date|
+      return true if date == required_date
     end
 
     false
@@ -280,14 +280,14 @@ class Recurrence_
   #   r.each
   #   #=> #<Enumerator: [Mon, 15 Nov 2010, Tue, 16 Nov 2010]:each>
   #
-  def each(&block)
-    events.each(&block)
+  def each(&)
+    events.each(&)
   end
 
   # Works like Recurrence::Namespace#each, but removes the cache first.
-  def each!(&block)
+  def each!(&)
     reset!
-    each(&block)
+    each(&)
   end
 
   private def validate_initialize_options(options)

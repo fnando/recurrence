@@ -109,13 +109,13 @@ class Recurrence_
       end
 
       private def valid_ordinal?(ordinal)
-        return if ORDINALS.include?(ordinal.to_s)
+        return false if ORDINALS.include?(ordinal.to_s)
 
         raise ArgumentError, "invalid ordinal #{ordinal}"
       end
 
       private def valid_interval?(interval)
-        return if INTERVALS.key?(interval)
+        return false if INTERVALS.key?(interval)
 
         raise ArgumentError, "invalid ordinal #{interval}"
       end

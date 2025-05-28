@@ -5,6 +5,7 @@ require "test_helper"
 class YearlyRecurringTest < Minitest::Test
   test "recurs until limit date" do
     r = Recurrence.yearly(on: [12, 31])
+
     assert_equal Date.parse("2037-12-31"), r.events[-1]
   end
 
@@ -15,6 +16,7 @@ class YearlyRecurringTest < Minitest::Test
       on: [date.month, date.day],
       until: date.to_date
     )
+
     assert_equal date.to_date, r.events[-1]
   end
 
@@ -25,6 +27,7 @@ class YearlyRecurringTest < Minitest::Test
       on: [date.month, date.day],
       through: date.to_date
     )
+
     assert_equal date.to_date, r.events[-1]
   end
 
@@ -35,6 +38,7 @@ class YearlyRecurringTest < Minitest::Test
       on: [date.month, date.day],
       starts: date.to_date
     )
+
     assert_equal date.to_date, r.events[0]
   end
 
@@ -48,6 +52,7 @@ class YearlyRecurringTest < Minitest::Test
       starts: starts,
       until: ends
     )
+
     assert_equal "2003-06-07", r.events[0].to_s
     assert_equal "2018-06-07", r.events[-1].to_s
   end
@@ -62,6 +67,7 @@ class YearlyRecurringTest < Minitest::Test
       starts: starts,
       through: ends
     )
+
     assert_equal "2003-06-07", r.events[0].to_s
     assert_equal "2018-06-07", r.events[-1].to_s
   end
@@ -75,6 +81,7 @@ class YearlyRecurringTest < Minitest::Test
       interval: 2,
       starts: starts
     )
+
     assert_equal "2008-09-21", r.events[0].to_s
     assert_equal "2010-09-21", r.events[1].to_s
     assert_equal "2012-09-21", r.events[2].to_s
@@ -90,6 +97,7 @@ class YearlyRecurringTest < Minitest::Test
       starts: starts,
       repeat: 5
     )
+
     assert_equal 5, r.events.size
   end
 
@@ -103,6 +111,7 @@ class YearlyRecurringTest < Minitest::Test
       starts: starts,
       through: ends
     )
+
     assert_equal "2019-06-07", r.events[-1].to_s
   end
 
@@ -111,6 +120,7 @@ class YearlyRecurringTest < Minitest::Test
     starts = Date.parse("2008-09-03")
 
     r = recurrence(every: :year, on: [10, 27], starts: starts)
+
     assert_equal "2008-10-27", r.events[0].to_s
   end
 
@@ -118,10 +128,12 @@ class YearlyRecurringTest < Minitest::Test
        "start date" do
     starts = Date.parse("2008-09-03")
     r = recurrence(every: :year, on: [7, 1], starts: starts)
+
     assert_equal "2009-07-01", r.events[0].to_s
 
     starts = Date.parse("2008-09-03")
     r = recurrence(every: :year, on: [9, 1], starts: starts)
+
     assert_equal "2009-09-01", r.events[0].to_s
   end
 
@@ -129,7 +141,7 @@ class YearlyRecurringTest < Minitest::Test
     r = Recurrence.yearly(on: [12, 31],
                           except: "#{Time.now.year + 3}-12-31")
 
-    assert r.events.include?("#{Time.now.year + 2}-12-31".to_date)
-    refute r.events.include?("#{Time.now.year + 3}-12-31".to_date)
+    assert_includes r.events, "#{Time.now.year + 2}-12-31".to_date
+    refute_includes r.events, "#{Time.now.year + 3}-12-31".to_date
   end
 end

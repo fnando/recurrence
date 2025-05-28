@@ -5,25 +5,29 @@ require "test_helper"
 class WeeklyRecurringTest < Minitest::Test
   test "recurs until limit date" do
     r = Recurrence.weekly(on: :thursday)
+
     assert_equal Date.parse("2037-12-31"), r.events[-1]
   end
 
   test "repeats 6 weeks from now" do
     date = 6.weeks.from_now
     r = recurrence(every: :week, on: date.wday, until: date.to_date)
+
     assert_equal date.to_date, r.events[-1]
   end
 
   test "repeats through 6 weeks from now" do
     date = 6.weeks.from_now
     r = recurrence(every: :week, on: date.wday, through: date.to_date)
+
     assert_equal date.to_date, r.events[-1]
   end
 
-  test "starts 3 months ago (#{3.months.ago.to_s(:date)})" do
+  test "starts 3 months ago (#{3.months.ago.to_date})" do
     date = 3.months.ago
 
     r = recurrence(every: :week, on: date.wday, starts: date.to_date)
+
     assert_equal date.to_date, r.events[0]
     assert_equal (date + 1.week).to_date, r.events[1]
     assert_equal (date + 2.weeks).to_date, r.events[2]
@@ -43,6 +47,7 @@ class WeeklyRecurringTest < Minitest::Test
       starts: starts,
       until: ends.to_date
     )
+
     assert_equal "2008-02-29", r.events[0].to_s
     assert_equal "2008-03-07", r.events[1].to_s
     assert_equal ends.to_s, r.events[-1].to_s
@@ -58,6 +63,7 @@ class WeeklyRecurringTest < Minitest::Test
       starts: starts,
       through: ends.to_date
     )
+
     assert_equal "2008-02-29", r.events[0].to_s
     assert_equal "2008-03-07", r.events[1].to_s
     assert_equal ends.to_s, r.events[-1].to_s
@@ -72,6 +78,7 @@ class WeeklyRecurringTest < Minitest::Test
       starts: starts,
       until: "2009-01-01"
     )
+
     assert_equal "2008-09-21", r.events[0].to_s
     assert_equal "2008-10-05", r.events[1].to_s
     assert_equal "2008-10-19", r.events[2].to_s
@@ -90,6 +97,7 @@ class WeeklyRecurringTest < Minitest::Test
       until: "2011-01-01",
       repeat: 5
     )
+
     assert_equal 5, r.events.size
   end
 
@@ -102,6 +110,7 @@ class WeeklyRecurringTest < Minitest::Test
       starts: starts,
       until: "2009-01-01"
     )
+
     assert_equal "2008-09-21", r.events[0].to_s
     assert_equal "2008-09-27", r.events[1].to_s
     assert_equal "2008-10-05", r.events[2].to_s
@@ -118,6 +127,7 @@ class WeeklyRecurringTest < Minitest::Test
       starts: starts,
       until: "2009-01-01"
     )
+
     assert_equal "2008-09-22", r.events[0].to_s
     assert_equal "2008-09-24", r.events[1].to_s
     assert_equal "2008-09-26", r.events[2].to_s
@@ -134,6 +144,7 @@ class WeeklyRecurringTest < Minitest::Test
       starts: starts,
       until: "2009-01-01"
     )
+
     assert_equal "2008-09-27", r.events[0].to_s
   end
 
@@ -142,7 +153,7 @@ class WeeklyRecurringTest < Minitest::Test
     r = recurrence(every: :week, on: date.wday,
                    except: 2.weeks.from_now.to_date)
 
-    assert r.events.include?(1.week.from_now.to_date)
-    refute r.events.include?(2.weeks.from_now.to_date)
+    assert_includes r.events, 1.week.from_now.to_date
+    refute_includes r.events, 2.weeks.from_now.to_date
   end
 end

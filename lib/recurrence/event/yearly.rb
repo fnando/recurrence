@@ -51,13 +51,13 @@ class Recurrence_
       end
 
       private def valid_month?(month)
-        return if (1..12).cover?(month)
+        return false if (1..12).cover?(month)
 
         raise ArgumentError, "invalid month #{month}"
       end
 
       private def valid_month_name?(month)
-        return if MONTHS.key?(month.to_s)
+        return false if MONTHS.key?(month.to_s)
 
         raise ArgumentError, "invalid month #{month}"
       end

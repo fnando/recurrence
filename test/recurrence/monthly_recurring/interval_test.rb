@@ -8,6 +8,7 @@ class MonthlyRecurringIntervalTest < Minitest::Test
   test "uses numeric interval" do
     r = recurrence(every: :month, on: 21, interval: 2,
                    starts: starts)
+
     assert_equal "2008-09-21", r.events[0].to_s
     assert_equal "2008-11-21", r.events[1].to_s
     assert_equal "2009-01-21", r.events[2].to_s
@@ -21,6 +22,7 @@ class MonthlyRecurringIntervalTest < Minitest::Test
       starts: starts,
       interval: :monthly
     )
+
     assert_equal "2008-09-10", r.events[0].to_s
     assert_equal "2008-10-10", r.events[1].to_s
   end
@@ -32,6 +34,7 @@ class MonthlyRecurringIntervalTest < Minitest::Test
       starts: starts,
       interval: :bimonthly
     )
+
     assert_equal "2008-09-10", r.events[0].to_s
     assert_equal "2008-11-10", r.events[1].to_s
   end
@@ -43,6 +46,7 @@ class MonthlyRecurringIntervalTest < Minitest::Test
       starts: starts,
       interval: :quarterly
     )
+
     assert_equal "2008-09-10", r.events[0].to_s
     assert_equal "2008-12-10", r.events[1].to_s
   end
@@ -50,6 +54,7 @@ class MonthlyRecurringIntervalTest < Minitest::Test
   test "accepts semesterly symbol" do
     r = recurrence(every: :month, on: 10, starts: starts,
                    interval: :semesterly)
+
     assert_equal "2008-09-10", r.events[0].to_s
     assert_equal "2009-03-10", r.events[1].to_s
   end
