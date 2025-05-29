@@ -5,6 +5,6 @@ class Recurrence_
     MAJOR = 1
     MINOR = 3
     PATCH = 0
-    STRING = "#{MAJOR}.#{MINOR}.#{PATCH}"
+    STRING = "#{MAJOR}.#{MINOR}.#{PATCH}".freeze
   end
 end

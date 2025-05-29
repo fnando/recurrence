@@ -2,3 +2,4 @@
 .bundle
 html
 *.lock
+coverage

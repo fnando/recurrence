@@ -1,13 +1,18 @@
 # frozen_string_literal: true
 
-require "active_support"
-require "active_support/core_ext"
 require "date"
+require "time"
 
 class Recurrence_
-  require "recurrence/event"
-  require "recurrence/handler"
-  require "recurrence/version"
+  require_relative "refinements/time"
+  require_relative "refinements/date"
+  require_relative "handler/fall_back"
+  require_relative "event/base"
+  require_relative "event/daily"
+  require_relative "event/monthly"
+  require_relative "event/weekly"
+  require_relative "event/yearly"
+  require_relative "version"
 
   include Enumerable
 
@@ -20,10 +25,10 @@ class Recurrence_
   FREQUENCY = %w[day week month year].freeze
 
   # This is the default callable that is used as the current date.
-  # If `Date.current` is available, use it. Otherwise, fall back to
-  # `Date.current`.
+  # If `Date.current` is available, use it. Otherwise, fall back
+  # to `Date.today`.
   DEFAULT_STARTS_DATE = lambda do
-    Date.current
+    Date.respond_to?(:current) ? Date.current : Date.today
   end
 
   attr_reader :event, :options
@@ -179,11 +184,11 @@ class Recurrence_
     required_date = as_date(required_date)
 
     if required_date < @_options[:starts] || required_date > @_options[:until]
-      false
-    else
-      each do |date|
-        return true if date == required_date
-      end
+      return false
+    end
+
+    each do |date|
+      return true if date == required_date
     end
 
     false
@@ -256,7 +261,7 @@ class Recurrence_
     end
   end
 
-  # Works like SimplesIdeias::Recurrence::Namespace#events, but removes the
+  # Works like Recurrence::Namespace#events, but removes the
   # cache first.
   def events!(options = {})
     reset!
@@ -280,14 +285,14 @@ class Recurrence_
   #   r.each
   #   #=> #<Enumerator: [Mon, 15 Nov 2010, Tue, 16 Nov 2010]:each>
   #
-  def each(&block)
-    events.each(&block)
+  def each(&)
+    events.each(&)
   end
 
   # Works like Recurrence::Namespace#each, but removes the cache first.
-  def each!(&block)
+  def each!(&)
     reset!
-    each(&block)
+    each(&)
   end
 
   private def validate_initialize_options(options)
@@ -322,12 +327,14 @@ class Recurrence_
     options
   end
 
-  private def as_date(date) # :nodoc:
-    case date
+  private def as_date(input) # :nodoc:
+    case input
+    when Time
+      input.to_date
     when String
-      Date.parse(date)
+      Date.parse(input)
     else
-      date
+      input
     end
   end
 end

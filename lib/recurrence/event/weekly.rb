@@ -4,8 +4,8 @@ class Recurrence_
   module Event
     class Weekly < Base # :nodoc: all
       private def validate
-        @options[:on] = Array.wrap(@options[:on]).inject([]) do |days, value|
-          days << valid_weekday_or_weekday_name?(value)
+        @options[:on] = Array(@options[:on]).inject([]) do |days, value|
+          days << expand_weekday!(value)
         end
 
         @options[:on].sort!

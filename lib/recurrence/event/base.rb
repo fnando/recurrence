@@ -41,11 +41,14 @@ class Recurrence_
         @date = next_in_recurrence
 
         @finished = true if @options[:through] && @date >= @options[:through]
+
         if @date > @options[:until]
           @finished = true
           @date = nil
         end
+
         shift_to @date if @date && @options[:shift]
+
         @date
       end
 
@@ -79,25 +82,26 @@ class Recurrence_
 
       # Common validation for inherited classes.
       #
-      private def valid_month_day?(day)
-        raise ArgumentError, "invalid day #{day}" unless (1..31).cover?(day)
+      private def validate_month_day(day)
+        return if (1..31).cover?(day)
+
+        raise ArgumentError, "invalid day: #{day.inspect}"
       end
 
       # Check if the given key has a valid weekday (0 upto 6) or a valid weekday
       # name (defined in the DAYS constant). If a weekday name (String) is
       # given, convert it to a weekday (Integer).
       #
-      private def valid_weekday_or_weekday_name?(value)
+      private def expand_weekday!(value)
         if value.is_a?(Numeric)
           unless (0..6).cover?(value)
-            raise ArgumentError,
-                  "invalid day #{value}"
+            raise ArgumentError, "invalid weekday: #{value}"
           end
 
           value
         else
           weekday = WEEKDAYS[value.to_s]
-          raise ArgumentError, "invalid weekday #{value}" unless weekday
+          raise ArgumentError, "invalid weekday: #{value}" unless weekday
 
           weekday
         end

@@ -19,12 +19,12 @@ class Recurrence_
       }.freeze
 
       private def validate
-        valid_month_day?(@options[:on].last)
+        validate_month_day(@options[:on]&.last)
 
         if @options[:on].first.is_a?(Numeric)
-          valid_month?(@options[:on].first)
+          validate_month(@options[:on].first)
         else
-          valid_month_name?(@options[:on].first)
+          validate_month_name(@options[:on].first)
           @options[:on] = [MONTHS[@options[:on].first.to_s], @options[:on].last]
         end
       end
@@ -50,16 +50,16 @@ class Recurrence_
         @options[:on] = [date.month, date.day]
       end
 
-      private def valid_month?(month)
+      private def validate_month(month)
         return if (1..12).cover?(month)
 
-        raise ArgumentError, "invalid month #{month}"
+        raise ArgumentError, "invalid month: #{month.inspect}"
       end
 
-      private def valid_month_name?(month)
+      private def validate_month_name(month)
         return if MONTHS.key?(month.to_s)
 
-        raise ArgumentError, "invalid month #{month}"
+        raise ArgumentError, "invalid month: #{month.inspect}"
       end
     end
   end

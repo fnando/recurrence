@@ -12,26 +12,24 @@ class Recurrence_
 
       private def validate
         if @options.key?(:weekday)
-
           # Allow :on => :last, :weekday => :thursday contruction.
           if @options[:on].to_s == "last"
             @options[:on] = 5
           elsif @options[:on].is_a?(Numeric)
-            valid_week?(@options[:on])
+            validate_week(@options[:on])
           else
-            valid_ordinal?(@options[:on])
+            validate_ordinal(@options[:on])
             @options[:on] = ORDINALS.index(@options[:on].to_s) + 1
           end
 
-          @options[:weekday] =
-            valid_weekday_or_weekday_name?(@options[:weekday])
+          @options[:weekday] = expand_weekday!(@options[:weekday])
         else
-          valid_month_day?(@options[:on])
+          validate_month_day(@options[:on])
         end
 
         return unless @options[:interval].is_a?(Symbol)
 
-        valid_interval?(@options[:interval])
+        validate_interval(@options[:interval])
         @options[:interval] = INTERVALS[@options[:interval]]
       end
 
@@ -40,7 +38,7 @@ class Recurrence_
 
         type = @options.key?(:weekday) ? :weekday : :monthday
 
-        class_eval <<-METHOD, __FILE__, __LINE__ + 1
+        singleton_class.class_eval <<-METHOD, __FILE__, __LINE__ + 1
           # private def next_month
           #   if initialized?
           #     advance_to_month_by_weekday(@date)
@@ -105,23 +103,25 @@ class Recurrence_
       end
 
       private def shift_to(date)
-        @options[:on] = date.day
+        @options[:on] = date.day unless @options[:weekday]
       end
 
-      private def valid_ordinal?(ordinal)
+      private def validate_ordinal(ordinal)
         return if ORDINALS.include?(ordinal.to_s)
 
-        raise ArgumentError, "invalid ordinal #{ordinal}"
+        raise ArgumentError, "invalid ordinal: #{ordinal}"
       end
 
-      private def valid_interval?(interval)
+      private def validate_interval(interval)
         return if INTERVALS.key?(interval)
 
-        raise ArgumentError, "invalid ordinal #{interval}"
+        raise ArgumentError, "invalid ordinal: #{interval.inspect}"
       end
 
-      private def valid_week?(week)
-        raise ArgumentError, "invalid week #{week}" unless (1..5).cover?(week)
+      private def validate_week(week)
+        return if (1..5).cover?(week)
+
+        raise ArgumentError, "invalid week: #{week.inspect}"
       end
     end
   end

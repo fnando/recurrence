@@ -15,6 +15,8 @@ class Recurrence_
     #   # => February 28, 2011
     #
     module FallBack
+      using Refinements
+
       def self.call(day, month, year)
         Date.new(year, month, [day, Time.days_in_month(month, year)].min)
       end
