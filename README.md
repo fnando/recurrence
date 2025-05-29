@@ -61,32 +61,36 @@ r = Recurrence.yearly(on: [:january, 31])
 # :starts defaults to Date.current
 # :until defaults to 2037-12-31
 r = Recurrence.new(every: :day, starts: Date.current)
-r = Recurrence.new(every: :day, until: '2010-01-31')
-r = Recurrence.new(every: :day, starts: Date.current, until: '2010-01-31')
+r = Recurrence.new(every: :day, until: "2010-01-31")
+r = Recurrence.new(every: :day, starts: Date.current, until: "2010-01-31")
 
-# Generate a collection of events which always includes a final event with the given through date
-# :through defaults to being unset
-r = Recurrence.new(every: :day, through: '2010-01-31')
-r = Recurrence.new(every: :day, starts: Date.current, through: '2010-01-31')
+# Generate a collection of events which always includes a final event with the
+# given through date :through defaults to being unset
+r = Recurrence.new(every: :day, through: "2010-01-31")
+r = Recurrence.new(every: :day, starts: Date.current, through: "2010-01-31")
 
 # Remove a date in the series on the given except date(s)
 # :except defaults to being unset
-r = Recurrence.new(every: :day, except: '2010-01-31')
-r = Recurrence.new(every: :day, except: [Date.current, '2010-01-31'])
+r = Recurrence.new(every: :day, except: "2010-01-31")
+r = Recurrence.new(every: :day, except: [Date.current, "2010-01-31"])
 
 # Override the next date handler
-r = Recurrence.new(every: :month, on: 1, handler: Proc.new { |day, month, year| raise("Date not allowed!") if year == 2011 && month == 12 && day == 31 })
+handler = Proc.new do |day, month, year|
+  raise("Date not allowed!") if year == 2011 && month == 12 && day == 31
+end
+r = Recurrence.new(every: :month, on: 1, handler:)
 
-# Shift the recurrences to maintain dates around boundaries (Jan 31 -> Feb 28 -> Mar 28)
+# Shift the recurrences to maintain dates around
+# boundaries (Jan 31 -> Feb 28 -> Mar 28)
 r = Recurrence.new(every: :month, on: 31, shift: true)
 
 # Getting an array with all events
 r.events.each {|date| puts date.to_s }  # => Memoized array
 r.events!.each {|date| puts date.to_s } # => reset items cache and re-execute it
-r.events(starts: '2009-01-01').each {|date| puts date.to_s }
-r.events(until: '2009-01-10').each {|date| puts date.to_s }
-r.events(through: '2009-01-10').each {|date| puts date.to_s }
-r.events(starts: '2009-01-05', until: '2009-01-10').each {|date| puts date.to_s }
+r.events(starts: "2009-01-01").each {|date| puts date.to_s }
+r.events(until: "2009-01-10").each {|date| puts date.to_s }
+r.events(through: "2009-01-10").each {|date| puts date.to_s }
+r.events(starts: "2009-01-05", until: "2009-01-10").each {|date| puts date.to_s }
 
 # Iterating events
 r.each { |date| puts date.to_s } # => Use items method
